@@ -1,6 +1,6 @@
 package Tree;
 
-public class BalancedTree {
+public class  BalancedTree {
     // 判断一棵树是否为平衡二叉树
     public Info isBalancedTree(TreeNode root) {
         if (root == null)
