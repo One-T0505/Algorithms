@@ -6,13 +6,14 @@ public class Kruskal {
     // Kruskal 算法生成图的最小生成树。用并查集最合适
     public static class UnionFind{
         public HashMap<Node, Node> fatherMap;  // key: 某个结点  value: 结点往上的结点
-        public HashMap<Node, Integer> sizes;  // key: 一个集合的根结点   value：该集合的元素个数
+        public HashMap<Node, Integer> sizes;   // key: 一个集合的根结点   value：该集合的元素个数
 
         public UnionFind(){
             fatherMap = new HashMap<>();
             sizes = new HashMap<>();
         }
 
+        // 从一个图中建立初始信息：此时每个结点的父结点就是自己，并且以自己为根结点的集合size为1
         public void fromGraph(Graph graph){
             fatherMap.clear();
             sizes.clear();
@@ -42,7 +43,7 @@ public class Kruskal {
         public void union(Node a, Node b){
             if (a == null || b == null)
                 return;
-            if (!isSameSet(a, b)){
+            if (isSameSet(a, b)){
                 Node aroot = findRoot(a);
                 Node broot = findRoot(b);
                 int aSize = sizes.get(aroot);
@@ -67,9 +68,8 @@ public class Kruskal {
             }
         });
         // 将边逐个加入到小根堆，会自动排序，将最小的边放到堆顶
-        for (Edge edge : graph.edges)
-            minHeap.add(edge);
-        HashSet<Edge> res = new HashSet<Edge>();
+        minHeap.addAll(graph.edges);
+        HashSet<Edge> res = new HashSet<>();
         while (!minHeap.isEmpty()){
             Edge cur = minHeap.poll();
             if (!unionFind.isSameSet(cur.from, cur.to)){

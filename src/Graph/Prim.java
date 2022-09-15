@@ -6,48 +6,34 @@ import java.util.PriorityQueue;
 import java.util.Set;
 
 public class Prim {
-    public static class EdgeComparator implements Comparator<Edge> {
-
-        @Override
-        public int compare(Edge o1, Edge o2) {
-            return o1.weight - o2.weight;
-        }
-
-    }
-
-    public static Set<Edge> primMST(Graph graph) {
+    public static Set<Edge> primMST(Graph graph, Node source) {
         // 解锁的边进入小根堆
-        PriorityQueue<Edge> priorityQueue = new PriorityQueue<>(new EdgeComparator());
+        PriorityQueue<Edge> priorityQueue = new PriorityQueue<>(new Comparator<>() {
+            @Override
+            public int compare(Edge o1, Edge o2) {
+                return o1.weight - o2.weight;
+            }
+        });
 
         // 哪些点被解锁出来了
         HashSet<Node> nodeSet = new HashSet<>();
 
+        Set<Edge> resSet = new HashSet<>(); // 存放选中的边在resSet里
 
-
-        Set<Edge> result = new HashSet<>(); // 依次挑选的的边在result里
-
-        for (Node node : graph.nodes.values()) { // 随便挑了一个点
-            // node 是开始点
-            if (!nodeSet.contains(node)) {
-                nodeSet.add(node);
-                for (Edge edge : node.edges) { // 由一个点，解锁所有相连的边
-                    priorityQueue.add(edge);
-                }
-                while (!priorityQueue.isEmpty()) {
-                    Edge edge = priorityQueue.poll(); // 弹出解锁的边中，最小的边
-                    Node toNode = edge.to; // 可能的一个新的点
-                    if (!nodeSet.contains(toNode)) { // 不含有的时候，就是新的点
-                        nodeSet.add(toNode);
-                        result.add(edge);
-                        for (Edge nextEdge : toNode.edges) {
-                            priorityQueue.add(nextEdge);
-                        }
-                    }
-                }
+        // source 是开始点
+        nodeSet.add(source);
+        // 由一个点，解锁所有相连的边
+        priorityQueue.addAll(source.edges);
+        while (!priorityQueue.isEmpty()) {
+            Edge edge = priorityQueue.poll(); // 弹出解锁的边中，最小的边
+            Node toNode = edge.to; // 可能的一个新的点
+            if (!nodeSet.contains(toNode)) { // 不含有的时候，就是新的点
+                nodeSet.add(toNode);
+                resSet.add(edge);
+                priorityQueue.addAll(toNode.edges);  // 可能重复添加边，但是不影响结果
             }
-            // break;
         }
-        return result;
+        return resSet;
     }
 
     // 请保证graph是连通图

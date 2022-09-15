@@ -1,6 +1,5 @@
 package Graph;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -10,16 +9,16 @@ public class Dijkstra {
     public static HashMap<Node, Integer> dijkstra(Node source){
         // key：从source出发到达key结点  value：从source出发到达key结点的最小距离
         // 如果在hashmap中没有T这个结点的记录，说明source不可到达T
-        HashMap<Node, Integer> distance = new HashMap<Node, Integer>();
+        HashMap<Node, Integer> distance = new HashMap<>();
         distance.put(source, 0);  // 自己到自己的距离为0
         // 当用某个点来计算最小距离更新表之后，该结点的记录就不要再修改了 lock存放哪些结点的记录不用再修改
-        HashSet<Node> lock = new HashSet<Node>();
+        HashSet<Node> lock = new HashSet<>();
         Node minDis = selectNode(distance, lock);
         while (minDis != null){
             int dis = distance.get(minDis);
             for (Edge edge : minDis.edges){
                 Node to = edge.to;
-                if (!distance.containsKey(to))
+                if (!distance.containsKey(to)) // 该结点若还不在distance中，说明从原点到该点的距离还为无穷
                     distance.put(to, dis + edge.weight);
                 else
                     distance.put(to, Math.min(distance.get(to), dis + edge.weight));
@@ -30,6 +29,8 @@ public class Dijkstra {
         return distance;
     }
 
+    // 下面的方法是用来从distance中选择一个最小距离的点，并且该结点没有被锁定（不在lock中）
+    // 该方法每次都是遍历distance这个hashmap来得到的，是否可以用堆来优化？
     private static Node selectNode(HashMap<Node, Integer> distance, HashSet<Node> lock) {
         Node res = null;
         int minDistance = Integer.MAX_VALUE;

@@ -75,8 +75,6 @@ public class PrefixTree {
             cur.end--;
         }
     }
-
-
 }
 
 class PrefixTreeNode{

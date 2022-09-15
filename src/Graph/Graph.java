@@ -80,7 +80,7 @@ public class Graph {
     // 拓扑排序算法：只适用于有向无环图
     public static List<Node> Topology(Graph graph){
         // key: 一个结点   value：该结点剩余的入度
-        HashMap<Node, Integer> map = new HashMap<Node, Integer>();
+        HashMap<Node, Integer> map = new HashMap<>();
         // 入度为0的结点才能进该队列
         Queue<Node> queue = new LinkedList<>();
         for (Node node : graph.nodes.values()){

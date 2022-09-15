@@ -20,6 +20,7 @@ public class UnionFind {
         public HashMap<Node<V>, Node<V>> parents;  // 结点->其父结点
         public HashMap<Node<V>, Integer> sizes;    // 结点->该结点所在集合的元素个数, 只有各个集合的根结点才会记录
 
+
         public UnionSet(List<V> vals) {
             nodes = new HashMap<>();
             parents = new HashMap<>();
