@@ -1,14 +1,10 @@
 package LinkedList;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
 
 public class SingleLinkedList {
 
     // 单链表的反转
-    public  static SingleNode singleLinkedListTraverse(SingleNode head){
+    public  static SingleNode singleLinkedListReverse(SingleNode head){
         SingleNode next = null, pre = null;
         while (head != null) {
             next = head.next;
@@ -21,27 +17,28 @@ public class SingleLinkedList {
 
     // 单链表反转对数器
 
-    // 双链表反转
-    public static DoubleNode doubleLinkedListTraverse(DoubleNode head){
-        DoubleNode pre = null, next = null;
-        while (head != null) {
+    public static SingleNode reverse(SingleNode head){
+        SingleNode pre = null, next = null;
+        while (head != null){
             next = head.next;
             head.next = pre;
-            head.pre = next;
             pre = head;
             head = next;
         }
         return pre;
     }
 
+
     // 将单链表中结点值为 target的结点全部删除，剩下的结点相对顺序不变
     public static SingleNode removeTarget(SingleNode head, int target){
-        // 如果开始就是 target，所以首先要找到第一个不是target的结点作为新的头结点
+        // 如果头结点就是 target，那头结点就会被删除，就会产生新的头结点
+        // 所以首先要找到第一个不是target的结点作为新的头结点
         while (head != null){
             if (head.val != target)
                 break;
             head = head.next;
         }
+        // 跳出while循环后，head就来到了第一个不等于target的结点
         SingleNode pre = head, cur = head;
         while (cur != null) {
             if (cur.val == target)

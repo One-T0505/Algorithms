@@ -2,28 +2,28 @@ package BitOperation;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import utils.arrays;
 
 public class XOR {
-    //    问题描述：一个数组中，只有一个值出现过奇数次，其他数值都出现过偶数次，用O(n)的时间复杂度求出该出现过奇数次的值。
+//    1.问题描述：一个数组中，只有一个值出现过奇数次，其他数值都出现过偶数次，用O(n)的时间复杂度求出该出现过奇数次的值。
 //    只需要初始化一个值为0，让它和所有元素都异或运算一遍，就能求出唯一一个出现过奇数次的数
     public int one_odd_times_num(int[] arr){
         int eor=0;
-        for (int i = 0; i < arr.length; i++) {
-            eor ^=arr[i];
-        }
+        for (int j : arr)
+            eor ^= j;
         return eor;
     }
 
-    //    问题描述：一个数组中，有两个值出现过奇数次，其他数值都出现过偶数次，求出这两个现过奇数次的值。
+//    2.问题描述：一个数组中，有两个值出现过奇数次，其他数值都出现过偶数次，求出这两个现过奇数次的值。
 //    思路：假设两个出现过奇数次的值为a和b，令eor=0，与所有元素异或后，eor=a^b。既然a！=b 那么eor肯定不为0，
 //    eor中为1的值代表的是 a和b对应数位上的值不同，肯定是一个1，一个0.以eor最低位的1为分割线将a和b区分开
     public void two_odd_times_num(int[] arr){
         int eor = one_odd_times_num(arr);  // eor==a^b
         int right = eor & (~eor + 1);//固定操作：这样可以取出该数值的第一个不为空的1。eg： eor=10 （二进制：1010）-> right=0010
         int eor_1 = 0;
-        for (int i = 0; i < arr.length; i++) {
-            if ((arr[i] & right) == 0){ // 将right这个数值位上的值为0的数都选出来了
-                eor_1 ^= arr[i];        // 得到其中一个奇数次的值，eor_1可能是a，也可能是b
+        for (int j : arr) {
+            if ((j & right) == 0) { // 将right这个数值位上的值为0的数都选出来了
+                eor_1 ^= j;        // 得到其中一个奇数次的值，eor_1可能是a，也可能是b
             }
         }
         eor ^= eor_1;     // 得到出现奇数次的值，存在eor中
@@ -38,7 +38,7 @@ public class XOR {
         a = a ^ b;
     }
 
-    // 根据上面的题目进一步加大难度：给一个数组，里面只有一种数出现了 k 次，其他数都出现了 m 次，并且 m>1, k<m。
+    // 3.根据上面的题目进一步加大难度：给一个数组，里面只有一种数出现了 k 次，其他数都出现了 m 次，并且 m>1, k<m。
     // 请找出是哪个数出现了 k 次。
     // 思路：int型整数每个都是32位，申请一个固定长度为32的数组bit，从0-31，每一个索引上的值表示其二进制对应的位上为1的数量。
     // eg：遍历给的数组，假如有个数为9-->1001，所以 bit[0]++, bit[3]++。遍历完整个数组，bit中就包含了这些数据各个位上为1
@@ -81,7 +81,7 @@ public class XOR {
         //实际不同种类的数最少得有2种
         int numKinds = (int) (Math.random() * maxKinds) + 2;
         // 随机确定那个唯一出现 k 次的数
-        int kTimeNum = generateRandomNum(range);
+        int kTimeNum = arrays.generateRandomNum(range);
         //数组的长度：k + (numKinds - 1) * m
         int[] arr = new int[k + (numKinds - 1) * m];
         int index = 0;
@@ -96,7 +96,7 @@ public class XOR {
         while (numKinds != 0){
             int curNum = 0;
             do {
-                curNum = generateRandomNum(range);
+                curNum = arrays.generateRandomNum(range);
             }while (hashSet.contains(curNum));
             hashSet.add(curNum);
             numKinds--;
@@ -114,9 +114,16 @@ public class XOR {
         return arr;
     }
 
-    // 返回一个在 [-range, +range]的整数
-    public static int generateRandomNum(int range){
-        return ((int) (Math.random() * range) + 1) - ((int) (Math.random() * range) + 1);
+
+    // 4.给一个数，计算它的二进制形式下有多少个1
+    public static int oneBitNum(int N){
+        int count = 0;
+        while (N != 0){
+            int mostRightOne = N & ((~N) + 1);  // 提取出最右位的1
+            count++;
+            N ^= mostRightOne;  // 将最右边的位计入count之后就没用了， 异或让原数最右位的1抹为0
+        }
+        return count;
     }
 
     public static void main(String[] args) {

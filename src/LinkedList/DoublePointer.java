@@ -20,6 +20,7 @@ public class DoublePointer {
         return slow;
     }
 
+
     // 2.输入链表头结点，奇数长度返回中点，偶数长度返回下中点（因为偶数长度会有两个中点）
     public static SingleNode method2(SingleNode head){
         // base case: 头为空或者只有一个结点或者只有两个结点，直接返回head

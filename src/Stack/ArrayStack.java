@@ -8,6 +8,7 @@ public class ArrayStack {
 
     public ArrayStack(int maxsize){
         this.maxsize = maxsize;
+        stack = new int[maxsize];
     }
 
     public boolean isEmpty(){
@@ -15,7 +16,7 @@ public class ArrayStack {
     }
 
     public boolean isFull(){
-        return this.top == this.maxsize-1;
+        return this.top == this.maxsize - 1;
     }
 
     public void push(int elem){
