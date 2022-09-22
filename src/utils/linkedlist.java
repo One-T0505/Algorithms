@@ -27,6 +27,8 @@ public class linkedlist {
 
     // 尾插法建立单链表
     public static SingleNode tailInsert(int[] arr){
+        if (arr == null || arr.length == 0)
+            return null;
         int len = arr.length;
         SingleNode head = null, pointer = null;
         for (int j : arr) {
@@ -36,6 +38,20 @@ public class linkedlist {
              else
                 pointer.next = cur;
             pointer = cur;
+        }
+        return head;
+    }
+
+    // 给一个数组，按照尾插法构造成单链表，并返回head
+    public static SingleNode ww(int[] arr){
+        if (arr == null || arr.length == 0)
+            return null;
+        SingleNode head = new SingleNode(arr[0], null);
+        SingleNode tmp = head;
+        for (int i = 1; i < arr.length; i++) {
+            SingleNode cur = new SingleNode(arr[i], null);
+            tmp.next = cur;
+            tmp = cur;
         }
         return head;
     }
@@ -64,7 +80,7 @@ public class linkedlist {
 
     // 判断两个单链表是否完全一样
     public static boolean isSame(SingleNode list1, SingleNode list2){
-        if (len(list1) > 0 && len(list2) > 0 && len(list1) == len(list2)){
+        if (len(list1) >= 0 && len(list2) >= 0 && len(list1) == len(list2)){
             while (list1 != null && list2 != null){
                 if (list1.val != list2.val)
                     return false;
@@ -76,17 +92,36 @@ public class linkedlist {
             return false;
     }
 
+    // 逆序单链表
+    public static SingleNode reverseSingleLinkedList(SingleNode head){
+        if (head == null)
+            return null;
+        SingleNode pre = null, next = null;
+        while (head != null){
+            next = head.next;
+            head.next = pre;
+            pre = head;
+            head = next;
+        }
+        return pre;
+    }
+
+    // 单链表拷贝
+    public static SingleNode copyLinkedList(SingleNode head){
+        if (head == null)
+            return null;
+        SingleNode cur = new SingleNode(head.val, null);
+        SingleNode res = cur;
+        head = head.next;
+        while (head != null){
+            cur.next = new SingleNode(head.val, null);
+            cur =cur.next;
+            head = head.next;
+        }
+        return res;
+    }
+
 
     public static void main(String[] args) {
-        for (int i = 0; i < 100000; i++) {
-            SingleNode p = generateRandomLinkedList(10, 60);
-            SingleNode q = generateRandomLinkedList(10, 60);
-            if (isSame(p, q)){
-                printLinkedList(p);
-                printLinkedList(q);
-                System.out.println("===================================================");
-            }
-        }
-
     }
 }

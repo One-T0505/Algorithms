@@ -1,13 +1,15 @@
 package LinkedList;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import utils.*;
 
 // 快慢指针问题
 public class DoublePointer {
 
     // 1.输入链表头结点，奇数长度返回中点，偶数长度返回上中点（因为偶数长度会有两个中点）
     // 比如：4->2->11->7  2和11就是中点，2是上中点，11是下中点
-    public static SingleNode method1(SingleNode head){
+    public static SingleNode midOrFormerMid(SingleNode head){
         // base case: 头结点为空 或者 只有一个头结点 或者 只有两个结点
         if (head == null || head.next == null || head.next.next == null)
             return head;
@@ -22,21 +24,21 @@ public class DoublePointer {
 
 
     // 2.输入链表头结点，奇数长度返回中点，偶数长度返回下中点（因为偶数长度会有两个中点）
-    public static SingleNode method2(SingleNode head){
+    public static SingleNode midOrLatterMid(SingleNode head){
         // base case: 头为空或者只有一个结点或者只有两个结点，直接返回head
         if (head == null || head.next == null)
             return head;
         // 执行到这里说明至少有2个结点
-        SingleNode slow = head, fast = head.next;
+        SingleNode slow = head.next, fast = head.next;
         while (fast.next != null && fast.next.next != null){
             slow = slow.next;
             fast = fast.next.next;
         }
-        return slow.next;
+        return slow;
     }
 
     // 3.输入链表头结点，奇数长度返回中点的前驱，偶数长度返回上中点的前驱（因为偶数长度会有两个中点）
-    public static SingleNode method3(SingleNode head){
+    public static SingleNode midOrFormerMidPre(SingleNode head){
         // base case: 头为空或者只有一个结点或者只有两个结点，直接返回null
         if (head == null || head.next == null || head.next.next == null)
             return null;
@@ -50,7 +52,7 @@ public class DoublePointer {
     }
 
     // 4.输入链表头结点，奇数长度返回中点的前驱，偶数长度返回上中点（因为偶数长度会有两个中点）
-    public static SingleNode method4(SingleNode head){
+    public static SingleNode midOrLatterMidPre(SingleNode head){
         // base case: 头为空或者只有一个结点，直接返回null
         if (head == null || head.next == null)
             return null;
@@ -66,7 +68,7 @@ public class DoublePointer {
     // 5.将单链表按某个值划分成左边小、中间相等、右边大的形式
     //   方法1：把链表放数组里，在数组上做partition，在把数组构建成单链表（笔试用）时间复杂度：O(N), 空间复杂度：O(N)
     //   方法2：就在链表上分成小、中、大三部分再把各部分之间串起来（面试用）时间复杂度：O(N), 空间复杂度：O(1)
-    public static SingleNode linkedListPartition_v1(SingleNode head, int pivot){
+    public static SingleNode linkedListPartitionV1(SingleNode head, int pivot){
         if (head == null)
             return null;
         // 统计单链表的长度
@@ -112,7 +114,7 @@ public class DoublePointer {
     // 小于区的头尾指针：lH、lT；等于区的头尾指针：eH、eT；大于区的头尾指针：gH、gT
     // 遍历链表，将元素按照大小放在合适的区，最后再将小于区的尾指针->等于区的头指针 等于区的尾指针->大于区的头指针
     // 这样还能保证稳定性
-    public static SingleNode linkedListPartition_v2(SingleNode head, int pivot){
+    public static SingleNode linkedListPartitionV2(SingleNode head, int pivot){
         SingleNode lH = null, lT = null, eH = null, eT = null, gH = null, gT = null, next = null;
         while (head != null){
             next = head.next;
@@ -154,40 +156,19 @@ public class DoublePointer {
         }
         if (eT != null)
             eT.next = gH; // 即使大于区为空也无妨
+        // 执行到这里时，小于区的尾连接等于区的头，等于区的尾连接大于区的头，这样的首尾连接问题已经全部解决，所有情况都考虑进去了
+        // 最后一步就是确定返回哪个当头
         return lH != null ? lH : (eH != null ? eH : gH);
     }
 
-    // 一种特殊的单链表结点：
-    // class Node{
-    // int val;
-    // Node next;
-    // Node rand;
-    // Node(int val) {this.val = val;}}
-    // rand指针单链表结点新增的指针，rand可能指向链表中任一结点，也可指向null。给定一个由Node结点构成的无环单链表头结点head。实现
-    // 一个方法完成对该链表的深度复制，next指向和rand指向都得一样
-    public static Node deepCopy(Node head){
-        HashMap<Node, Node> map = new HashMap<>();
-        Node cur = head;
-        while (cur != null){
-            map.put(cur, new Node(cur.val));
-            cur = cur.next;
+    public static void main(String[] args) {
+        for (int i = 0; i < 10; i++) {
+            SingleNode head = linkedlist.generateRandomLinkedList(6, 30);
+            linkedlist.printLinkedList(head);
+            SingleNode newHead = linkedListPartitionV2(head, 15);
+            linkedlist.printLinkedList(newHead);
+            System.out.println("====================================");
         }
-        cur = head;
-        while (cur != null){
-            map.get(cur).next = map.get(cur.next);
-            map.get(cur).rand = map.get(cur.rand);
-            cur = cur.next;
-        }
-        return map.get(head);
     }
 }
 
-class Node {
-    public int val;
-    public Node next;
-    public Node rand;
-
-    public Node(int val) {
-        this.val = val;
-    }
-}

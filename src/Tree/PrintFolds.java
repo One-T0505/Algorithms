@@ -6,15 +6,16 @@ public class PrintFolds {
         printInOrder(1, N, true);
     }
 
-    private static void printInOrder(int nodeHeight, int treeHeight, boolean down) {
-        if (nodeHeight > treeHeight)
+    // N 表示了整棵树的高度
+    private static void printInOrder(int nodeHeight, int N, boolean down) {
+        if (nodeHeight > N)
             return;
-        printInOrder(nodeHeight + 1, treeHeight, true);
-        System.out.println(down ? nodeHeight + "凹" : nodeHeight + "凸");
-        printInOrder(nodeHeight + 1, treeHeight, false);
+        printInOrder(nodeHeight + 1, N, true);
+        System.out.print(down ? nodeHeight + "凹\t" : nodeHeight + "凸\t");
+        printInOrder(nodeHeight + 1, N, false);
     }
 
     public static void main(String[] args) {
-        PrintFolds.printFolds(3);
+        printFolds(4);
     }
 }

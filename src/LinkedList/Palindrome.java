@@ -1,12 +1,13 @@
 package LinkedList;
 
 import java.util.Stack;
+import utils.*;
 
 // 判断回文
 public class Palindrome {
     // 单链表判断回文
-    // 基础法：O(n) T(n)
-    public static boolean isPalindrome1(SingleNode head) {
+    // 基础法：O(n) T(n)  用一个栈装结点
+    public static boolean isPalindromeV1(SingleNode head) {
         if (head == null)
             return true;
         Stack<SingleNode> stack = new Stack<>();
@@ -16,7 +17,7 @@ public class Palindrome {
             cur = cur.next;
         }
         stack.push(cur);
-        while (!stack.empty()) {
+        while (!stack.isEmpty()) {
             if (head.val != stack.pop().val)
                 return false;
             head = head.next;
@@ -24,85 +25,55 @@ public class Palindrome {
         return true;
     }
 
+    // 优化版：不需要把整个链表都入栈，只需要入栈后半部分。奇数个结点时，入栈中点加后半部分；偶数个结点入栈后半部分
+    public static boolean isPalindromeV2(SingleNode head){
+        if (head == null)
+            return true;
+        SingleNode mid = DoublePointer.midOrLatterMid(head);
+        Stack<Integer> stack = new Stack<>();
+        while (mid.next != null){
+            stack.push(mid.val);
+            mid = mid.next;
+        }
+        stack.push(mid.val);
+        while (!stack.isEmpty()){
+            if (head.val != stack.pop())
+                return false;
+            head = head.next;
+        }
+        return true;
+    }
+
     // 进阶法：O(n) T(1)  快慢指针法：该算法适用于奇数个结点和偶数个结点，也适用于非常短的链表。通用模板
-    public static boolean isPalindrome2(SingleNode head) {
-        // base case
+    public static boolean isPalindromeV3(SingleNode head){
         if (head == null || head.next == null)
             return true;
-        // 执行到这里说明至少有两个结点
-        SingleNode mid = DoublePointer.method1(head);
-        //将链表的后半部分逆置
-        SingleNode cur = mid.next, next = null;
-        mid.next = null;
-        while (cur != null) {
-            next = cur.next;
-            cur.next = mid;
-            mid = cur;
-            cur = next;
-        }
-        next = mid;
-        cur = head;
-        boolean res = true;
-        while (mid != null && cur != null) {
-            if (mid.val != cur.val) {
-                res = false;
-                break;
-            }
-            mid = mid.next;
+        // 说明至少有两个结点。使用快慢指针，当有奇数个结点时，慢指针到中点；当有偶数个结点时，慢指针返回下中点
+        SingleNode cur = head;
+        SingleNode mid = DoublePointer.midOrLatterMid(head);
+        SingleNode newHead = linkedlist.reverseSingleLinkedList(mid);
+        SingleNode log = newHead;
+        while (newHead != null){
+            if (cur.val != newHead.val)
+                return false;
             cur = cur.next;
+            newHead = newHead.next;
         }
-        //恢复链表
-        mid = next.next;
-        next.next = null;
-        while (mid != null) {
-            cur = mid.next;
-            mid.next = next;
-            next = mid;
-            mid = cur;
-        }
-        return res;
-    }
-
-    // 对数器
-    public static int[] generateRandomArray(int maxSize, int range){
-        int size = (int) (Math.random() * (maxSize + 1));
-        int[] arr = new int[size];
-        for (int i = 0; i < arr.length; i++)
-            arr[i] = (int) (Math.random() * (range + 1));
-        return arr;
-    }
-
-    // 给一个数组，按照尾插法构造成单链表，并返回head
-    public static SingleNode tailInsert(int[] arr){
-        if (arr == null || arr.length == 0)
-            return null;
-        SingleNode head = new SingleNode(arr[0], null);
-        SingleNode tmp = head;
-        for (int i = 1; i < arr.length; i++) {
-            SingleNode cur = new SingleNode(arr[i], null);
-            tmp.next = cur;
-            tmp = cur;
-        }
-        return head;
-    }
-
-    public static void display(int[] arr){
-        for (int item : arr) System.out.print(item + " ");
-        System.out.println();
+        // 再将后半部分逆序回来
+        linkedlist.reverseSingleLinkedList(log);
+        return true;
     }
 
     public static void main(String[] args) {
-        // 对进阶方法测试 100，0000次
-        long start = System.currentTimeMillis();
-        for (int i = 0; i < 1000000; i++) {
-            int[] randomArray = generateRandomArray(40, 1000);
-//            display(randomArray);
-            SingleNode head = tailInsert(randomArray);
-            if (isPalindrome1(head) != isPalindrome2(head))
-                throw new RuntimeException("不一致，失败！！！");
+        for (int i = 0; i < 100000; i++) {
+            SingleNode src = linkedlist.generateRandomLinkedList(10, 100);
+            SingleNode copy = linkedlist.copyLinkedList(src);
+            if (isPalindromeV3(src) != isPalindromeV1(copy)){
+                System.out.println("Failed");
+                linkedlist.printLinkedList(src);
+                return;
+            }
         }
-        System.out.println("测试成功！！");
-        long end = System.currentTimeMillis();
-        System.out.println((end - start));
+        System.out.println("AC");
     }
 }

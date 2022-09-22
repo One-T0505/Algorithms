@@ -11,7 +11,6 @@ import java.util.Stack;
 public class UnionFind {
     public static class Node<V> {
         public V val;
-
         public Node(V val) { this.val = val;}
     }
 
@@ -57,12 +56,12 @@ public class UnionFind {
             if (!nodes.containsKey(a) || !nodes.containsKey(b))
                 return;
             if (!isSameSet(a, b)){
-                Node<V> aroot = findRoot(nodes.get(a));
-                Node<V> broot = findRoot(nodes.get(b));
-                int aSize = sizes.get(aroot);
-                int bSize = sizes.get(broot);
-                Node<V> big = aSize >= bSize ? aroot : broot;
-                Node<V> small = big == aroot ? broot : aroot;
+                Node<V> aRoot = findRoot(nodes.get(a));
+                Node<V> bRoot = findRoot(nodes.get(b));
+                int aSize = sizes.get(aRoot);
+                int bSize = sizes.get(bRoot);
+                Node<V> big = aSize >= bSize ? aRoot : bRoot;
+                Node<V> small = big == aRoot ? bRoot : aRoot;
                 parents.put(small, big);
                 sizes.put(big, aSize + bSize);
                 sizes.remove(small);

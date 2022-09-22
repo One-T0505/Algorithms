@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
-public class BinaryTreeTraverse {
+public class BinaryTree {
 
     // 先序遍历
     public void preOrder(TreeNode root) {
@@ -55,14 +55,15 @@ public class BinaryTreeTraverse {
     public void inOrderUnderStack(TreeNode root) {
         if (root != null) {
             Stack<TreeNode> stack = new Stack<>();
-            while (!stack.isEmpty() || root != null) {
-                if (root != null) {
-                    stack.push(root);
-                    root = root.left;
+            TreeNode cur = root;
+            while (!stack.isEmpty() || cur != null) {
+                if (cur != null) {
+                    stack.push(cur);
+                    cur = cur.left;
                 } else {
-                    root = stack.pop();
-                    System.out.print(root.val + "\t");
-                    root = root.right;
+                    cur = stack.pop();
+                    System.out.print(cur.val + "\t");
+                    cur = cur.right;
                 }
             }
         }
@@ -94,16 +95,15 @@ public class BinaryTreeTraverse {
         if (root != null) {
             Stack<TreeNode> stack = new Stack<>();
             stack.push(root);
-            TreeNode tmp = null;
             while (!stack.isEmpty()) {
-                tmp = stack.peek();
-                if (tmp.left != null && root != tmp.left && root != tmp.right)
-                    stack.push(tmp.left);
-                else if (tmp.right != null && root != tmp.right)
-                    stack.push(tmp.right);
+                TreeNode cur = stack.peek();
+                if (cur.left != null && root != cur.left && root != cur.right)
+                    stack.push(cur.left);
+                else if (cur.right != null && root != cur.right)
+                    stack.push(cur.right);
                 else {
                     System.out.print(stack.pop().val + "\t");
-                    root = tmp;
+                    root = cur;
                 }
             }
         }
@@ -127,41 +127,71 @@ public class BinaryTreeTraverse {
         System.out.println();
     }
 
-    // 统计一个二叉树的层次的最大宽度
-    public int maxWidthUnderMap(TreeNode root) {
+    // 统计一个二叉树的层次的最大宽度，利用hashmap和队列实现
+    public static int maxWidthV1(TreeNode root){
+        if (root == null)
+            return 0;
+        Queue<TreeNode> queue = new LinkedList<>();
+        HashMap<TreeNode, Integer> levelMap = new HashMap<>();  // 记录结点在树中的高度
+        int level = 1;  // 记录当前正在统计哪一层的结点数
+        int nodes = 0; // 当前层已统计的结点数
+        int max = 0;  // 记录最多结点数
+
+        queue.add(root);
+        levelMap.put(root, level);
+
+        while (!queue.isEmpty()){
+            TreeNode cur = queue.poll();
+            Integer curLevel = levelMap.get(cur);  // 当前结点的层
+            if (cur.left != null){
+                queue.add(cur.left);
+                levelMap.put(cur.left, level + 1);
+            }
+            if (cur.right != null){
+                queue.add(cur.right);
+                levelMap.put(cur.right, level + 1);
+            }
+            if (curLevel == level){
+                nodes++;
+            }else {
+                max = Math.max(max, nodes);
+                level++;
+                nodes = 1; // 如果进入了else里，就说明已经有一个结点了
+            }
+        }
+        return Math.max(max, nodes);  // 还需要再比较一次，因为最后一层的结点在队列中是不会进入else代码块中的
+    }
+
+    // 统计一个二叉树的层次的最大宽度，只用队列实现
+    public static int maxWidthV2(TreeNode root){
         if (root == null)
             return 0;
         Queue<TreeNode> queue = new LinkedList<>();
         queue.add(root);
-        //k为结点，v为层级
-        HashMap<TreeNode, Integer> hashMap = new HashMap<>();
-        hashMap.put(root, 1);
-
-        // curlevel表示当前正在统计哪一层，curLevelNodes 表示当前层的结点数，max 表示层的最大结点数
-        int curlevel = 1, curLevelNodes = 0, max = 0;
-        while (!queue.isEmpty()) {
+        TreeNode curEnd = root;  // 用于记录当前层的最后一个结点
+        TreeNode nextEnd = null; // 用于记录下一层最后一个结点
+        int max = 0;
+        int nodes = 0;  // 记录当前层已经统计的结点数量
+        while (!queue.isEmpty()){
             TreeNode cur = queue.poll();
-            int curNodeLevel = hashMap.get(cur);
-            if (cur.left != null) {
-                hashMap.put(cur.left, curNodeLevel + 1);
+            if (cur.left != null){
                 queue.add(cur.left);
+                nextEnd = cur.left;  // 动态记录下一层的最后一个结点
             }
-            if (cur.right != null) {
-                hashMap.put(cur.right, curNodeLevel + 1);
+            if (cur.right != null){
                 queue.add(cur.right);
+                nextEnd = cur.right; // 动态记录下一层的最后一个结点
             }
-
-            if (curNodeLevel == curlevel){
-                curLevelNodes++;
-            }else {
-                curlevel++;
-                max = Math.max(curLevelNodes, max);
-                curLevelNodes = 1;
+            nodes++;
+            if (cur == curEnd){
+                max = Math.max(max, nodes);
+                nodes = 0;
+                curEnd = nextEnd;
             }
         }
-        max = Math.max(max, curLevelNodes);
         return max;
     }
+
 
     //按照先序顺序序列化二叉树的主方法
     public Queue<String> preOrderSerialize(TreeNode root) {
@@ -186,6 +216,16 @@ public class BinaryTreeTraverse {
         if (list == null || list.size() == 0)
             return null;
         return preUnserialize(list);
+    }
+
+    public TreeNode preUnserialize(Queue<String> list) {
+        String value = list.poll();
+        if (value == null)
+            return null;
+        TreeNode root = new TreeNode(Integer.parseInt(value));
+        root.left = preUnserialize(list);
+        root.right = preUnserialize(list);
+        return root;
     }
 
     //中序、后序方式的序列化与反序列化与先序差不多，这里讲一下层次遍历的方式
@@ -216,7 +256,7 @@ public class BinaryTreeTraverse {
     }
 
     // 层次遍历的反序列化
-    public TreeNode levelorderUnserialize(Queue<String> list) {
+    public TreeNode levelOrderUnserialize(Queue<String> list) {
         if (list == null || list.size() == 0)
             return null;
         TreeNode root = generateNode(list.poll());
@@ -224,15 +264,14 @@ public class BinaryTreeTraverse {
         if (root != null)
             queue.add(root);
 
-        TreeNode tmp =null;
         while (!queue.isEmpty()) {
-            tmp = queue.poll();
-            tmp.left = generateNode(list.poll());
-            tmp.right = generateNode(list.poll());
-            if (tmp.left != null)
-                queue.add(tmp.left);
-            if (tmp.right != null)
-                queue.add(tmp.right);
+            TreeNode cur = queue.poll();
+            cur.left = generateNode(list.poll());
+            cur.right = generateNode(list.poll());
+            if (cur.left != null)
+                queue.add(cur.left);
+            if (cur.right != null)
+                queue.add(cur.right);
         }
         return root;
     }
@@ -240,21 +279,12 @@ public class BinaryTreeTraverse {
     public TreeNode generateNode(String poll) {
         if (poll == null)
             return null;
-        return new TreeNode(Integer.valueOf(poll));
+        return new TreeNode(Integer.parseInt(poll));
     }
 
-    public TreeNode preUnserialize(Queue<String> list) {
-        String value = list.poll();
-        if (value == null)
-            return null;
-        TreeNode root = new TreeNode(Integer.valueOf(value));
-        root.left = preUnserialize(list);
-        root.right = preUnserialize(list);
-        return root;
-    }
 
     public static void main(String[] args) {
-        BinaryTreeTraverse tree = new BinaryTreeTraverse();
+        BinaryTree tree = new BinaryTree();
         TreeNode n4 = new TreeNode(4, null, null);
         TreeNode n3 = new TreeNode(3, null, n4);
         TreeNode n2 = new TreeNode(2, n3, null);
@@ -280,6 +310,6 @@ public class BinaryTreeTraverse {
 
         tree.levelOrder(root);
 
-        System.out.println(tree.maxWidthUnderMap(root));
+        System.out.println(maxWidthV1(root));
     }
 }
