@@ -8,7 +8,7 @@ import java.util.Stack;
 public class BinaryTree {
 
     // 先序遍历
-    public void preOrder(TreeNode root) {
+    public static void preOrder(TreeNode root) {
         if (root == null)
             return;
         System.out.print(root.val + "\t");
@@ -17,7 +17,7 @@ public class BinaryTree {
     }
 
     // 中序遍历
-    public void inOrder(TreeNode root) {
+    public static void inOrder(TreeNode root) {
         if (root == null)
             return;
         inOrder(root.left);
@@ -26,7 +26,7 @@ public class BinaryTree {
     }
 
     // 后序遍历
-    public void posOrder(TreeNode root) {
+    public static void posOrder(TreeNode root) {
         if (root == null)
             return;
         posOrder(root.left);
@@ -35,7 +35,7 @@ public class BinaryTree {
     }
 
     // 非递归方式实现先序遍历
-    public void preOrderUnderStack(TreeNode root) {
+    public static void preOrderUnderStack(TreeNode root) {
         if (root != null) {
             Stack<TreeNode> stack = new Stack<>();
             stack.push(root);
@@ -52,7 +52,7 @@ public class BinaryTree {
     }
 
     // 非递归方式实现中序遍历
-    public void inOrderUnderStack(TreeNode root) {
+    public static void inOrderUnderStack(TreeNode root) {
         if (root != null) {
             Stack<TreeNode> stack = new Stack<>();
             TreeNode cur = root;
@@ -71,7 +71,7 @@ public class BinaryTree {
     }
 
     // 非递归方式实现后序遍历
-    public void posOrderUnderStack(TreeNode root){
+    public static void posOrderUnderStack(TreeNode root){
         if (root != null){
             Stack<TreeNode> stack1 = new Stack<>();
             Stack<TreeNode> stack2 = new Stack<>();
@@ -91,7 +91,7 @@ public class BinaryTree {
     }
 
     // 只用一个栈实现非递归方式的后序遍历
-    public void posOrderUnderStack2(TreeNode root){
+    public static void posOrderUnderStack2(TreeNode root){
         if (root != null) {
             Stack<TreeNode> stack = new Stack<>();
             stack.push(root);
@@ -111,7 +111,7 @@ public class BinaryTree {
     }
 
     // 层次遍历
-    public void levelOrder(TreeNode root) {
+    public static void levelOrder(TreeNode root) {
         if (root == null)
             return;
         Queue<TreeNode> queue = new LinkedList<>();
@@ -194,14 +194,14 @@ public class BinaryTree {
 
 
     //按照先序顺序序列化二叉树的主方法
-    public Queue<String> preOrderSerialize(TreeNode root) {
+    public static Queue<String> preOrderSerialize(TreeNode root) {
         Queue<String> res = new LinkedList<>();
         preSerialize(root, res);
         return res;
     }
 
     //按照先序顺序序列化二叉树的核心方法
-    private void preSerialize(TreeNode root, Queue<String> res) {
+    private static void preSerialize(TreeNode root, Queue<String> res) {
         if (root == null)
             res.add(null);
         else {
@@ -212,13 +212,13 @@ public class BinaryTree {
     }
 
     // 接收一个按照先序顺序序列化的 list，将其反序列化构建成一棵二叉树
-    public TreeNode preOrderUnserialize(Queue<String> list){
+    public static TreeNode preOrderUnserialize(Queue<String> list){
         if (list == null || list.size() == 0)
             return null;
         return preUnserialize(list);
     }
 
-    public TreeNode preUnserialize(Queue<String> list) {
+    public static TreeNode preUnserialize(Queue<String> list) {
         String value = list.poll();
         if (value == null)
             return null;
@@ -229,7 +229,7 @@ public class BinaryTree {
     }
 
     //中序、后序方式的序列化与反序列化与先序差不多，这里讲一下层次遍历的方式
-    public Queue<String> levelOrderSerialize(TreeNode root) {
+    public static Queue<String> levelOrderSerialize(TreeNode root) {
         //存储序列化的结果
         Queue<String> res = new LinkedList<>();
         if (root == null)
@@ -256,7 +256,7 @@ public class BinaryTree {
     }
 
     // 层次遍历的反序列化
-    public TreeNode levelOrderUnserialize(Queue<String> list) {
+    public static TreeNode levelOrderUnserialize(Queue<String> list) {
         if (list == null || list.size() == 0)
             return null;
         TreeNode root = generateNode(list.poll());
@@ -276,40 +276,9 @@ public class BinaryTree {
         return root;
     }
 
-    public TreeNode generateNode(String poll) {
+    public static TreeNode generateNode(String poll) {
         if (poll == null)
             return null;
         return new TreeNode(Integer.parseInt(poll));
-    }
-
-
-    public static void main(String[] args) {
-        BinaryTree tree = new BinaryTree();
-        TreeNode n4 = new TreeNode(4, null, null);
-        TreeNode n3 = new TreeNode(3, null, n4);
-        TreeNode n2 = new TreeNode(2, n3, null);
-        TreeNode n8 = new TreeNode(8, null, null);
-        TreeNode n9 = new TreeNode(9, null, null);
-        TreeNode n6 = new TreeNode(6, n8, null);
-        TreeNode n7 = new TreeNode(7, n9, null);
-        TreeNode n5 = new TreeNode(5, n6, n7);
-        TreeNode root = new TreeNode(1, n2, n5);
-
-        tree.preOrder(root);
-        System.out.println();
-        tree.preOrderUnderStack(root);
-
-        tree.inOrder(root);
-        System.out.println();
-        tree.inOrderUnderStack(root);
-
-        tree.posOrder(root);
-        System.out.println();
-        tree.posOrderUnderStack(root);
-        tree.posOrderUnderStack2(root);
-
-        tree.levelOrder(root);
-
-        System.out.println(maxWidthV1(root));
     }
 }

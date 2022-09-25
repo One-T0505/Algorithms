@@ -19,7 +19,6 @@ public class UnionFind {
         public HashMap<Node<V>, Node<V>> parents;  // 结点->其父结点
         public HashMap<Node<V>, Integer> sizes;    // 结点->该结点所在集合的元素个数, 只有各个集合的根结点才会记录
 
-
         public UnionSet(List<V> vals) {
             nodes = new HashMap<>();
             parents = new HashMap<>();
@@ -42,7 +41,7 @@ public class UnionFind {
             }
             // 当跳出上面的循环后， node就指向了当前集合的根结点
             while (!stack.isEmpty())
-                parents.put(stack.pop(), node);
+                parents.put(stack.pop(), node); // 让沿路上的那些结点的parent直接指向所在集合的根，这样起到了优化的作用
             return node;
         }
 

@@ -1,12 +1,31 @@
 package Tree;
 
+import utils.*;
+import Tree.BinaryTree;
+import Tree.PrintTree;
 public class MaxBST {
     // 给一个结点，找出其最大二叉排序树
-    public Info3 maxSubBST(TreeNode root) {
+
+    static class Info {
+        public boolean isBST;    // 以当前结点为根的树是否为二叉排序树
+        public int maxSubBSTSize;   //以当前结点为根的树的最大子二叉排序树的结点个数
+        public int min;         // 以当前结点为根的树的最小值
+        public int max;         // 以当前结点为根的树的最大值
+
+        public Info(boolean isBST, int maxSubBSTSize, int min, int max) {
+            this.isBST = isBST;
+            this.maxSubBSTSize = maxSubBSTSize;
+            this.min = min;
+            this.max = max;
+        }
+    }
+
+    // 该方法是在整合Info时碰到不确定的情况就返回null的处理流程
+    public static Info maxSubBST(TreeNode root) {
         if (root == null)
             return null;
-        Info3 left = maxSubBST(root.left);
-        Info3 right = maxSubBST(root.right);
+        Info left = maxSubBST(root.left);
+        Info right = maxSubBST(root.right);
 
         // 开始整合当前结点需要返回Info3中的4份信息
         int min = root.val, max = root.val;
@@ -26,34 +45,44 @@ public class MaxBST {
             maxSubBSTSize = Math.max(maxSubBSTSize, right.maxSubBSTSize);
 
         boolean isAllBST = false;
-        if (
+        if ( 
             // 左、右子树都需要整体是二叉排序树
-                (left == null ? true : left.isBST) &&
-                        (right == null ? true : right.isBST) &&
+                (left == null || left.isBST) &&
+                        (right == null || right.isBST) &&
                         // 并且左子树的最大值< 当前结点的值 < 右子树的最小值
-                        (left == null ? true : left.max < root.val) &&
-                        (right == null ? true : right.min > root.val)
+                        (left == null || left.max < root.val) &&
+                        (right == null || right.min > root.val)
         ) {
             maxSubBSTSize = (left == null ? 0 : left.maxSubBSTSize) +
                     (right == null ? 0 : right.maxSubBSTSize) + 1;
             isAllBST = true;
         }
 
-        return new Info3(isAllBST, maxSubBSTSize, min, max);
+        return new Info(isAllBST, maxSubBSTSize, min, max);
     }
 
-}
+    // 该方法是不管怎么样都要返回Info
+    public static Info isB(TreeNode root){
+        if (root == null)
+            return new Info(true, 0, Integer.MAX_VALUE, Integer.MIN_VALUE);
 
-class Info3 {
-    public boolean isBST;
-    public int maxSubBSTSize;   //最大子二叉排序树的结点个数
-    public int min;
-    public int max;
+        Info left = isB(root.left);
+        Info right = isB(root.right);
 
-    public Info3(boolean isBST, int maxSubBSTSize, int min, int max) {
-        this.isBST = isBST;
-        this.maxSubBSTSize = maxSubBSTSize;
-        this.min = min;
-        this.max = max;
+        boolean isBST = left.isBST && right.isBST && root.val > left.max && root.val < right.min;
+        int maxSubBSTSize = isBST ? left.maxSubBSTSize + right.maxSubBSTSize + 1 :
+                Math.max(left.maxSubBSTSize, right.maxSubBSTSize);
+        int min = Math.min(Math.min(left.min, right.min), root.val);
+        int max = Math.max(Math.max(left.max, right.max), root.val);
+        return new Info(isBST, maxSubBSTSize, min, max);
+    }
+
+    public static void main(String[] args) {
+        for (int i = 0; i < 2000; i++) {
+            int[] array = arrays.noRepeatArray(10, 20);
+            TreeNode root = tree.generateRandomBinaryTree(array);
+            if (maxSubBST(root) != null && isB(root).maxSubBSTSize != maxSubBST(root).maxSubBSTSize)
+                PrintTree.printT(root);
+        }
     }
 }

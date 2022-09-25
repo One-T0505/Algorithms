@@ -1,13 +1,34 @@
 package utils;
 
+import java.util.HashSet;
+
 // 该类存放一些公用的方法，比如随机生成一个数组，数组的打印等。这些方法在各个算法中都有可能作为辅助验证用，
 // 所以集中放在一起
 public class arrays {
-    // 生成一个随机数组，长度在[0, maxSize]之间，数值在[0, maxVal]之间
+    // 生成一个随机数组，长度在[0, maxSize]之间，数值在[0, maxVal]之间。允许重复值，并且无序。
     public static int[] generateRandomArray(int maxSize, int maxVal){
         int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
         for (int i = 0; i < arr.length; i++) {
             arr[i] = (int) ((maxVal + 1) * Math.random());
+        }
+        return arr;
+    }
+
+    // 生成一个随机数组，长度在[0, maxSize]之间，数值在[-maxVal, maxVal]之间，不允许重复值。
+    public static int[] noRepeatArray(int maxSize, int maxVal){
+        int[] arr = new int[(int) (Math.random() * (maxSize + 1))];
+        HashSet<Integer> set = new HashSet<>();
+        for (int i = 0; i < arr.length; i++) {
+            int val = (int) (Math.random() * (maxVal + 1)) - (int) (Math.random() * (maxVal + 1));
+            if (!set.contains(val)){
+                set.add(val);
+                arr[i] = val;
+            }else {
+                while (set.contains(val))
+                    val = (int) (Math.random() * (maxVal + 1)) - (int) (Math.random() * (maxVal + 1));
+                set.add(val);
+                arr[i] = val;
+            }
         }
         return arr;
     }
@@ -22,7 +43,7 @@ public class arrays {
     // 数组的展示
     public static void printArray(int[] arr){
         for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + "\t");
+            System.out.print(arr[i] + "  ");
         }
         System.out.println();
     }
@@ -56,8 +77,7 @@ public class arrays {
     }
 
     public static void main(String[] args) {
-        int[] src = {10, 15, 20};
-        int[] des = {10, 15};
-        System.out.println(isSameArray(src, des));
+        int[] array = noRepeatArray(10, 30);
+        printArray(array);
     }
 }

@@ -14,6 +14,9 @@ public class Graph {
         this.edges = new HashSet<>();
     }
 
+    // 假如给了一张A[N][3]的矩阵，每一行表示一条边的信息，每一行中：
+    // A[i][0] 表示边的权重； A[i][1] 表示起始点；  A[i][2] 表示终点；
+    // 如果是这样的形式，就可以用如下的方法将矩阵信息转化为图
     public Graph createGraph(int[][] matrix){
         Graph graph = new Graph();
         for (int i = 0; i < matrix.length; i++) {
@@ -55,7 +58,9 @@ public class Graph {
         System.out.println();
     }
 
-    // 从一个结点出发进行深度优先遍历
+
+    // 从一个结点出发进行深度优先遍历。栈中存放的结点顺序就代表已经探明可以走的深度轨迹，所以每次进栈时做相应
+    // 操作，就是DFS序。
     public static void DFS(Node node){
         if (node == null)
             return;

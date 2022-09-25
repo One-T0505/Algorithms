@@ -3,6 +3,19 @@ package Tree;
 import java.util.HashMap;
 
 public class PrefixTree {
+
+    static class PrefixTreeNode{
+        public int pass; // 经过该结点的次数
+        public int end;  // 以该结点为终点的字符串数量
+        public HashMap<Integer, PrefixTreeNode> successors;
+
+        public PrefixTreeNode() {
+            pass = 0;
+            end = 0;
+            successors = new HashMap<>(); // 现在处理的是只包含小写26个字母的情况，0->a，以此类推.
+        }
+    }
+
     public PrefixTreeNode root;
 
     public PrefixTree() {
@@ -74,18 +87,5 @@ public class PrefixTree {
             }
             cur.end--;
         }
-    }
-}
-
-
-class PrefixTreeNode{
-    public int pass; // 经过该结点的次数
-    public int end;  // 以该结点为终点的字符串数量
-    public HashMap<Integer, PrefixTreeNode> successors;
-
-    public PrefixTreeNode() {
-        pass = 0;
-        end = 0;
-        successors = new HashMap<>(); // 现在处理的是只包含小写26个字母的情况，0->a，以此类推.
     }
 }

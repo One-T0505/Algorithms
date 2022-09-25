@@ -22,11 +22,35 @@ public class PrintTree {
     }
 
     private static String getBlankSpace(int len) {
-        StringBuffer buffer = new StringBuffer("");
-        for (int i = 0; i < len; i++) {
-            buffer.append(" ");
-        }
-        return buffer.toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append(" ".repeat(Math.max(0, len)));
+        return sb.toString();
+    }
+
+    public static void printT(TreeNode root){
+        if (root == null)
+            return;
+        printIn(root, "", 1, 9);
+    }
+
+    private static void printIn(TreeNode cur, String direct, int height, int len) {
+        if (cur == null)
+            return;
+        printIn(cur.right, "↙", height + 1, len);
+
+        String res = blankSpace(direct + cur.val, height, len);
+        System.out.println(res);
+
+        printIn(cur.left, "↖", height + 1, len);
+    }
+
+    private static String blankSpace(String val, int height, int len) {
+        int valLen = val.length();
+        int left = (len - valLen) >> 1;
+        int right = len - valLen - left;
+        StringBuilder builder = new StringBuilder();
+        builder.append(" ".repeat(left + (height - 1) * len)).append(val).append(" ".repeat(right));
+        return builder.toString();
     }
 
 
@@ -38,6 +62,6 @@ public class PrintTree {
         TreeNode n7 = new TreeNode(7, null, null);
         TreeNode n5 = new TreeNode(5, n6, n7);
         TreeNode root = new TreeNode(1, n2, n5);
-        PrintTree.printTree(root);
+        PrintTree.printT(root);
     }
 }

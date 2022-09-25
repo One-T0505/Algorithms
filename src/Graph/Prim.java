@@ -15,25 +15,31 @@ public class Prim {
             }
         });
 
-        // 哪些点被解锁出来了
+        // 这两个set分别用于记录哪些边和点已经处理过了，避免重复处理
         HashSet<Node> nodeSet = new HashSet<>();
+        HashSet<Edge> edgeSet = new HashSet<>(source.edges);
 
-        Set<Edge> resSet = new HashSet<>(); // 存放选中的边在resSet里
+        Set<Edge> res = new HashSet<>(); // 存放选中的边在resSet里
 
         // source 是开始点
         nodeSet.add(source);
         // 由一个点，解锁所有相连的边
         priorityQueue.addAll(source.edges);
         while (!priorityQueue.isEmpty()) {
-            Edge edge = priorityQueue.poll(); // 弹出解锁的边中，最小的边
-            Node toNode = edge.to; // 可能的一个新的点
+            Edge cur = priorityQueue.poll(); // 弹出解锁的边中，最小的边
+            Node toNode = cur.to; // 可能的一个新的点
             if (!nodeSet.contains(toNode)) { // 不含有的时候，就是新的点
                 nodeSet.add(toNode);
-                resSet.add(edge);
-                priorityQueue.addAll(toNode.edges);  // 可能重复添加边，但是不影响结果
+                res.add(cur);
+                for (Edge edge : toNode.edges){
+                    if (!edgeSet.contains(edge)){
+                        edgeSet.add(edge);
+                        priorityQueue.add(edge);
+                    }
+                }
             }
         }
-        return resSet;
+        return res;
     }
 
     // 请保证graph是连通图
@@ -44,9 +50,7 @@ public class Prim {
         int[] distances = new int[size];
         boolean[] visit = new boolean[size];
         visit[0] = true;
-        for (int i = 0; i < size; i++) {
-            distances[i] = graph[0][i];
-        }
+        System.arraycopy(graph[0], 0, distances, 0, size);
         int sum = 0;
         for (int i = 1; i < size; i++) {
             int minPath = Integer.MAX_VALUE;

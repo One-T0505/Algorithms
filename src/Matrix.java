@@ -1,4 +1,4 @@
-public class ZigzagMatrix {
+public class Matrix {
     // 1.拉链式打印矩阵
     public static void zigZag(int[][] matrix){
         int endRow = matrix.length - 1, endCol = matrix[0].length - 1;

@@ -12,7 +12,7 @@ public class StackReverse {
         stack.push(i);
     }
 
-    // f函数的作用是返回栈顶，并将剩下的元素逆序
+    // f函数的作用是返回栈底元素，剩下的元素依次下落
     private static int f(Stack<Integer> stack) {
         int res = stack.pop();
         if (stack.isEmpty())
