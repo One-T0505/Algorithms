@@ -9,11 +9,12 @@ public class Backpack {
     }
 
     // 只考虑index及其之后的货物，rest表示背包剩余的载重量
+    // process函数返回值表示：从index处开始做选择能得到的最大价值
     private static int process(int[] w, int[] v, int index, int rest) {
         // base case 1: 背包已经满了。返回-1表示没有方案
         if (rest < 0)
             return -1;
-        if (index == w.length)  // base case 2: 背包还有容量，但是货物不够了，此时还没到达背包容量，所以返回0
+        if (index == w.length)  // base case 2: 背包还有容量，但是货物不够了，所以从index做选择能得到的最大价值为0
             return 0;
         int value1 = process(w, v, index + 1, rest); // 没选index处的货物
         int value2 = -1;
@@ -31,7 +32,6 @@ public class Backpack {
         int[][] cache = new int[N + 1][bag + 1];
         // if (rest < 0)  return -1;  这个不需要考虑因为cache中rest只能从0～bag
         // if (index == w.length) return 0; 这个也不用管，因为数组默认初始值就是0
-
         // int value1 = process(w, v, index + 1, rest);
         // int value2 = -1;
         // int p2Next = process(w, v, index + 1, rest - w[index]);
