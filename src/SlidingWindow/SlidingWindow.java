@@ -1,27 +1,29 @@
+package SlidingWindow;
+
 import java.util.LinkedList;
 
 public class SlidingWindow {
     private int L;
     private int R;
     private int[] arr;
-    LinkedList<Integer> queen;  // 这里存的是元素下标
+    LinkedList<Integer> queue;  // 这里存的是元素下标
 
     public SlidingWindow(){}
 
     public SlidingWindow(int[] arr) {
-        this.L = -1;
-        this.R = 0;
+        L = -1;
+        R = 0;
         this.arr = arr;
-        this.queen = new LinkedList<>();
+        queue = new LinkedList<>();
     }
 
     // R 向右移动
     public void addItemFromRight(){
-        if (this.R == arr.length)
+        if (R == arr.length)
             return;
-        while (!queen.isEmpty() && arr[queen.peekLast()] <= arr[R])
-            queen.pollLast();
-        queen.addLast(R++);
+        while (!queue.isEmpty() && arr[queue.peekLast()] <= arr[R])
+            queue.pollLast();
+        queue.addLast(R++);
     }
 
     // L 向右移动
@@ -29,15 +31,15 @@ public class SlidingWindow {
         L++;
         if (L == arr.length)
             return;
-        if (L == queen.peekFirst())
-            queen.pollFirst();
+        if (!queue.isEmpty() && L == queue.peekFirst())
+            queue.pollFirst();
 
     }
 
     // 获取当前窗口的最大值
     public Integer getCurMax(){
-        if (!queen.isEmpty())
-            return arr[queen.peekFirst()];
+        if (!queue.isEmpty())
+            return arr[queue.peekFirst()];
         return null;
     }
 }

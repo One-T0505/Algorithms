@@ -2,7 +2,7 @@ package Tree;
 
 // 平衡二叉树
 public class AVLTree<K extends Comparable<K>, V> {
-    private AVLNode<K, V> root;
+    private AVLTNode<K, V> root;
     private int size;
 
     public AVLTree() {
@@ -11,8 +11,8 @@ public class AVLTree<K extends Comparable<K>, V> {
     }
 
     // 右旋，并返回新的根结点
-    private AVLNode<K, V> rightRotate(AVLNode<K, V> cur){
-        AVLNode<K, V> left = cur.left;
+    private AVLTNode<K, V> rightRotate(AVLTNode<K, V> cur){
+        AVLTNode<K, V> left = cur.left;
         cur.left = left.right;
         left.right = cur;
         cur.h = Math.max(cur.left == null ? 0 : cur.left.h, cur.right == null ? 0 : cur.right.h) + 1;
@@ -21,8 +21,8 @@ public class AVLTree<K extends Comparable<K>, V> {
     }
 
     // 左旋，并返回新的根结点
-    private AVLNode<K, V> leftRotate(AVLNode<K, V> cur){
-        AVLNode<K, V> right = cur.right;
+    private AVLTNode<K, V> leftRotate(AVLTNode<K, V> cur){
+        AVLTNode<K, V> right = cur.right;
         cur.right = right.left;
         right.left = cur;
         cur.h = Math.max(cur.left == null ? 0 : cur.left.h, cur.right == null ? 0 : cur.right.h) + 1;
@@ -31,9 +31,9 @@ public class AVLTree<K extends Comparable<K>, V> {
     }
 
     // 在平衡二叉树中插入新结点，cur表示当前到的结点
-    private AVLNode<K, V> add(AVLNode<K, V> cur, K key, V val){
+    private AVLTNode<K, V> add(AVLTNode<K, V> cur, K key, V val){
         if (cur == null)
-            return new AVLNode<>(key, val);
+            return new AVLTNode<>(key, val);
         else {
             if (key.compareTo(cur.key) < 0)
                 cur.left = add(cur.left, key, val);
@@ -48,7 +48,7 @@ public class AVLTree<K extends Comparable<K>, V> {
 
     // 在以cur为根结点的树上，删除key代表的结点，并在删除后检查平衡性，返回新头部
     // 默认：key是存在于这棵树中的
-    private AVLNode<K, V> delete(AVLNode<K, V> cur, K key){
+    private AVLTNode<K, V> delete(AVLTNode<K, V> cur, K key){
         if (key.compareTo(cur.key) > 0)
             cur.right = delete(cur.right, key);
         else if (key.compareTo(cur.key) < 0)
@@ -62,7 +62,7 @@ public class AVLTree<K extends Comparable<K>, V> {
                 cur = cur.right;
             else {
                 // 有左右子树，那就用右子树中最小的结点替换.此时就变成了删除右子树中最小结点了
-                AVLNode<K, V> des = cur.right;
+                AVLTNode<K, V> des = cur.right;
                 while (des.left != null)
                     des = des.left;
                 // 此时des已经来到cur右子树中最小的结点
@@ -83,7 +83,7 @@ public class AVLTree<K extends Comparable<K>, V> {
     // 2.LR型不平衡需要在最小不平衡树的左子树上先做一次左旋，再在最小不平衡树上做一次右旋
     // 3.RR型不平衡需要在最小不平衡树上做一次左旋
     // 4.RL型不平衡需要在最小不平衡树的右子树上先做一次右旋，再在最小不平衡树上做一次左旋
-    private AVLNode<K, V> keepBalance(AVLNode<K, V> cur) {
+    private AVLTNode<K, V> keepBalance(AVLTNode<K, V> cur) {
         if (cur == null)
             return null;
         int leftH = cur.left == null ? 0 : cur.left.h;
@@ -110,5 +110,18 @@ public class AVLTree<K extends Comparable<K>, V> {
             }
         }
         return cur;
+    }
+}
+
+class AVLTNode<K, V> {
+    public K key;
+    public V val;
+    public AVLTNode<K, V> left;
+    public AVLTNode<K, V> right;
+    public int h; // 以当前结点为根的树的高度
+
+    public AVLTNode(K key, V val) {
+        this.key = key;
+        this.val = val;
     }
 }

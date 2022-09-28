@@ -192,8 +192,8 @@ public class BinaryTree {
         return max;
     }
 
-
-    //按照先序顺序序列化二叉树的主方法
+    // --------------------------------------------------------------------------------------------------------
+    //按照先序顺序序列化二叉树的主方法. 中序遍历是没办法序列化的，因为有歧义
     public static Queue<String> preOrderSerialize(TreeNode root) {
         Queue<String> res = new LinkedList<>();
         preSerialize(root, res);
@@ -281,4 +281,5 @@ public class BinaryTree {
             return null;
         return new TreeNode(Integer.parseInt(poll));
     }
+    // --------------------------------------------------------------------------------------------------------
 }

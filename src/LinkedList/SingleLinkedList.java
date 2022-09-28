@@ -50,6 +50,7 @@ public class SingleLinkedList {
         return head;
     }
 
+
     public static void main(String[] args) {
         SingleNode n5 = new SingleNode(4, null);
         SingleNode n4 = new SingleNode(7, n5);

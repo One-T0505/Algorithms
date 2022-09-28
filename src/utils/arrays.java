@@ -42,8 +42,10 @@ public class arrays {
 
     // 数组的展示
     public static void printArray(int[] arr){
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + "  ");
+        if (arr == null || arr.length == 0)
+            return;
+        for (int j : arr) {
+            System.out.print(j + "  ");
         }
         System.out.println();
     }
@@ -62,6 +64,11 @@ public class arrays {
 
     // 判断两个数组是否完全相等，不仅长度相等，并且对应元素都相等
     public static boolean isSameArray(int[] arr1, int[] arr2){
+        if (arr1 == null && arr2 == null)
+            return true;
+        if (arr1 == null || arr2 == null)
+            return false;
+        // 运行到这里说明两个数组都不为空
         if (arr1.length >= 1 && arr2.length >= 1 && arr1.length == arr2.length){
             int len = arr1.length;
             boolean flag = true;

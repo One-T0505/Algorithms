@@ -53,7 +53,7 @@ public class MergeSort {
                 L = R + 1;
             }
             // 防止一个数很大时，再✖2就会溢出
-            if (mergeGroup > N / 2)
+            if (mergeGroup > (N >> 1))
                 break;
             mergeGroup <<= 1;
         }
@@ -75,7 +75,6 @@ public class MergeSort {
         int mid = l + ((r - l) >> 1);
         return process_2(arr, l, mid) + process_2(arr, mid + 1, r) + merge2(arr, l, mid, r);
     }
-
 
     public static int merge2(int[] arr, int l, int m, int r){
         int[] help = new int[r - l + 1];
@@ -109,20 +108,49 @@ public class MergeSort {
         return process_3(arr, l, mid) + process_3(arr, mid + 1, r) +merge3(arr, l, mid, r);
     }
 
-    public static int merge3(int[] arr, int l, int mid, int r) {
-        int [] help = new int[r - l + 1];
-        int p1 = mid, p2 = r, index = help.length - 1, num = 0;
-        while ((p1 >= l) && (p2 >= mid + 1)){
-            num += arr[p1] > arr[p2] ? p2 - mid : 0;
-            help[index--] = arr[p1] <= arr[p2] ? arr[p2--] : arr[p1--];
+    public static int merge3(int[] arr, int L, int M, int R) {
+        int [] help = new int[R - L + 1];
+        int left = M, right = R, index = help.length - 1, num = 0;
+        // 此时是逆序完成help数组
+        while ((left >= L) && (right >= M + 1)){
+            num += arr[left] > arr[right] ? right - M : 0;
+            help[index--] = arr[left] <= arr[right] ? arr[right--] : arr[left--];
         }
-        while (p1 >= l)
-            help[index--] = arr[p1--];
-        while (p2 >= mid + 1)
-            help[index--] = arr[p2--];
-        System.arraycopy(help, 0, arr, l, help.length);
+        while (left >= L)
+            help[index--] = arr[left--];
+        while (right >= M + 1)
+            help[index--] = arr[right--];
+        System.arraycopy(help, 0, arr, L, help.length);
         return num;
     }
+
+    // 一个数组arr，对每个元素M求：M的右边有多少个元素，是 M > 2 * 该元素。算出该数组中符合的所有数量。
+    // 该方法的主函数和递归调用和之前的一摸一样，只是merge过程有点不一样
+    public static int merge4(int[] arr, int L, int M, int R){
+        // 单独处理
+        int res = 0, right = M + 1;
+        for (int left = L; left <= M; left++) {
+            while (right <= R && arr[left] > (arr[right] << 1))
+                right++;
+            res += right - M - 1;
+        }
+
+        // 拷贝的操作单独写。没有将两个过程写在一起
+        int[] help = new int[R - L + 1];
+        int index = 0;
+        int p1 = L, p2 = M + 1;
+        while (p1 <= M && p2 <= R)
+            help[index++] = arr[p1] < arr[p2] ? arr[p1++] : arr[p2++];
+        while (p1 <= M)
+            help[index++] =arr[p1++];
+        while (p2 <= R)
+            help[index++] = arr[p2++];
+        System.arraycopy(help, 0, arr, L, help.length);
+
+        return res;
+    }
+
+    // 给定一个数组arr,两个整数lower和upper, 返回arr中有多少个子数组的累加和在[lower,upper]范围上
 
 
     public static void main(String[] args) {
