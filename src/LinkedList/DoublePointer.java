@@ -14,7 +14,7 @@ public class DoublePointer {
         if (head == null || head.next == null || head.next.next == null)
             return head;
         // 链表有3个结点或以上
-        SingleNode slow = head.next, fast = head.next.next;
+        SingleNode slow = head, fast = head.next.next;
         while (fast.next != null && fast.next.next != null){
             slow = slow.next;
             fast = fast.next.next;
@@ -161,14 +161,43 @@ public class DoublePointer {
         return lH != null ? lH : (eH != null ? eH : gH);
     }
 
+
+
+    // 6.假设有一个单链表长度为偶数2N，标记为：L1, L2, ... ,Ln, R1, R2, ... ,Rn，现在希望将其调整为：
+    //   L1, Rn, L2, Rn-1, ... ,Ln, R1. 并返回新头部
+    public static SingleNode merge(SingleNode head){ // 该方法时间复杂度：O(N) 额外空间复杂度：O(1)
+        if (head == null)
+            return null;
+        // 需要找到R1这个位置，由上面的4个题目可知，现在需要找到链表的下中点
+        SingleNode latterMid = midOrLatterMid(head);
+        // 将后半部分逆序
+        SingleNode latterHead = linkedlist.reverseSingleLinkedList(latterMid);
+        SingleNode fast = head.next, latterFast = latterHead.next;
+        SingleNode slow = head;
+        while (latterFast != null){
+            slow.next = latterHead;
+            latterHead.next = fast;
+            slow = fast;
+            fast = fast.next;
+            latterHead = latterFast;
+            latterFast = latterFast.next;
+        }
+        return head;
+    }
+
+
     public static void main(String[] args) {
         for (int i = 0; i < 10; i++) {
             SingleNode head = linkedlist.generateRandomLinkedList(6, 30);
-            linkedlist.printLinkedList(head);
-            SingleNode newHead = linkedListPartitionV2(head, 15);
-            linkedlist.printLinkedList(newHead);
-            System.out.println("====================================");
+            if ((linkedlist.len(head) & 1) == 0) { // 说明链表长度为偶数
+                linkedlist.printLinkedList(head);
+                SingleNode newHead = merge(head);
+                linkedlist.printLinkedList(newHead);
+                System.out.println("====================================");
+            }
         }
     }
+
+
 }
 

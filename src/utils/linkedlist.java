@@ -42,20 +42,6 @@ public class linkedlist {
         return head;
     }
 
-    // 给一个数组，按照尾插法构造成单链表，并返回head
-    public static SingleNode ww(int[] arr){
-        if (arr == null || arr.length == 0)
-            return null;
-        SingleNode head = new SingleNode(arr[0], null);
-        SingleNode tmp = head;
-        for (int i = 1; i < arr.length; i++) {
-            SingleNode cur = new SingleNode(arr[i], null);
-            tmp.next = cur;
-            tmp = cur;
-        }
-        return head;
-    }
-
     public static void printLinkedList(SingleNode head){
         if (head == null)
             return;

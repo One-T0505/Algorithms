@@ -2,6 +2,8 @@ package Sort;
 
 import utils.arrays;
 
+import java.util.Stack;
+
 public class QuickSort {
     // 给一个数组arr和一个整数num，把 <=num的数放在数组的左边， >num的数凡在数组的右边，左右两边的内部不要求有序
     // 要求：空间复杂度为O(1)，时间复杂度为O(N)
@@ -13,13 +15,10 @@ public class QuickSort {
             return;
         int bound = -1;
         for (int i = 0; i < arr.length; i++) {
-            if (arr[i] <= num){
-                arrays.swap(arr, bound + 1, i);
-                bound++;
-            }
+            if (arr[i] <= num)
+                arrays.swap(arr, ++bound, i);
         }
     }
-
 
     // 给一个数组arr和一个整数num，把 <num的数放在数组的左边，=num的放中间， >num的数凡在数组的右边
     // 左右两边的内部不要求有序
@@ -118,18 +117,42 @@ public class QuickSort {
     private static void process2(int[] arr, int L, int R) {
         if (L >= R)
             return;
-        int len = R - L + 1;
-        arrays.swap(arr, R, L + (int) (Math.random() * len));
+        arrays.swap(arr, R, L + (int) (Math.random() * (R - L + 1)));
         int[] equalAreas = HollandFlag(arr, L, R);
         process2(arr, L, equalAreas[0] - 1);
         process2(arr, equalAreas[1] + 1, R);
     }
 
+    // 非递归改写随机快速排序
+    public static void quickSortV3UnderStack(int[] arr){
+        if (arr == null || arr.length < 2)
+            return;
+        int N = arr.length;
+        arrays.swap(arr, (int) (Math.random() * N), N - 1);
+        int[] equalAreas = HollandFlag(arr, 0, N - 1);
+        Stack<Record> records = new Stack<>();
+        records.push(new Record(0, equalAreas[0] - 1));
+        records.push(new Record(equalAreas[1] + 1, N - 1));
+        while (!records.isEmpty()){
+            Record cur = records.pop();
+            arrays.swap(arr, cur.L + (int) (Math.random() * (cur.R - cur.L + 1)), cur.R);
+            equalAreas = HollandFlag(arr, cur.L, cur.R);
+            records.push(new Record(cur.L, equalAreas[0] - 1));
+            records.push(new Record(equalAreas[1] + 1, cur.R));
+        }
+    }
+
+    public static class Record{
+        public int L;
+        public int R;
+
+        public Record(int l, int r) {
+            L = l;
+            R = r;
+        }
+    }
 
     public static void main(String[] args) {
-        int[] arr = {10, 6, 3, 7, 15, 12, 2, 8, 1, 11, 13, 5, 10};
-        partitionThree(arr, 10);
-        arrays.printArray(arr);
 //        int[] holland = QuickSort.Holland(arr, 0, arr.length - 1);
 //        for (int i = 0; i < arr.length; i++) {
 //            System.out.print(arr[i] + "\t");
@@ -139,7 +162,5 @@ public class QuickSort {
 //            System.out.print(holland[i] + "\t");
 //        }
 //        System.out.println();
-
-
     }
 }

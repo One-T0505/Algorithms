@@ -1,5 +1,6 @@
 package Sort;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 import utils.arrays;
@@ -118,6 +119,44 @@ public class HeapSort {
         }
         while (!heap.isEmpty())
             arr[i++] = heap.poll();
+    }
+
+    // 最大线段重合问题(用堆的实现)  给定很多线段，每个线段都有两个数[start, end],表示线段开始位置和结束位置，左右都是闭区间
+    // 规定: 1)线段的开始和结束位置一定都是整数值  2)线段重合区域的长度必须>=1
+    // 返回线段最多重合区域中，包含了几条线段
+    //
+    // 思路：先把所有线段按起点从小到大排序，再申请一个小根堆，里面存放的是线段的终点，每次一条线段来，
+    // 就从堆里删除所有终点<=当前线段起点 的线段，因为这些线段肯定比当前线段先来进行判断，所以他们的起点一定 <= 当前线段，并且
+    // 堆里存放的是他们的终点，依然不大于当前结点的起点，那么这些线段必然和当前线段没有重合区域。
+
+    // 矩阵m的形状为：N ✖ 2
+    public static int lineOverlap(int[][] m){
+        // 先将矩阵转化为线段类
+        Line[] lines = new Line[m.length];
+        for (int row = 0; row < m.length; row++)
+            lines[row] = new Line(m[row][0], m[row][1]);
+        Arrays.sort(lines, (a, b) -> a.start - b.start);
+
+        PriorityQueue<Integer> heap = new PriorityQueue<>();
+        int max = Integer.MIN_VALUE;
+        for (int cur = 0; cur < lines.length; cur++) {
+            while (!heap.isEmpty() && heap.peek() <= lines[cur].start)
+                heap.poll();
+            heap.add(lines[cur].end);
+            max = Math.max(max, heap.size());
+        }
+        return max;
+    }
+
+
+    public static class Line {
+        public int start;
+        public int end;
+
+        public Line(int start, int end) {
+            this.start = start;
+            this.end = end;
+        }
     }
     public static void main(String[] args) {
         int[] arr= {10, 1, 5, 2, 6, 8, 3, 7, 13, 2};

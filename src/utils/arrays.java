@@ -50,9 +50,9 @@ public class arrays {
         System.out.println();
     }
 
-    // 返回一个在 [-range, +range]的整数
+    // 返回一个在 [0, range]的整数
     public static int generateRandomNum(int range){
-        return ((int) (Math.random() * range) + 1) - ((int) (Math.random() * range) + 1);
+        return (int) (Math.random() * (range + 1));
     }
 
     // 交换数组上i和j位置上的两个值
