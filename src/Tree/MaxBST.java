@@ -76,13 +76,58 @@ public class MaxBST {
         int max = Math.max(Math.max(left.max, right.max), root.val);
         return new Info(isBST, maxSubBSTSize, min, max);
     }
+    // --------------------------------------------------------------------
 
-    public static void main(String[] args) {
-        for (int i = 0; i < 2000; i++) {
-            int[] array = arrays.noRepeatArray(10, 20);
-            TreeNode root = tree.generateRandomBinaryTree(array);
-            if (maxSubBST(root) != null && isB(root).maxSubBSTSize != maxSubBST(root).maxSubBSTSize)
-                PrintTree.printT(root);
+    // 上面的两个方法是用于找到一棵树的最大二叉搜索树的结点数量；现在稍微变化一下，给定一棵二叉树的头节点root,
+    // 返回这颗二叉树中最大的二叉搜索子树的头节点
+    static class Info2 {
+
+        public TreeNode maxSubBSTHead;
+        public int maxSubBSTSize;
+        public int max;
+        public int min;
+
+        public Info2(TreeNode maxSubBSTHead, int maxSubBSTSize, int max, int min) {
+            this.maxSubBSTHead = maxSubBSTHead;
+            this.maxSubBSTSize = maxSubBSTSize;
+            this.max = max;
+            this.min = min;
         }
     }
+
+    public static TreeNode maxBST(TreeNode root) {
+        if (root == null)
+            return null;
+        return process(root).maxSubBSTHead;
+    }
+
+    private static Info2 process(TreeNode root) {
+        if (root == null)
+            return new Info2(null, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        Info2 leftInfo = process(root.left);
+        Info2 rightInfo = process(root.right);
+
+        int max = Math.max(Math.max(root.val, leftInfo.max), rightInfo.max);
+        int min = Math.min(Math.min(root.val, leftInfo.min), rightInfo.min);
+        boolean isBST = (leftInfo.maxSubBSTHead == root.left && rightInfo.maxSubBSTHead == root.right &&
+                root.val > leftInfo.max && root.val < rightInfo.min);
+        int maxSubBSTSize = isBST ? leftInfo.maxSubBSTSize + rightInfo.maxSubBSTSize + 1 :
+                Math.max(leftInfo.maxSubBSTSize, rightInfo.maxSubBSTSize);
+
+        TreeNode maxSubBSTHead = isBST ? root : (leftInfo.maxSubBSTSize >= rightInfo.maxSubBSTSize ?
+                        leftInfo.maxSubBSTHead : rightInfo.maxSubBSTHead);
+        return new Info2(maxSubBSTHead, maxSubBSTSize, max, min);
+    }
+
+    public static void main(String[] args) {
+        for (int i = 0; i < 10; i++) {
+            int[] array = arrays.noRepeatArray(20, 50);
+            TreeNode root = tree.generateRandomBinaryTree(array);
+            PrintTree.printT(root);
+            System.out.println(maxBST(root) == null ? null : maxBST(root).val);
+            System.out.println("====================================================================");
+        }
+    }
+
+
 }

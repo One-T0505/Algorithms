@@ -276,10 +276,11 @@ public class BinaryTree {
         return root;
     }
 
-    public static TreeNode generateNode(String poll) {
+    private static TreeNode generateNode(String poll) {
         if (poll == null)
             return null;
         return new TreeNode(Integer.parseInt(poll));
     }
     // --------------------------------------------------------------------------------------------------------
+
 }

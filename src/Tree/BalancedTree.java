@@ -13,18 +13,20 @@ public class  BalancedTree {
         }
     }
 
-    public Info isBalanced(TreeNode root) {
+    public Info process(TreeNode root) {
         if (root == null)
             return new Info(true, 0);
-        Info left = isBalanced(root.left);
-        Info right = isBalanced(root.right);
+        Info left = process(root.left);
+        Info right = process(root.right);
         int height = Math.max(left.height, right.height) + 1;
         boolean balanced = left.isBalanced && right.isBalanced &&
                 Math.abs(left.height - right.height) < 2;;
         return new Info(balanced, height);
     }
-    public boolean mainThread(TreeNode root) {
-        return isBalanced(root).isBalanced;
+    public boolean isBalancedV1(TreeNode root) {
+        if (root == null)
+            return true;
+        return process(root).isBalanced;
     }
 
 }

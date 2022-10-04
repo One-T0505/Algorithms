@@ -1,5 +1,8 @@
 package Tree;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class PrintTree {
     // 打印一棵二叉树：将二叉树的结构逆时针旋转90度在终端打印出
     public static void printTree(TreeNode root){
@@ -52,7 +55,6 @@ public class PrintTree {
         builder.append(" ".repeat(left + (height - 1) * len)).append(val).append(" ".repeat(right));
         return builder.toString();
     }
-
 
     public static void main(String[] args) {
         TreeNode n4 = new TreeNode(4, null, null);
