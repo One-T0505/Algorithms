@@ -62,12 +62,7 @@ public class Kruskal {
         UnionFind unionFind = new UnionFind();
         unionFind.fromGraph(graph);
         // 堆 传入一个新的比较器：实现按照边的权重从小到大排序
-        PriorityQueue<Edge> minHeap = new PriorityQueue<>(new Comparator<Edge>() {
-            @Override
-            public int compare(Edge o1, Edge o2) {
-                return o1.weight - o2.weight;
-            }
-        });
+        PriorityQueue<Edge> minHeap = new PriorityQueue<>((o1, o2) -> o1.weight - o2.weight);
         // 将边逐个加入到小根堆，会自动排序，将最小的边放到堆顶
         minHeap.addAll(graph.edges);
         HashSet<Edge> res = new HashSet<>();
