@@ -72,13 +72,13 @@ public class NQueens {
 
     public static void main(String[] args) {
         long start1 = System.currentTimeMillis();
-        System.out.println(nQueens(15));
+        int res1 = nQueens_v2(14);
         long end1 = System.currentTimeMillis();
-        System.out.println(end1 - start1);
+        System.out.println(res1 + "  " + (end1 - start1) + "ms");
 
         long start2 = System.currentTimeMillis();
-        System.out.println(nQueens_v2(15));
+        int res2 = nQueens(14);
         long end2 = System.currentTimeMillis();
-        System.out.println(end2 - start2);
+        System.out.println(res2 + "  " + (end2 - start2) + "ms");
     }
 }
