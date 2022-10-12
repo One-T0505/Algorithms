@@ -57,6 +57,7 @@ public class  SubSequence {
     }
     // ============================================================================================
 
+
     // 3.打印一个字符串的所有全排列。eg：String s = abc 那么s的全排列就是：abc、acb、bac、bca、cab、cba
     public static List<String> permutationV1(String s){
         if (s == null || s.length() == 0)

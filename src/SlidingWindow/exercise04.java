@@ -22,12 +22,12 @@ public class exercise04 {
         if (index == arr.length)
             return rest == 0 ? 0 : -1;
         // 不要
-        int v1 = process(arr, index + 1, rest);
+        int p1 = process(arr, index + 1, rest);
         // 要
-        int v2 = process(arr, index + 1, rest - arr[index]);
+        int p2 = process(arr, index + 1, rest - arr[index]);
         // 为什么v1不用判断？ 因为在当前方法中，如果能走到这里，就说明rest不小于0，所以肯定不会为-1
-        if (v2 != -1)
-            v2++;
-        return Math.min(v1, v2);
+        if (p2 != -1)
+            p2++;
+        return Math.min(p1, p2);
     }
 }

@@ -106,9 +106,9 @@ public class NumberToLetter {
     }
 
     public static void main(String[] args) {
-        System.out.println(numberToLetterV1("15121132111"));
-        System.out.println(numberToLetterV2("15121132111"));
-        System.out.println(dpV1("15121132111"));
-        System.out.println(dpV2("15121132111"));
+        System.out.println(numberToLetterV1("15121134192111"));
+        System.out.println(numberToLetterV2("15121134192111"));
+        System.out.println(dpV1("15121134192111"));
+        System.out.println(dpV2("15121134192111"));
     }
 }

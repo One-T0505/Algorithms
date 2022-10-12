@@ -6,7 +6,7 @@ import utils.arrays;
 
 // 假设一个固定大小为W的窗口，依次划过arr,返回每一次滑出状况的最大值
 // 例如：arr= [4,3,5,4,3,3,6,7], W= 3  返回: [5,5,5,4,6,7]
-public class exersice01 {
+public class exercise01 {
 
     // w表示窗口大小. 假如数组长度为N，窗口大小为W，则会返回 N-W+1 个结果
     public static int[] getMax(int[] arr, int w){
