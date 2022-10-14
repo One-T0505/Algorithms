@@ -41,6 +41,8 @@ public class QuickSort {
                 arrays.swap(arr, --rightBound, index);
         }
     }
+    // ====================================================================================================
+
 
     // 前两个问题说明了如何partition的过程，接下来就要用不同的partiton过程来实现快速排序
     // 快速排序初级版，每次只能搞定一个数
@@ -68,6 +70,8 @@ public class QuickSort {
         arr[front] = pivot;
         return front;
     }
+    // ====================================================================================================
+
 
     // 荷兰国旗的partition问题和上面的非常一样，也是分成3个区域 < = >，该方法接收三个参数：arr、L、R；
     // num是arr[R],并且要求返回中间相等区域的头尾索引.
@@ -104,6 +108,8 @@ public class QuickSort {
         process(arr, l, equalAreas[0] - 1);
         process(arr, equalAreas[1] + 1, r);
     }
+    // ====================================================================================================
+
 
     // 快排进化版的partition过程因为用到了荷兰国旗的分治，所以要优于初级版。如果是最差情况，数组中每一个元素都不相同
     // 并且最后区域都到了边界上，那时间复杂度就降为了O(N2).
@@ -122,6 +128,8 @@ public class QuickSort {
         process2(arr, L, equalAreas[0] - 1);
         process2(arr, equalAreas[1] + 1, R);
     }
+    // ====================================================================================================
+
 
     // 非递归改写随机快速排序
     public static void quickSortV3UnderStack(int[] arr){
@@ -141,7 +149,6 @@ public class QuickSort {
             records.push(new Record(equalAreas[1] + 1, cur.R));
         }
     }
-
     public static class Record{
         public int L;
         public int R;
@@ -151,16 +158,74 @@ public class QuickSort {
             R = r;
         }
     }
+    // ====================================================================================================
+
+
+
+    // 快排的改编版应用
+    // 给一个无序的数组arr，找出数组中第k小的数，其中k>=1. 要求时间复杂度O(N), 额外空间复杂度O(1).
+
+    // 用快排，每次将数组分成三个区域：小于区、等于区、大于区。按理说如果整个数组有序了，那么第k小的数肯定在arr[k-1]处，所以
+    // 如果 等于区左边界 <= k - 1 <= 等于区右边界, 那么就结束了，直接返回arr[k-1]，毕竟等于区都一样，返回哪个都可以。
+    // 否则，就去左边递归或者右边递归！！！！ 这里是和传统快排最大的不同，传统快排是左右两边都要递归，而现在左右两边只有
+    // 一侧会递归。
+    public static int findK(int[] arr, int k){
+        if (arr == null || arr.length < k || k < 1)
+            return Integer.MAX_VALUE;   // 表示无意义
+        return process3(arr, 0, arr.length - 1, k - 1);
+    }
+
+    // index表示如果arr在L～R上有序后，应该返回的位置,并且index一定满足： L <= index <= R
+    private static int process3(int[] arr, int L, int R, int index) {
+        if (L == R)
+            return arr[L];
+        int pivot = L + (int) (Math.random() * (R - L + 1));
+        arrays.swap(arr, pivot, R);
+        int[] equalAreas = HollandFlag(arr, L, R);
+        if (equalAreas[0] <= index && index <= equalAreas[1])
+            return arr[index];
+        else if (index < equalAreas[0]) {
+            return process3(arr, L, equalAreas[0] - 1, index);
+        } else
+            return process3(arr, equalAreas[1] + 1, R, index);
+    }
+
+    // 非递归实现上述方法
+    public static int findKV2(int[] arr, int k){
+        if (arr == null || arr.length < k || k < 1)
+            return Integer.MAX_VALUE;   // 表示无意义
+        int L = 0, R = arr.length - 1;
+        int pivot = 0;
+        while (L <= R){
+            pivot = L + (int) (Math.random() * (R - L + 1));
+            arrays.swap(arr, pivot, R);
+            int[] equalAreas = HollandFlag(arr, L, R);
+            if (equalAreas[0] <= k - 1 && k - 1 <= equalAreas[1])
+                return arr[k - 1];
+            else if (k - 1 < equalAreas[0]) {
+                R  = equalAreas[0] - 1;
+            } else
+                L = equalAreas[1] + 1;
+        }
+        return arr[k - 1];
+    }
+
 
     public static void main(String[] args) {
-//        int[] holland = QuickSort.Holland(arr, 0, arr.length - 1);
-//        for (int i = 0; i < arr.length; i++) {
-//            System.out.print(arr[i] + "\t");
-//        }
-//        System.out.println();
-//        for (int i = 0; i < holland.length; i++) {
-//            System.out.print(holland[i] + "\t");
-//        }
-//        System.out.println();
+        for (int i = 0; i < 1000000; i++) {
+            int maxSize = 20;
+            int maxVal = 60;
+            int[] arr = arrays.generateRandomArray(maxSize, maxVal);
+            int k = ((int) (Math.random() * arr.length)) + 1;
+            int res1 = findK(arr, k);
+            int res2 = findKV2(arr, k);
+            if (res1 != res2){
+                System.out.println("Failed!");
+                System.out.println(res1);
+                System.out.println(res2);
+                return;
+            }
+        }
+        System.out.println("AC");
     }
 }
