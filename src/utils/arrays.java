@@ -7,11 +7,23 @@ import java.util.HashSet;
 public class arrays {
     // 生成一个随机数组，长度在[0, maxSize]之间，数值在[0, maxVal]之间。允许重复值，并且无序。
     public static int[] generateRandomArray(int maxSize, int maxVal){
-        int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
+        int[] arr = new int[((int) (maxSize * Math.random())) + 1];
         for (int i = 0; i < arr.length; i++) {
             arr[i] = (int) ((maxVal + 1) * Math.random());
         }
         return arr;
+    }
+
+    // 随机生成一个矩阵
+    public static int[][] generateRandomMatrix(int maxRow, int maxCol, int maxVal){
+        int rows = (int) (Math.random() * maxRow) + 1;
+        int cols = (int) (Math.random() * maxCol) + 1;
+        int[][] matrix = new int[rows][cols];
+        for (int i = 0; i < rows; i++){
+            for (int j = 0; j < cols; j++)
+                matrix[i][j] = (int) ((maxVal + 1) * Math.random());
+        }
+        return matrix;
     }
 
     // 生成一个随机数组，长度在[0, maxSize]之间，数值在[-maxVal, maxVal]之间，不允许重复值。
