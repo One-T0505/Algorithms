@@ -1,4 +1,9 @@
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 // AC自动机
 // 该模型应用场景是什么样的？假如有一篇很长的文章，然后有一个敏感词表单，请从这篇文章里找出包含了哪些敏感词。
 // 即便是用KMP进行快速匹配，那也只能每次遍历整篇文章才能找到一种敏感词，KMP只适用于单一子串匹配，并且原串不能太大。
@@ -49,11 +54,6 @@
 // 就把能找到的敏感词全部收集到了。然后大文章中再来到下一个。因为此时cur还在第一条的e并且没有孩子为f，所以此时让cur直接回到根。
 //
 // 当遍历到大文章的e时，就把文章开头到当前的e可能包含的所有敏感词全部找出来了，所以效率很高。
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 
 public class ACAutomata {
 
