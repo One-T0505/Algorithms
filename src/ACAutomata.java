@@ -110,6 +110,7 @@ public class ACAutomata {
                     // 我们采用的逻辑是：先全部指向root，再单独处理那些有其他指向的
                     cur.nexts[i].fail = root;
                     cFail = cur.fail;
+                    // 根结点的孩子是不会执行该循环的，因为在第二层时，cur就是根，根的fail==null
                     while (cFail != null){ // 顺着fail循环一周去寻找 ==null 说明已经来到根结点的fail
                         if (cFail.nexts[i] != null){
                             cur.nexts[i].fail = cFail.nexts[i];
