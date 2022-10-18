@@ -16,6 +16,20 @@ import java.util.List;
 
 public class NaryTree {
 
+    static class NaryNode {
+        public int val;
+        public List<NaryNode> children;
+
+        public NaryNode(int val) {
+            this.val = val;
+        }
+
+        public NaryNode(int val, List<NaryNode> children) {
+            this.val = val;
+            this.children = children;
+        }
+    }
+
     // 将多叉树转换为二叉树，并返回根结点
     public TreeNode encode(NaryNode root) {
         if (root == null)
@@ -53,19 +67,5 @@ public class NaryTree {
             firstChild = firstChild.right;
         }
         return children;
-    }
-}
-
-class NaryNode {
-    public int val;
-    public List<NaryNode> children;
-
-    public NaryNode(int val) {
-        this.val = val;
-    }
-
-    public NaryNode(int val, List<NaryNode> children) {
-        this.val = val;
-        this.children = children;
     }
 }
