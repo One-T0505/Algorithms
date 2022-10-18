@@ -14,8 +14,12 @@ package Tree.OrderedTree;
 // 若A存在LR型违规，说的是：E的结点数 > C的结点数    则先做一次左旋，再做一次右旋，该操作和AVL树一模一样，并返回新头
 // 若A存在RR型违规，说的是：G的结点数 > B的结点数    则做一次左旋，该操作和AVL树一模一样，并返回新头
 // 若A存在RL型违规，说的是：F的结点数 > B的结点数    则先做一次右旋，再做一次左旋，该操作和AVL树一模一样，并返回新头
-// 做完调整后，以新头为根，遍历树，看有哪个结点的左右孩子是在调整完之后发生改变了，那就对这个结点调用和A一样的判断是否不平衡的方法
-// SBTree在删除结点时是不会检查树的平衡性的，只会在加结点的时候考虑
+//
+// 怎么方便记忆违规的对象呢？可以这样：违规只有可能是某个侄子超过了其叔叔，以下犯上，所以只有可能是后辈去违背前辈，也就是说
+// 违规的形式都是侄子超过了叔叔。侄子和叔叔的方位就确定了这4种违规类型。
+//
+// 做完调整后，以新头为根，遍历树，看有哪个结点的左右孩子是在调整完之后发生改变了，那就对这个结点调用和A一样的判断是否不平衡的
+// 方法。 SBTree在删除结点时是不会检查树的平衡性的，只会在加结点的时候考虑
 public class SBTree {
     public static class SBTNode<K extends Comparable<K>, V> {
         public K key;
@@ -125,13 +129,14 @@ public class SBTree {
                         des.size--;
                     }
                     // 此时des来到了右子树最左的结点，pre是des的父结点
+                    // 为什么要加这个if呢？因为上面的while可能不执行，因为cur.right就没有左子树
                     if (pre != null){
                         pre.left = des.right;
                         des.right = cur.right;
                     }
                     des.left = cur.left;
                     des.size = des.left.size + (des.right == null ? 0 : des.right.size) + 1;
-                    cur =des;
+                    cur = des;
                 }
             }
             // cur = keepBalanced(cur)  这句可以不要，因为SBTree默认是在删除时不调整的
