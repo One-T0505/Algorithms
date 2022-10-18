@@ -1,4 +1,4 @@
-package Tree;
+package Tree.PrefixTree;
 
 import java.util.HashMap;
 

@@ -1,4 +1,6 @@
-package Tree;
+package Tree.BinaryTree;
+
+import Tree.TreeNode;
 
 public class MaxDistance {
     // 求以某结点为根结点的子树的最大距离。两个结点的距离是从一个结点到另一个结点经过的结点数（包含头尾结点）。

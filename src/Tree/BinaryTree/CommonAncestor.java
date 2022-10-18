@@ -1,4 +1,4 @@
-package Tree;
+package Tree.BinaryTree;
 
 // 一棵二叉树中，任意给出两个结点，找出其第一个公共祖先结点。
 // 给出两个结点a，b，x表示一棵树的根结点，有可能是整棵树的根，也有可能是递归过程中遇到的某棵子树的根
@@ -9,6 +9,8 @@ package Tree;
 //   1>.a，b分别在左右子树上，一边有一个    2>.x就是a结点，而b在左右子树上   3>.x就是b结点，而a在左右子树上
 
 // 经过初步分析，可以列举出需要的信息：1.在树上是否发现a; 2.在树上是否发现b; 3.在树上是否找到了最低汇聚点
+
+import Tree.TreeNode;
 
 import java.util.HashMap;
 import java.util.HashSet;

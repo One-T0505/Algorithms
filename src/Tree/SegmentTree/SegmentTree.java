@@ -1,4 +1,4 @@
-package Tree;
+package Tree.SegmentTree;
 import utils.arrays;
 
 // 线段树 SegmentTree

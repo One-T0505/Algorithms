@@ -1,4 +1,6 @@
-package Tree;
+package Tree.BinaryTree;
+
+import Tree.TreeNode;
 
 public class FullBinaryTree {
 

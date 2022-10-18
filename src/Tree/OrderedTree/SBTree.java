@@ -1,4 +1,4 @@
-package Tree;
+package Tree.OrderedTree;
 
 // SizeBalanceTree 也是一种平衡二叉树，不过它的平衡性的定义和AVL树不一样。
 // SBTree的不平衡性是这样定义的：

@@ -1,8 +1,8 @@
-package Tree;
+package Tree.BinaryTree;
 
+import Tree.TreeNode;
 import utils.*;
-import Tree.BinaryTree;
-import Tree.PrintTree;
+
 public class MaxBST {
     // 给一个结点，找出其最大二叉排序树
 

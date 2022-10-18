@@ -1,4 +1,4 @@
-package Tree;
+package Tree.BinaryTree;
 
 public class PrintFolds {
     // 折纸打印折痕问题

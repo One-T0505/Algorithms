@@ -1,4 +1,6 @@
-package Tree;
+package Tree.BinaryTree;
+
+import Tree.TreeNode;
 
 // 二叉树的Mirrors遍历
 // 二叉树的递归遍历：时间复杂度为O(N) 空间复杂度为O(logN)  而Mirrors遍历可以做到：时间复杂度O(N)  空间复杂度为O(1)

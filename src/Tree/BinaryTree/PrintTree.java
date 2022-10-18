@@ -1,7 +1,6 @@
-package Tree;
+package Tree.BinaryTree;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import Tree.TreeNode;
 
 public class PrintTree {
     // 打印一棵二叉树：将二叉树的结构逆时针旋转90度在终端打印出

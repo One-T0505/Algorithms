@@ -1,4 +1,6 @@
-package Tree;
+package Tree.BinaryTree;
+
+import Tree.TreeNode;
 
 public class  BalancedTree {
     // 判断一棵树是否为平衡二叉树
