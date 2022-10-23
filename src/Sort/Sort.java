@@ -1,14 +1,15 @@
 package Sort;
 
+import utils.arrays;
 
 public class Sort {
 
-    //    简单插入排序
-    public static void insertSort(int[] arr){
-        if (arr == null || arr.length < 2)
+    //    在数组的L～R上做简单插入排序,
+    public static void insertSort(int[] arr, int L, int R){
+        if (arr == null || arr.length < 2 || L < 0 || R >= arr.length || L + 1 >= R)
             return;
-        for (int i = 1; i < arr.length; i++) {
-            for (int j = i - 1; j >= 0 && arr[j] > arr[j + 1]; j--)
+        for (int i = L + 1; i <= R; i++) {
+            for (int j = i - 1; j >= L && arr[j] > arr[j + 1]; j--)
                 swap(arr, j, j + 1);
         }
     }
@@ -73,9 +74,7 @@ public class Sort {
     public static void main(String[] args) {
         int[] arr = {12, 5, 3, 21, 18, 1, 1};
         int[] arr2 = {2, 15, 23, 21, 38};
-        insertSort(arr);
-        for (int j : arr)
-            System.out.print(j + "\t");
-        System.out.println();
+        insertSort(arr, 3, 6);
+        arrays.printArray(arr);
     }
 }
