@@ -6,10 +6,19 @@ import java.util.HashSet;
 // 所以集中放在一起
 public class arrays {
     // 生成一个随机数组，长度在[0, maxSize]之间，数值在[0, maxVal]之间。允许重复值，并且无序。
+    public static int[] generateRandomNoNegativeArray(int maxSize, int maxVal){
+        int[] arr = new int[((int) (maxSize * Math.random())) + 1];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = generateRandomNoNegativeNum(maxVal);
+        }
+        return arr;
+    }
+
+    // 生成一个随机数组，长度在[0, maxSize]之间，数值在[-maxVal, maxVal]之间。允许重复值，并且无序。
     public static int[] generateRandomArray(int maxSize, int maxVal){
         int[] arr = new int[((int) (maxSize * Math.random())) + 1];
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = (int) ((maxVal + 1) * Math.random());
+            arr[i] = generateRandomNum(maxVal);
         }
         return arr;
     }
@@ -45,6 +54,14 @@ public class arrays {
         return arr;
     }
 
+    // 生成一个长度固定，但是元素值随机的非负数组
+    public static int[] generateFixedLengthArray(int len, int maxVal){
+        int[] res = new int[len];
+        for (int i = 0; i < len; i++)
+            res[i] = (int) (Math.random() * (maxVal + 1));
+        return res;
+    }
+
     // 传入一个源数组，返回一模一样的新数组
     public static int[] copyArray(int[] src){
         int[] des = new int[src.length];
@@ -62,9 +79,23 @@ public class arrays {
         System.out.println();
     }
 
+    public static void printArray(double[] arr){
+        if (arr == null || arr.length == 0)
+            return;
+        for (double j : arr) {
+            System.out.print(j + "  ");
+        }
+        System.out.println();
+    }
+
     // 返回一个在 [0, range]的整数
-    public static int generateRandomNum(int range){
+    public static int generateRandomNoNegativeNum(int range){
         return (int) (Math.random() * (range + 1));
+    }
+
+    // 返回一个在 [-range, range]的整数
+    public static int generateRandomNum(int range){
+        return (int) (Math.random() * (range + 1)) - (int) (Math.random() * (range + 1));
     }
 
     // 交换数组上i和j位置上的两个值
