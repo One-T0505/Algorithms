@@ -56,13 +56,13 @@ public class NQueens {
             return 1;
         // pos上为1的位置都是可摆皇后的地方
         // colLim | leftLim | rightLim 可得到总限制，1表示不能放的地方，再取反后1就表示可以放的位置。
-        // 但是32位中前面有一大坨0取反时都变为1，所以再和limit与操作
+        // 但是32位中前面有一大坨0取反时都变为1，所以再和limit与操作  limit其实就是为了让变乱的数在回归到整齐的状态
         int pos = limit & (~(colLim | leftLim | rightLim));
         // 然后尝试pos中每一个为1的位置
         int rightestOne = 0, res = 0;
         while (pos != 0){
             rightestOne = pos & (~pos + 1);  // 提取自己最右侧的1
-            pos = pos - rightestOne;
+            pos -= rightestOne;
             res += process2(limit, colLim | rightestOne, (leftLim | rightestOne) << 1,
                     (rightLim | rightestOne) >> 1);
         }
