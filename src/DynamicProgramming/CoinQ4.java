@@ -1,10 +1,13 @@
 package DynamicProgramming;
 
+// leetCode322
 // arr是面值数组，其中的值都是正数且没有重复。再给定一个正数aim。每个值都认为是一种面值，且认为张数是无限的。
 // 返回组成aim的最少货币数。注意：返回的不是方法数！！！
 // eg：arr={2, 5, 10} aim=100， 应该返回10，因为用10张10元的是使用货币数量最少的
 
 // 判断：本题属于从左到右的尝试模型
+
+import java.util.Arrays;
 
 public class CoinQ4 {
 
@@ -35,27 +38,24 @@ public class CoinQ4 {
     // ===================================================================================================
 
 
-    // 动态规划
+    // 动态规划  -1表示不可行   这个已经是经过斜率优化后的版本了
     public static int dpV1(int[] arr, int aim){
-        if (arr == null || arr.length == 0 || aim <= 0)
-            return 0;
         int N = arr.length;
-        int[][] cache = new int[N + 1][aim + 1];
-        cache[N][0] = 0;    // 这句可以省略，但是为了表现改写的过程还是加上了
-        for (int i = 1; i <= aim; i++)
-            cache[N][i] = Integer.MAX_VALUE;
-        for (int index = N - 1; index >= 0; index--) {
-            for (int rest = 0; rest <= aim; rest++) {
-                int res = Integer.MAX_VALUE;
-                for (int i = 0; i * arr[index] <= rest; i++){
-                    int p = cache[index + 1][rest - i * arr[index]];
-                    if (p != Integer.MAX_VALUE)
-                        res = Math.min(res, p + i);
-                }
-                cache[index][rest] = res;
+        int[][] dp = new int[N + 1][aim + 1];
+        // dp[N]这一行，只有dp[N][0]可以填0   并且第0列也都是0
+        Arrays.fill(dp[N], -1);
+        dp[N][0] = 0;
+        for (int i = N - 1; i >= 0; i--) {
+            for (int j = 1; j <= aim; j++) {
+                int p1 = dp[i + 1][j];
+                int p2 = j - arr[i] >= 0 && dp[i][j - arr[i]] != -1 ? dp[i][j - arr[i]] + 1 : -1;
+                if(p1 != -1 ^ p2 != -1)
+                    dp[i][j] = Math.max(p1, p2);
+                else
+                    dp[i][j] = Math.min(p1, p2);
             }
         }
-        return cache[0][aim];
+        return dp[0][aim];
     }
     // ====================================================================================================
 

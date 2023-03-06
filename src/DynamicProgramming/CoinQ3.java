@@ -32,10 +32,7 @@ public class CoinQ3 {
     private static Info preProcess(int[] arr) {
         HashMap<Integer, Integer> map = new HashMap<>(); // 记录每种面值的货币有多少张
         for (int cur : arr) {
-            if (!map.containsKey(cur))
-                map.put(cur, 1);
-            else
-                map.put(cur, map.get(cur) + 1);
+            map.put(cur, map.getOrDefault(cur, 0) + 1);
         }
         int N = map.size();
         int[] kinds = new int[N];
