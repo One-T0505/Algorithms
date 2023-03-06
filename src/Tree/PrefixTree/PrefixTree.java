@@ -56,7 +56,7 @@ public class PrefixTree {
     }
 
     // 在前缀树中查找以prefix为前缀的字符串个数
-    public int matchPrefix(String prefix){
+    public int match(String prefix){
         if (prefix == null)
             return 0;
         char[] chars = prefix.toCharArray();

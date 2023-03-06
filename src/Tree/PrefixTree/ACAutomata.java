@@ -64,6 +64,7 @@ public class ACAutomata {
         // 如果end不为空，表示这个点是某个字符串的结尾，end的值就是这个字符串
         public String end;
         // 只有在上面的end变量不为空的时候，logged才有意义。表示，这个字符串之前有没有加入过答案
+        // 因为一篇大文章里，同一个敏感词可能出现的次数不止1次，所以避免重复收集
         public boolean logged;
         public Node fail;
         public Node[] nexts;   // 这里默认所有都是由小写英文字母组成的字符串，a-->0  b-->1  z-->25
@@ -131,19 +132,22 @@ public class ACAutomata {
         char[] chars = content.toCharArray();
         Node cur = root;
         Node follow = null;
-        int index = 0;
+        int path = 0;
         List<String> res = new ArrayList<>();
         for (char c : chars) {
-            index = c - 'a';
+            // 虚线包围的代码其实就是给cur寻找要跳的位置，等cur跳好了之后，就让follow绕一圈收集答案。
+            // ----------------------------------------------------------------------------------------
+            path = c - 'a';
             // 如果当前字符在这条路上没配出来，就随着fail方向走向下条路径
             // 为啥要加一个cur != root 因为cur==root时再往fail走就到null了，我们的意思是最后最差也是回到根重新配
-            while (cur.nexts[index] == null && cur != root)
+            while (cur.nexts[path] == null && cur != root)
                 cur = cur.fail;
             // 跳出while时有两种可能
-            cur = cur.nexts[index] == null ? root : cur.nexts[index];
+            cur = cur.nexts[path] == null ? root : cur.nexts[path];
             // 到这里时，cur就有两种情形：
             // 1) 现在来到的路径，是可以继续匹配的
             // 2) 现在来到的节点，就是前缀树的根节点
+            // ----------------------------------------------------------------------------------------
             follow = cur;
             while (follow != root) { // 如果是第2种情形，那么该while不会执行，不影响后续
                 if (follow.logged)  // 如果已经加过，直接跳出，因为后续的循环肯定也走过
@@ -163,10 +167,10 @@ public class ACAutomata {
         ACAutomata ac = new ACAutomata();
         ac.insert("dhe");
         ac.insert("he");
-        ac.insert("abcdheks");
+        ac.insert("abcdhekts");
         // 设置fail指针
         ac.build();
-        List<String> contains = ac.involvedWords("abcdhekskdjfafhasldkflskdjhwqaeruv");
+        List<String> contains = ac.involvedWords("abcdheksdawdetehfhferewrbqew");
         for (String word : contains) {
             System.out.println(word);
         }
