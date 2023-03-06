@@ -76,8 +76,9 @@ public class exercise02 {
 
     public static void main(String[] args) {
         for (int i = 0; i < 100000; i++) {
-            int[] src = arrays.generateRandomArray(10, 50);
-            int[] copy = arrays.copyArray(src);
+            int[] src = arrays.randomNoNegativeArr(10, 50);
+            int[] copy = new int[src.length];
+            System.arraycopy(src, 0, copy, 0, src.length);
             int res1 = limitedSubArray(src, 15);
             int res2 = verify(copy, 15);
             if (res1 != res2){

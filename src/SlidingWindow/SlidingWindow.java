@@ -8,8 +8,6 @@ public class SlidingWindow {
     private int[] arr;
     LinkedList<Integer> queue;  // 这里存的是元素下标
 
-    public SlidingWindow(){}
-
     public SlidingWindow(int[] arr) {
         L = -1;
         R = 0;

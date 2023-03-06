@@ -1,5 +1,8 @@
 package SlidingWindow;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+
 // 加油站问题：给一个数组gas，分别表示每个加油站有多少单位的汽油；还有一个数组dis，分别表示从i号加油站到i+1号加油站的距离，
 // dis中最后一个元素表示最后一个加油站到0号加油站的距离，所以是个环形距离。问从哪个加油站出发，能绕一圈回到出发点，找出所有
 // 的出发点。
@@ -16,11 +19,8 @@ package SlidingWindow;
 // 只能按顺序去到下一个加油站，不能随便跑，在哪个加油站就可以把油站的油加完，油箱无限制
 // 该图中，不能从0号出发，因为在0号加了1个油，在去往1号加油站的路上就熄火了。只能以2号加油站为起点能绕一圈回到2号。
 
-import java.util.Arrays;
-import java.util.LinkedList;
-
-// 思路：gas - dis = [-1, -1, 2, 0] 用这个新数组res更方便解答，假设从1号加油站出发，那么res[1]不断累加res[2],res[3],res[0]
-// 但凡累加和小于0了，那就不符合。所以暴力解法可以这样做
+// 思路：gas - dis = [-1, -1, 2, 0] 用这个新数组res更方便解答，假设从1号加油站出发，那么res[1]不断累加res[2],
+//      res[3],res[0]  但凡累加和小于0了，那就不符合。所以暴力解法可以这样做
 public class exercise03 {
 
     // 暴力解法做对数器 时间复杂度：O(N2)
@@ -29,9 +29,8 @@ public class exercise03 {
             return 0;
         int num = 0;
         int[] res = new int[gas.length];
-        for (int i = 0; i < res.length; i++) {
+        for (int i = 0; i < res.length; i++)
             res[i] = gas[i] - dis[i];
-        }
         for (int i = 0; i < res.length; i++) { // 每一个加油站尝试做起点
             int tmp = res[i];
             int j = i + 1 == res.length ? 0 : i + 1;
@@ -47,7 +46,8 @@ public class exercise03 {
 
     // 利用滑动窗口思想 时间复杂度：O(N) 额外空间复杂度：O(N). 这里的脑洞比较大
     // 还用之前的例子，gas=[1, 1, 3, 1]  dis=[2, 2, 1, 1]  得到res=[-1, -1, 2, 0] 我们要算的是所有加油站为起点，
-    // 其累加和过程中是否小于0的出现。用暴力法就是要遍历数组，利用滑动窗口的话就需要对res进一步加工。下面一步一步来对res加工，首先：
+    // 其累加和过程中是否小于0的出现。用暴力法就是要遍历数组，利用滑动窗口的话就需要对res进一步加工。下面一步一步来对res
+    // 加工，首先：
     // 以0号加油站为起点，累加和为：sum0 = [-1, -2, 0, 0]
     // 以1号加油站为起点，累加和为：sum1 = [-1, 1, 1, 0]
     // 以2号加油站为起点，累加和为：sum2 = [2, 2, 1, 0]
