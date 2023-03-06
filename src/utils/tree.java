@@ -1,10 +1,9 @@
 package utils;
 
 import Tree.TreeNode;
-import Tree.BinaryTree;
+import Tree.BinaryTree.BinaryTree;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 public class tree {

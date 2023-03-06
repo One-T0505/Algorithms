@@ -6,7 +6,7 @@ import java.util.HashSet;
 // 所以集中放在一起
 public class arrays {
     // 生成一个随机数组，长度在[0, maxSize]之间，数值在[0, maxVal]之间。允许重复值，并且无序。
-    public static int[] generateRandomNoNegativeArray(int maxSize, int maxVal){
+    public static int[] randomNoNegativeArr(int maxSize, int maxVal){
         int[] arr = new int[((int) (maxSize * Math.random())) + 1];
         for (int i = 0; i < arr.length; i++) {
             arr[i] = generateRandomNoNegativeNum(maxVal);
@@ -15,7 +15,7 @@ public class arrays {
     }
 
     // 生成一个随机数组，长度在[0, maxSize]之间，数值在[-maxVal, maxVal]之间。允许重复值，并且无序。
-    public static int[] generateRandomArray(int maxSize, int maxVal){
+    public static int[] RandomArr(int maxSize, int maxVal){
         int[] arr = new int[((int) (maxSize * Math.random())) + 1];
         for (int i = 0; i < arr.length; i++) {
             arr[i] = generateRandomNum(maxVal);
@@ -23,20 +23,9 @@ public class arrays {
         return arr;
     }
 
-    // 随机生成一个矩阵
-    public static int[][] generateRandomMatrix(int maxRow, int maxCol, int maxVal){
-        int rows = (int) (Math.random() * maxRow) + 1;
-        int cols = (int) (Math.random() * maxCol) + 1;
-        int[][] matrix = new int[rows][cols];
-        for (int i = 0; i < rows; i++){
-            for (int j = 0; j < cols; j++)
-                matrix[i][j] = (int) ((maxVal + 1) * Math.random());
-        }
-        return matrix;
-    }
 
     // 生成一个随机数组，长度在[0, maxSize]之间，数值在[-maxVal, maxVal]之间，不允许重复值。
-    public static int[] noRepeatArray(int maxSize, int maxVal){
+    public static int[] noRepeatArr(int maxSize, int maxVal){
         int[] arr = new int[(int) (Math.random() * (maxSize + 1))];
         HashSet<Integer> set = new HashSet<>();
         for (int i = 0; i < arr.length; i++) {
@@ -54,20 +43,38 @@ public class arrays {
         return arr;
     }
 
-    // 生成一个长度固定，但是元素值随机的非负数组
-    public static int[] generateFixedLengthArray(int len, int maxVal){
+    // 随机生成一个矩阵  行数在[1, maxRow]  列数在[1, maxCol]之间  值在[0, maxVal]之间
+    public static int[][] randomMatrix(int maxRow, int maxCol, int maxVal){
+        int rows = (int) (Math.random() * maxRow) + 1;
+        int cols = (int) (Math.random() * maxCol) + 1;
+        int[][] matrix = new int[rows][cols];
+        for (int i = 0; i < rows; i++){
+            for (int j = 0; j < cols; j++)
+                matrix[i][j] = (int) ((maxVal + 1) * Math.random());
+        }
+        return matrix;
+    }
+
+
+    // 打印矩阵
+    public static void printMatrix(int[][] m){
+        for (int[] ints : m) {
+            for (int j = 0; j < m[0].length; j++) {
+                System.out.print(ints[j] + "\t");
+            }
+            System.out.println();
+        }
+    }
+
+
+    // 生成一个长度固定，但是元素值随机的正整数数组
+    public static int[] fixedLenArray(int len, int maxVal){
         int[] res = new int[len];
         for (int i = 0; i < len; i++)
-            res[i] = (int) (Math.random() * (maxVal + 1));
+            res[i] = (int) (Math.random() * maxVal) + 1;
         return res;
     }
 
-    // 传入一个源数组，返回一模一样的新数组
-    public static int[] copyArray(int[] src){
-        int[] des = new int[src.length];
-        System.arraycopy(src, 0, des, 0, src.length);
-        return des;
-    }
 
     // 数组的展示
     public static void printArray(int[] arr){
@@ -88,6 +95,7 @@ public class arrays {
         System.out.println();
     }
 
+
     // 返回一个在 [0, range]的整数
     public static int generateRandomNoNegativeNum(int range){
         return (int) (Math.random() * (range + 1));
@@ -106,7 +114,7 @@ public class arrays {
     }
 
     // 判断两个数组是否完全相等，不仅长度相等，并且对应元素都相等
-    public static boolean isSameArray(int[] arr1, int[] arr2){
+    public static boolean isSameArr(int[] arr1, int[] arr2){
         if (arr1 == null && arr2 == null)
             return true;
         if (arr1 == null || arr2 == null)
@@ -127,7 +135,7 @@ public class arrays {
     }
 
     public static void main(String[] args) {
-        int[] array = noRepeatArray(10, 30);
+        int[] array = noRepeatArr(10, 30);
         printArray(array);
     }
 }

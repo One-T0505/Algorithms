@@ -7,7 +7,7 @@ public class linkedlist {
 
     // 生成一个长度随机，值随机的单链表，并返回头结点
     public static SingleNode generateRandomLinkedList(int maxSize, int maxVal){
-        int[] arr = arrays.generateRandomArray(maxSize, maxVal);
+        int[] arr = arrays.randomNoNegativeArr(maxSize, maxVal);
         return tailInsert(arr);
     }
 
