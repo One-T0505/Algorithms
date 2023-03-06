@@ -114,7 +114,7 @@ public class IndexTree {
         int testTime = 2000000;
         System.out.println("test begin");
         for (int i = 0; i < testTime; i++) {
-            int[] ori = arrays.generateRandomArray(maxSize, maxVal);
+            int[] ori = arrays.randomNoNegativeArr(maxSize, maxVal);
             IndexTree tree = new IndexTree(ori);
             PlanB planB = new PlanB(ori);
             int N = ori.length;

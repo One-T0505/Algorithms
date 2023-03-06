@@ -24,7 +24,7 @@ package Tree.IndexTree;
 
 import utils.arrays;
 
-public class IndexTree2D {
+public class  IndexTree2D {
     public int rows;
     public int cols;
     public int[][] copy;
@@ -118,7 +118,7 @@ public class IndexTree2D {
         int testTime = 1000000;
         System.out.println("test begin");
         for (int i = 0; i < testTime; i++) {
-            int[][] ori = arrays.generateRandomMatrix(maxRow, maxCol, maxVal);
+            int[][] ori = arrays.randomMatrix(maxRow, maxCol, maxVal);
             IndexTree2D tree = new IndexTree2D(ori);
             IndexTree2D.PlanB planB = new IndexTree2D.PlanB(ori);
             int rows = ori.length;
