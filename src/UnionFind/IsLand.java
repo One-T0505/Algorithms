@@ -1,5 +1,6 @@
 package UnionFind;
 
+// leetCode200
 // 岛问题
 // 给定一个二维数组matrix，里面的值不是1就是0, 上、下、左、右相邻的1认为是一片岛, 返回matrix中岛的数量
 public class IsLand {
@@ -21,7 +22,7 @@ public class IsLand {
     }
 
     private static void infect(char[][] matrix, int i, int j) {
-        if (i < 0 || i >= matrix.length || j < 0 || j >= matrix[0].length || matrix[i][j] == '2')
+        if (i < 0 || i >= matrix.length || j < 0 || j >= matrix[0].length || matrix[i][j] != '1')
             return;
         matrix[i][j] = '2';    // 将已经访问过的地方改为2，否则下面递归就会无穷尽
         infect(matrix, i - 1, j);  // 上
@@ -94,31 +95,31 @@ public class IsLand {
 
 
     // 主方法：
-    public static int isLandV2(char[][] matrix){
-        if (matrix == null)
+    public static int isLandV2(char[][] grid){
+        if (grid == null)
             return 0;
-        UnionFind unionFind = new UnionFind(matrix);
+        UnionFind unionFind = new UnionFind(grid);
         // 对每个元素只需要考察左、上有没有'1'即可。只考察右、下得不到同样的效果。
         // 第一行的元素无上，第一列的元素无左，为了不把所有的事情都放在一个for循环里实现，此时可以拆成多个for循环，
         // 这样就少写了很多条件判断
 
         // matrix[0][0]元素，既无左也无上，所以不用考虑
         // 该for循环处理第一行
-        for (int i = 1; i < matrix[0].length; i++) {
-            if (matrix[0][i] == '1' && matrix[0][i - 1] == '1')
-                unionFind.union(0, i - 1, 0, i);
+        for (int j = 1; j < unionFind.cols; j++) {
+            if (grid[0][j] == '1' && grid[0][j - 1] == '1')
+                unionFind.union(0, j - 1, 0, j);
         }
         // 该for循环处理第一列
-        for (int i = 1; i < matrix.length; i++) {
-            if (matrix[i][0] == '1' && matrix[i - 1][0] == '1')
+        for (int i = 1; i < unionFind.rows; i++) {
+            if (grid[i][0] == '1' && grid[i - 1][0] == '1')
                 unionFind.union( i, 0, i - 1, 0);
         }
         // 该for循环处理剩余所有既有左又有上的元素
-        for (int i = 1; i < matrix.length; i++) {
-            for (int j = 1; j < matrix[0].length; j++) {
-                if (matrix[i][j] == '1' && matrix[i - 1][j] == '1')  // 上
+        for (int i = 1; i < unionFind.rows; i++) {
+            for (int j = 1; j < unionFind.cols; j++) {
+                if (grid[i][j] == '1' && grid[i - 1][j] == '1')  // 上
                     unionFind.union(i, j, i - 1, j);
-                if (matrix[i][j] == '1' && matrix[i][j - 1] == '1')  // 左
+                if (grid[i][j] == '1' && grid[i][j - 1] == '1')  // 左
                     unionFind.union(i, j, i, j - 1);
             }
         }

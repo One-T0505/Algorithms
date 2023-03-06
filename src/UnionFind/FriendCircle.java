@@ -1,8 +1,11 @@
 package UnionFind;
 
+// leetCode547 虽然和这道题目内容不同，但是考点完全一样
 // 给定一个方阵M，行数代表有多少个人，M[i][j] = 1，表示i和j两个人互相认识，并且有M[j][i] = 1.
 // 并且有M[i][i] = 1,自己肯定认识自己。所以M必然是一个对称矩阵，请问这里有多少个朋友圈子。
 // 注意：0认识2，0认识4，他们三个就可以构成圈子，不用让2也认识4。只要一个人认识圈子里的一个人就可以加入该圈子
+
+import java.util.Arrays;
 
 public class FriendCircle {
     // 这里用改良的并查集结构，用数组替换之前用的哈希表，这样更快
@@ -15,7 +18,13 @@ public class FriendCircle {
 
         public UnionFind(int N) { // N表示有多少个人
             roots = new int[N];
+            // 一开始，每个人的根都是自己
+            for (int i = 0; i < N; i++) {
+                roots[i] = i;
+            }
             sizes = new int[N];
+            // 一开始，自己所在集合的容量都是1
+            Arrays.fill(sizes, 1);
             help = new int[N];
             circles = N;   // 一开始每一个人都是一个圈子
         }
@@ -61,5 +70,11 @@ public class FriendCircle {
             }
         }
         return unionFind.circles;
+    }
+
+
+    public static void main(String[] args) {
+        int[][] m = {{1, 1, 0}, {1, 1, 0}, {0, 0, 1}};
+        System.out.println(findFriendCircles(m));
     }
 }

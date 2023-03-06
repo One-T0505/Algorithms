@@ -44,13 +44,13 @@ public class IsLandV2 {
             return isLand;
         }
 
-        private void union(int row1, int col1, int row2, int col2) {
-            if (row1 < 0 || row1 == rows || row2 < 0 || row2 == rows ||
-                    col1 < 0 || col1 == cols || col2 < 0 || col2 == cols)
+        private void union(int r1, int c1, int r2, int c2) {
+            if (r1 < 0 || r1 == rows || r2 < 0 || r2 == rows ||
+                    c1 < 0 || c1 == cols || c2 < 0 || c2 == cols)
                 return;
 
-            int pos1 = row1 * cols + col1;
-            int pos2 = row2 * cols + col2;
+            int pos1 = r1 * cols + c1;
+            int pos2 = r2 * cols + c2;
             // 只要有一个还没初始化过，就不用做了
             if (sizes[pos1] == 0 || sizes[pos2] == 0)
                 return;
