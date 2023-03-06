@@ -83,19 +83,19 @@ public class Dijkstra {
 
         // 表示从源点到cur新发现了一个距离dis，来判断cur和dis要如何处理
         public void addOrUpdateOrIgnore(Node cur, int dis) {
-            // 如果该结点进过堆，并且此刻就在堆上
-            if (isInHeap(cur) && dis < distance.get(cur)){
-                distance.put(cur, dis);
-                upHeapify(cur, index.get(cur));
-            }
-            // 如果根本没进过堆
+            // 1.如果根本没进过堆
             if (!isEntered(cur)){
                 heap[size] = cur;
                 index.put(cur, size);
                 distance.put(cur, dis);
                 upHeapify(cur, size++);
             }
-            // 如果进过堆，但是此时已经不在堆上了，就什么都不做
+            // 2.如果进过堆，但是此时已经不在堆上了，就什么都不做
+            // 3.如果该结点进过堆，并且此刻就在堆上
+            if (isInHeap(cur) && dis < distance.get(cur)){
+                distance.put(cur, dis);
+                upHeapify(cur, index.get(cur));
+            }
         }
 
 
