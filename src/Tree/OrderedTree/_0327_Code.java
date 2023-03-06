@@ -24,17 +24,37 @@ import Sort.MergeSort;
 
 import java.util.HashSet;
 
-public class z_exercise01 {
+// 给你一个整数数组 nums 以及两个整数 lower 和 upper 。求数组中，值位于范围 [lower, upper]
+//（包含 lower 和 upper）之内的区间和的个数。区间和 S(i, j) 表示在 nums 中，位置从 i 到 j 的元
+// 素之和，包含 i 和 j (i ≤ j)。
+
+public class _0327_Code {
+
+    // 这道题是很经典的题目。方法1用了有序表的改写来完成。方法2就是之前归并排序里讲的方法。
+    public static int countRangeSum(int[] arr, int lower, int upper){
+        SBExtendedTree tree = new SBExtendedTree();
+        long sum = 0;
+        int res = 0;
+        tree.put(0);
+        for (int elem : arr) {
+            sum += elem;
+            long a = tree.lessKey(sum - lower + 1);
+            long b = tree.lessKey(sum - upper);
+            res += a - b;
+            tree.put(sum);
+        }
+        return res;
+    }
 
     // 结点定义
     public static class SBTNode{
-        public int key;  // 表示累加和
+        public long key;  // 表示累加和
         public SBTNode left;
         public SBTNode right;
         public int size;  // 不同的key的数量
         public int all;   // 所有的数量
 
-        public SBTNode(int key) {
+        public SBTNode(long key) {
             this.key = key;
             size = 1;
             all = 1;
@@ -44,12 +64,12 @@ public class z_exercise01 {
     // 整棵树的封装
     // ======================================================================================================
     public static class SBExtendedTree {
-        public SBTNode root;
-        public HashSet<Integer> set = new HashSet<>(); // 用于记录添加过的key
+        private SBTNode root;
+        public HashSet<Long> set = new HashSet<>(); // 用于记录添加过的key
 
 
         // 添加结点
-        public void put(int sum){
+        public void put(long sum){
             boolean contains = set.contains(sum);
             root = add(root, sum, contains);
             set.add(sum);
@@ -57,7 +77,7 @@ public class z_exercise01 {
 
         // 计算有多少个严格小于key的记录，这里的记录是指包含重复加入的结点数。<11的记录数量 == <=10的记录数量
         // 因为这里的key是int整数
-        public int lessKey(int key){
+        public long lessKey(long key){
             SBTNode cur = root;
             int res = 0;
             while (cur != null){
@@ -74,11 +94,11 @@ public class z_exercise01 {
 
         // 计算比key大的记录有多少，不算相等的
         // 比如要计算 >11的，只需要用全部的 - <=11的。
-        public int greaterKey(int key){
+        public long greaterKey(long key){
             return root == null ? 0 : root.all - lessKey(key + 1);
         }
 
-        private SBTNode add(SBTNode cur, int key, boolean contains) {
+        private SBTNode add(SBTNode cur, long key, boolean contains) {
             if (cur == null)
                 return new SBTNode(key);
             else {
@@ -124,8 +144,8 @@ public class z_exercise01 {
             } else if (rightLeftS > leftS){ // RL  最后一个条件判断不能直接写else，必须要严格判断
                 cur.right = rightRotate(cur.right);
                 cur = leftRotate(cur);
-                cur.right = keepBalanced(cur.right);
                 cur.left = keepBalanced(cur.left);
+                cur.right = keepBalanced(cur.right);
                 cur = keepBalanced(cur);
             }
             return cur;
@@ -168,24 +188,59 @@ public class z_exercise01 {
     // ======================================================================================================
 
 
-    public static int countRangeSum(int[] arr, int lower, int upper){
-        SBExtendedTree tree = new SBExtendedTree();
-        int sum = 0;
-        int res = 0;
-        tree.put(0);
-        for (int elem : arr) {
-            sum += elem;
-            int a = tree.lessKey(sum - lower + 1);
-            int b = tree.lessKey(sum - upper);
-            res += a - b;
-            tree.put(sum);
+
+
+    // 方法2 归并排序+窗口+前缀和
+    public static int countRangeSum2(int[] arr, int lower, int upper){
+        int N = arr.length;
+        // 制作前缀和
+        long[] preSum = new long[N + 1];
+        preSum[1] = arr[0];
+        for (int i = 2; i <= N; i++) {
+            preSum[i] = preSum[i - 1] + arr[i - 1];
         }
+        return f(preSum, 0, N, lower, upper);
+    }
+
+    private static int f(long[] preSum, int L, int R, int low, int up) {
+        if (L == R)
+            return 0;
+        int mid = L + ((R - L) >> 1);
+        return f(preSum, L, mid, low, up) + f(preSum, mid + 1, R, low, up) +
+                merge(preSum, L, mid, R, low, up);
+    }
+
+    private static int merge(long[] preSum, int L, int M, int R, int low, int up) {
+        int p = L, s = M + 1, e = M + 1;
+        int res = 0;
+        while (p <= M){
+            while (s <= R && preSum[s] - preSum[p] < low)
+                s++;
+            while (e <= R && preSum[e] - preSum[p] <= up)
+                e++;
+            res += e - s;
+            p++;
+        }
+        // 合并
+        long[] sorted = new long[R - L + 1];
+        s = L;
+        e = M + 1;
+        p = 0;
+        while (s <= M && e <= R) {
+            sorted[p++] = preSum[s] <= preSum[e] ? preSum[s++] : preSum[e++];
+        }
+        while (s <= M)
+            sorted[p++] = preSum[s++];
+        while (e <= R)
+            sorted[p++] = preSum[e++];
+        System.arraycopy(sorted, 0, preSum, L, R - L + 1);
         return res;
     }
 
+
     public static void test(int maxLen, int maxVal, int testTime){
         for (int i = 0; i < testTime; i++) {
-            int[] arr = arrays.generateRandomArray(maxLen, maxVal);
+            int[] arr = arrays.randomNoNegativeArr(maxLen, maxVal);
             int lower = arrays.generateRandomNum(maxVal);
             int upper = lower + (int) (Math.random() * maxVal);
             int ans1 = countRangeSum(arr, lower, upper);
@@ -202,10 +257,4 @@ public class z_exercise01 {
         System.out.println("AC");
     }
 
-    public static void main(String[] args) {
-//        int[] arr = {3, -1, 2, 5, -2, 6, 4, -3};
-//        int res = countRangeSum(arr, 2, 7);
-//        System.out.println(res);
-        test(20, 60, 1000);
-    }
 }

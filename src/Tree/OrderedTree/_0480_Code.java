@@ -3,7 +3,7 @@ package Tree.OrderedTree;
 import utils.arrays;
 import Sort.Sort;
 
-// 有一个滑动窗口(讲过的) :
+// 有一个滑动窗口(讲过的，之前是用堆来实现的) :
 //  1) L是滑动窗口最左位置，R是滑动窗口最右位置，一开始L、R都在数组左侧
 //  2) 任何一步都可能R往右动，表示某个数进了窗口
 //  3) 任何一步都可能L往右动，表示某个数出了窗口
@@ -13,7 +13,7 @@ import Sort.Sort;
 // 思路很简单，我们用SizeBalancedTree改写，每次R往右移动就把新数加入树中，L往右移动就从树中删除一个记录；
 // 每时刻下树中所有记录就是当前窗口的状态，我们需要新增一个接口：查找树中第index大的数就可以完成该题。
 
-public class z_exercise02 {
+public class _0480_Code {
 
     // 有序表结点类定义
     public static class SBTNode<K extends Comparable<K>> {
@@ -37,7 +37,7 @@ public class z_exercise02 {
         // ============================================================================================
         public boolean containsKey(K key) {
             if (key == null) {
-                throw new RuntimeException("invalid parameter.");
+                return false;
             }
             SBTNode<K> lastNode = lastIndex(key);
             return lastNode != null && key.compareTo(lastNode.key) == 0;
@@ -46,19 +46,20 @@ public class z_exercise02 {
         // 往树中放结点
         public void put(K key){
             if (key == null) {
-                throw new RuntimeException("invalid parameter.");
+                return;
             }
             SBTNode<K> lastNode = lastIndex(key);
             if (lastNode == null || key.compareTo(lastNode.key) != 0) {
                 root = add(root, key);
             }
+
         }
 
 
         // 删除结点
         public void remove(K key){
             if (key == null)
-                throw new RuntimeException("invalid parameter.");
+                return;
             if (containsKey(key))
                 root = delete(root, key);
         }
@@ -76,7 +77,9 @@ public class z_exercise02 {
         }
 
         // ============================================================================================
-        // 如果树中存在key则返回，若不存在则返回key的上一个结点，即离key最近但是小于key的结点
+        // 如果树中存在key则返回，若不存在则需要看树中是否结点的key全部大于key，如果全部大于key，则返回最小的那个
+        // 如果树中存在比key小的结点，那么返回离key最近且小于key 的。
+        // 所以，这个方法的会返回值可能比key大，也可能比key小。
         private SBTNode<K> lastIndex(K key) {
             SBTNode<K> pre = root;
             SBTNode<K> cur = root;
@@ -96,12 +99,13 @@ public class z_exercise02 {
         private SBTNode<K> getIndex(SBTNode<K> cur, int index) {
             if (cur == null)
                 return null;
-            if (index == (cur.left == null ? 0 : cur.left.size) + 1)
+            int leftS = cur.left == null ? 0 : cur.left.size;
+            if (index == (leftS) + 1)
                 return cur;
             else if (index <= (cur.left != null ? cur.left.size : 0)) {
                 return getIndex(cur.left, index);
             } else {
-                return getIndex(cur.right, index - 1 - (cur.left == null ? 0 : cur.left.size));
+                return getIndex(cur.right, index - 1 - (leftS));
             }
         }
 
@@ -181,7 +185,7 @@ public class z_exercise02 {
                 cur.left = keepBalanced(cur.left);
                 cur = keepBalanced(cur);
             } else if (rightLeftS > leftS) {  // RL
-                cur.left = rightRotate(cur.right);
+                cur.right = rightRotate(cur.right);
                 cur = leftRotate(cur);
                 cur.left = keepBalanced(cur.left);
                 cur.right = keepBalanced(cur.right);
@@ -227,8 +231,8 @@ public class z_exercise02 {
 
         @Override
         public int compareTo(Node o) {
-            // 首先按元素值大小排序，如果值相等，则按位置排序
-            return val != o.val ? val - o.val : index - o.index;
+            return val == o.val ? Integer.valueOf(index).compareTo(o.index) :
+                    Integer.valueOf(val).compareTo(o.val);
         }
     }
 
@@ -236,12 +240,13 @@ public class z_exercise02 {
     public static double[] getMedianV1(int[] arr, int k){
         if (arr == null || arr.length < k)
             return null;
+        int N = arr.length;
         SBETree<Node> tree = new SBETree<>();
         for (int i = 0; i < k - 1; i++)
             tree.put(new Node(i, arr[i]));
-        double[] res = new double[arr.length - k + 1];
+        double[] res = new double[N - k + 1];
         int index = 0;
-        for (int i = k - 1; i < arr.length; i++) {
+        for (int i = k - 1; i < N; i++) {
             tree.put(new Node(i, arr[i]));
             // 偶数个
             if ((tree.size() & 1) == 0) {

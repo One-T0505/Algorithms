@@ -186,7 +186,7 @@ public class AVLTree<K extends Comparable<K>, V> {
                 int leftLeftH = cur.left != null && cur.left.left != null ? cur.left.left.h : 0;
                 int leftRightH = cur.left != null && cur.left.right != null ? cur.left.right.h : 0;
                 if (leftLeftH >= leftRightH) // 如果有一种不平衡，既可以看作是LL型，也可以是LR型，那就按LL型来处理，这是一种技巧
-                    cur =rightRotate(cur); // LL型只需要右旋一次即可
+                    cur = rightRotate(cur); // LL型只需要右旋一次即可
                 else { // LR型
                     cur.left = leftRotate(cur.left);
                     cur = rightRotate(cur);
@@ -206,7 +206,8 @@ public class AVLTree<K extends Comparable<K>, V> {
     }
 
 
-    // 如果树中有key则返回，如果没有则返回他的前一个结点
+    // 如果树中有key则返回，如果没有则返回树中离key最近的结点。
+    // 如果树中全部大于key，那就返回树中最小的；如果树中有小于key的，那就返回小于key且最近的
     private AVLTNode<K, V> findLastIndex(K key){
         AVLTNode<K, V> pre = root;
         AVLTNode<K, V> cur = root;

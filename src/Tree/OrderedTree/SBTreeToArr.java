@@ -138,27 +138,27 @@ public class SBTreeToArr {
         private SBTNode<V> keepBalanced(SBTNode<V> cur) {
             if (cur == null)
                 return null;
-            int leftSize = cur.left != null ? cur.left.size : 0;
-            int leftLeftSize = cur.left != null && cur.left.left != null ? cur.left.left.size : 0;
-            int leftRightSize = cur.left != null && cur.left.right != null ? cur.left.right.size : 0;
-            int rightSize = cur.right != null ? cur.right.size : 0;
-            int rightLeftSize = cur.right != null && cur.right.left != null ? cur.right.left.size : 0;
-            int rightRightSize = cur.right != null && cur.right.right != null ? cur.right.right.size : 0;
-            if (leftLeftSize > rightSize) {
+            int lS = cur.left != null ? cur.left.size : 0;
+            int lLS = cur.left != null && cur.left.left != null ? cur.left.left.size : 0;
+            int lRS = cur.left != null && cur.left.right != null ? cur.left.right.size : 0;
+            int rS = cur.right != null ? cur.right.size : 0;
+            int rLS = cur.right != null && cur.right.left != null ? cur.right.left.size : 0;
+            int rRS = cur.right != null && cur.right.right != null ? cur.right.right.size : 0;
+            if (lLS > rS) {
                 cur = rightRotate(cur);
                 cur.right = keepBalanced(cur.right);
                 cur = keepBalanced(cur);
-            } else if (leftRightSize > rightSize) {
+            } else if (lRS > rS) {
                 cur.left = leftRotate(cur.left);
                 cur = rightRotate(cur);
                 cur.left = keepBalanced(cur.left);
                 cur.right = keepBalanced(cur.right);
                 cur = keepBalanced(cur);
-            } else if (rightRightSize > leftSize) {
+            } else if (rRS > lS) {
                 cur = leftRotate(cur);
                 cur.left = keepBalanced(cur.left);
                 cur = keepBalanced(cur);
-            } else if (rightLeftSize > leftSize) {
+            } else if (rLS > lS) {
                 cur.right = rightRotate(cur.right);
                 cur = leftRotate(cur);
                 cur.left = keepBalanced(cur.left);
