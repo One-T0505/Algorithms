@@ -139,6 +139,9 @@ public class Shopping {
         return res;
     }
 
+
+
+
     // 接下来，用增强堆来进行优化
     static class WhoIsWinner {
         private HashMap<Integer, Customer> map;  // 用户和id的关系表
@@ -169,10 +172,18 @@ public class Shopping {
 
         // 当前处理arr[i]事件
         public void operate(int time, int id, boolean buyOrRefund) {
+            // 既是退货 并且 这个人还是第一次出现
             if (!buyOrRefund && !map.containsKey(id))
                 return;
+            // 执行到这里说明上面的条件不成立，所以现在的情况是：
+            // 1. 退货 并且不是新用户     或者
+            // 2. 购物 并且是新用户     或者
+            // 3. 购物 并且不是新用户
+
+            // 经过这个if之后，三种情况下，不管是什么操作都对应了用户
             if (!map.containsKey(id))
                 map.put(id, new Customer(id, 0, 0));
+            // 现在来统一处理是购物还是退货
             Customer c = map.get(id);
             if (buyOrRefund)
                 c.shopping++;
@@ -180,15 +191,19 @@ public class Shopping {
                 c.shopping--;
             if (c.shopping == 0)
                 map.remove(id);
+            // 上面只是处理好了map，还没有处理候选区和获奖区
             // 下面开始就能体现出优化了
-            if (!candidates.contains(c) && !winners.contains(c)){ // 当前用户不存在于两个区
+            // 当前用户不存在于两个区  那只有可能是情况2，购物，所以下面的if里并没有对c.shopping==0做检查，
+            // 因为是购物，所以不可能是0
+            if (!candidates.contains(c) && !winners.contains(c)){
                 c.enterTime = time;
                 if (winners.size() < topLimit){
                     winners.push(c);       // O(logN)
                 } else {
                     candidates.push(c);    // O(logN)
                 }
-            } else if (candidates.contains(c)) {  // 存在于候选区
+            } else if (candidates.contains(c)) {  // 存在于候选区  那就是说这个用户是之前就有的，对应了情况1和情况3
+                // 因为有可能是退货，所以要对c.shopping检查
                 if (c.shopping == 0)
                     candidates.remove(c);  // O(logN)
                 else
