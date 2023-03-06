@@ -63,6 +63,7 @@ public class EnhancedHeap<K> {
         return res;
     }
 
+
     // 调用该方法时，说明该key已经变化了
     public void resign(K key){
         // 不管怎么变化，不是在堆上需要向上移动，就是需要向下移动，所以下面两个方法必中一个

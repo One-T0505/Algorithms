@@ -14,9 +14,10 @@ public class HeapSort {
 
     public HeapSort(int limit) {
         this.limit = limit;
-        this.size = 0;
-        this.arr = new int[limit];
+        size = 0;
+        arr = new int[limit];
     }
+
 
     // 向已排好的堆中插入一个新的元素
     public void insert(int val){
@@ -28,9 +29,9 @@ public class HeapSort {
             // 可以简化成：while (heap.heap[index] > heap.heap[(index - 1)/2]) 因为index=0时，来到根时，
             // (index - 1)/2 = 0，所以 heap.heap[index] > heap.heap[(index - 1)/2] 不成立，效果一样，
             // 来到根时也会跳出循环
-            while ((index - 1)/2 >= 0 && arr[index] > arr[(index - 1)/2]){
-                arrays.swap(arr, index, (index - 1)/2);
-                index = (index - 1)/2;
+            while ((index - 1) / 2 >= 0 && arr[index] > arr[(index - 1) / 2]){
+                arrays.swap(arr, index, (index - 1) / 2);
+                index = (index - 1) / 2;
             }
         }
     }
@@ -45,7 +46,7 @@ public class HeapSort {
 
     // 从index处的元素往下调整
     private void heapify(int[] arr, int index, int capacity) {
-        int left = index * 2 + 1; // 左孩子下标
+        int left = index << 1 | 1; // 左孩子下标
         while (left < capacity){
             // 将index的左右孩子中较大的那个元素的下标记住，前提是index有右孩子
             int greater = left + 1 < capacity && arr[left + 1] > arr[left] ?
@@ -55,7 +56,7 @@ public class HeapSort {
                 break;
             arrays.swap(arr, greater, index);
             index = greater;
-            left = index * 2 + 1;
+            left = index << 1 | 1;
         }
     }
 
@@ -63,12 +64,19 @@ public class HeapSort {
     public void heapSort(int[] arr){
         if (arr == null || arr.length < 2)
             return;
+        // 第一步    建堆
         for (int i : arr) insert(i);
+        // 第二步    迭代
         while (size > 0){
             arrays.swap(this.arr, 0, --size);
             heapify(this.arr, 0, size);
         }
     }
+    // 堆排序分成了两步：第一步建堆时间复杂度为O(NlogN)   第二步迭代时间复杂度为O(NlogN)
+    // 这里有一个更优化的堆排序，只是优化了第一步，使建堆的时间复杂度为O(N)  第二步还是一样的，
+    // 虽然总体上时间复杂度依然是O(NlogN)   但确实是更快了
+    // 下面就是优化版的建堆方法
+
 
     // 有一种优化的方法让堆排序更快。一开始给了一个无序的数组，假设数组的长度为N，把该数组想象成一棵完全二叉树。
     // 那么叶结点的数量必为 ⌊N/2⌋ + 1，并且是N个元素最后的 ⌊N/2⌋ + 1 个元素是叶结点，它们在数组中都是连续的。
@@ -80,9 +88,11 @@ public class HeapSort {
             return;
         int size = arr.length;
         int bound = arr.length / 2 - 1;   // 第一个非叶结点
+        // 优化后的建堆
         while (bound >= 0){
             heapify(arr, bound--, size);
         }
+        // 第二步还是一样
         while (size > 0){
             arrays.swap(arr, 0, --size);
             heapify(arr, 0, size);
