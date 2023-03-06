@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Stack;
 
 // 现在来介绍一种新的数据结构：单调栈。该结构通常用于求一个数组中某个元素左边和右边离自己最近且自己小的值。
-// 当然也可以是左右边离自己最近且比自己大的值。用最暴力的遍历也可以做，但是时间复杂度为：O(N)，而单调栈可以做到：O(N).
+// 当然也可以是左右边离自己最近且比自己大的值。用最暴力的遍历也可以做，但是时间复杂度为：O(N^2)，而单调栈可以做到：O(N).
 // 下面就来介绍用单调栈寻找数组中每个元素左边和右边离自己最近且自己小的值。
 
 // 假设该数组中没有重复值。arr=[4, 2, 5, 9, 6, 1, 3]   流程： 申请一个栈，从栈底到栈顶必须严格递增。
@@ -36,6 +36,7 @@ public class MonotonicStack {
             return null;
         int N = arr.length;
         int[][] res = new int[N][2];
+        char[] a = new char[5];
         Stack<Integer> stack = new Stack<>();
         for (int i = 0; i < N; i++) {
             while (!stack.isEmpty() && arr[stack.peek()] > arr[i]){
@@ -78,7 +79,7 @@ public class MonotonicStack {
                 int left = stack.isEmpty() ? -1 : stack.peek().get(stack.peek().size() - 1);
                 for (int pos : cur){
                     res[pos][1] = i;
-                    res[pos][0] = stack.isEmpty() ? -1 : left;
+                    res[pos][0] = left;
                 }
             }
             // 此时栈顶元素>=arr[i] 或者 栈已为空

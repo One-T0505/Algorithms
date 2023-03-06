@@ -63,7 +63,7 @@ public class exercise01 {
 
 
     public static void main(String[] args) {
-        int[] arr = arrays.generateRandomArray(15, 50);
+        int[] arr = arrays.randomNoNegativeArr(15, 50);
         System.out.println(v1(arr));
         System.out.println(v2(arr));
     }
