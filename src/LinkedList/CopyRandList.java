@@ -2,6 +2,7 @@ package LinkedList;
 
 import java.util.HashMap;
 
+// leetCode138  原题
 // 有一个链表，结点采用RandNode型，完全复刻一个一模一样的链表，不仅要复刻出next，也要复刻出rand，并返回新头部
 // 有两种方式实现，一种是借助容器，一种只用有限几个变量
 public class CopyRandList {
@@ -16,19 +17,20 @@ public class CopyRandList {
         }
         cur =head;
         while (cur != null){
-            map.get(cur).next = cur.next;
-            map.get(cur).rand = cur.rand;
+            map.get(cur).next = map.get(cur.next);
+            map.get(cur).rand = map.get(cur.rand);
             cur = cur.next;
         }
         return map.get(head);
     }
+
 
     // 进化方法：不用容器，使得空间复杂度降低为O(1). 将原链表中的每一个结点对应的新结点插入到原结点后面，手动做出一个对应关系
     public static RandNode copyRandListV2(RandNode head){
         if (head == null)
             return null;
         RandNode cur = head, next = null;
-        // while循环，将原链表长度翻倍，并且奇数位上都是原结点，偶数位上都是新结点
+        // while循环，将原链表长度翻倍，并且奇数位上都是原结点，偶数位上都是新结点(坐标从1开始的情况下)
         while (cur != null){
             next = cur.next;
             cur.next = new RandNode(cur.val);
@@ -39,7 +41,7 @@ public class CopyRandList {
         next = cur.next;
         // 复刻rand域
         while (cur != null){
-            next.rand = cur.rand;
+            next.rand = cur.rand == null ? null : cur.rand.next;
             cur = next.next;
             next = cur == null ? next : cur.next;
         }

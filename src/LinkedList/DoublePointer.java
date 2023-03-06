@@ -165,6 +165,7 @@ public class DoublePointer {
 
     // 6.假设有一个单链表长度为偶数2N，标记为：L1, L2, ... ,Ln, R1, R2, ... ,Rn，现在希望将其调整为：
     //   L1, Rn, L2, Rn-1, ... ,Ln, R1. 并返回新头部
+    // 对应于leetCode 143 题
     public static SingleNode merge(SingleNode head){ // 该方法时间复杂度：O(N) 额外空间复杂度：O(1)
         if (head == null)
             return null;
