@@ -92,8 +92,8 @@ public class Guess {
 
     public static void main(String[] args) {
         for (int i = 0; i < 1000; i++) {
-            int[] d = arrays.generateFixedLengthArray(10, 100);
-            int[] p = arrays.generateFixedLengthArray(10, 100);
+            int[] d = arrays.fixedLenArray(10, 100);
+            int[] p = arrays.fixedLenArray(10, 100);
             int res1 = adventureV2(d, p);
             int res2 = dpV1(d, p);
             if (res1 != res2){
