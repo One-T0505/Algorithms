@@ -3,6 +3,7 @@ package Stack;
 import java.util.LinkedList;
 import java.util.Queue;
 
+// leetCode225
 // 只用队列来实现栈
 
 // 尾          头         尾            头
