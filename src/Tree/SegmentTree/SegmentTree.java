@@ -7,8 +7,8 @@ import utils.arrays;
 // 对区间频繁地做某种操作时就可以使用线段树，他可以将所有这样的操作的时间复杂度降为：O(logN)
 
 // 实现：先用一个比较短的数组来模拟一下线段树的机制。 假设 arr=[8, 2, 5, 4, 7, 3, 6, 9] 长度为8，因为会用到数组模拟堆时
-//      推测自己父亲或者子结点的位置，所以我们需要将愿数组复刻一份，但是是从索引1开始。这样就得到：
-//      copy = [0, 8, 2, 5, 4, 7, 3, 6, 9]  现在就让copy当作愿数组。我们还需要一个数组sum，这个数组就是用来记录某个区
+//      推测自己父亲或者子结点的位置，所以我们需要将原数组复刻一份，但是是从索引1开始。这样就得到：
+//      copy = [0, 8, 2, 5, 4, 7, 3, 6, 9]  现在就让copy当作原数组。我们还需要一个数组sum，这个数组就是用来记录某个区
 //      间的累加和。我们想在sum中模拟的效果如下图所示：
 //
 //                [1,8]                                     sum中每个元素都是某个区间的累加和；原数组copy中有效元素
@@ -23,15 +23,15 @@ import utils.arrays;
 // 但是我们开辟的sum要保证任何情况下都够用，所以得分析原数组最差的情况，那就是 2的N次方+1 个时sum是最浪费的。假设N=5时，
 // sum如下图所示：
 //            [1,5]
-//          /       \                      本来愿数组只有5个，但是为了构成一个完全二叉树，sum数组0号位没用也得加上，
-//       [1,2]      [3,5]  3               刚还是 1 5 + 1 =16  ，也就是说原数组有N个的时候，sum大小为4*N时，一定够用。
+//          /       \                      本来原数组只有5个，但是为了构成一个完全二叉树，sum数组0号位没用也得加上，
+//       [1,2]      [3,5]  3               刚好是 15 + 1 =16  ，也就是说原数组有N个的时候，sum大小为4*N时，一定够用。
 //     /    \       /   \
 //    [1]   [2] 3  [3]  [4,5]
 //                      /   \
 //                    [4]   [5]
 //
 // 累加和数组sum定义完后，还需要一个和sum等长的lazy数组，这个数组用于记录懒信息，刚好一个位置对应一个区间。下面介绍懒信息的
-// 机制。我们用arr来模拟。假如现在来了一个操作是：将[2~5]范围上的数全部加3。首先来到根结点[1,8]，发现[2,5]，有部分在根结点
+// 机制。我们用arr来模拟。假如现在来了一个操作是：将[2~5]范围上的数全部加3。首先来到根结点[1,5]，发现[2,5]，有部分在根结点
 // 的左孩子[1,2]，又有一部分是在[3,5]上的，所以根结点就需要将该任务传递给左右孩子；[1,2]发现其左孩子压根不在范围内，所以不会给
 // [1]发送任务；右孩子[2]是完全在目标范围内的，当某个区间全部都在目标范围内时，就打住，在该区间记录懒信息，因为[2]是sum[5],
 // 所以就让 lazy[5]=3，表示5号位置对应区间内的数全部加3；再看[3,5]，刚好全部包含在[2,5],所以就打住，由[3,5]收集懒信息，
@@ -64,7 +64,7 @@ public class SegmentTree {
         N = arr.length + 1;
         copy = new int[N];
         // 将原数组拷贝，并从1下标开始，0位不用
-        System.arraycopy(arr, 0, copy, 1, arr.length);
+        System.arraycopy(arr, 0, copy, 1, N - 1);
         sum = new int[N << 2];   // 4N 保证最坏情况也能装得下
         lazyA = new int[N << 2];   // 4N 保证最坏情况也能装得下
         lazyU = new int[N << 2];   // 4N 保证最坏情况也能装得下
@@ -72,35 +72,9 @@ public class SegmentTree {
     }
 
 
-    // 之前的，所有懒增加，和懒更新，从父范围，发给左右两个子范围
-    // 分发策略是什么
-    // ln表示左子树元素结点个数，rn表示右子树结点个数
-    // 一定要先做更新操作的分发
-    private void distribute(int pos, int ln, int rn) {
-        // 更新操作的分发
-        if (effect[pos]){
-            effect[pos << 1] = true;
-            effect[pos << 1 | 1] = true;
-            lazyU[pos << 1] = lazyU[pos];
-            lazyU[pos << 1 | 1] = lazyU[pos];
-            lazyA[pos << 1] = 0;
-            lazyA[pos << 1 | 1] = 0;
-            sum[pos << 1] = lazyU[pos] * ln;
-            sum[pos << 1 | 1] = lazyU[pos] * rn;
-            effect[pos] = false;  // 分发下去之后，就清空自己的有效位信息
-        }
-        // 累加操作的检查
-        if (lazyA[pos] != 0){
-            lazyA[pos << 1] += lazyA[pos];
-            sum[pos << 1] += lazyA[pos] * ln;
-            lazyA[pos << 1 | 1] += lazyA[pos];
-            sum[pos << 1 | 1] += lazyA[pos] * rn;
-            lazyA[pos] = 0;
-        }
-    }
 
     // 利用copy数组，构造出sum数组中的累加和信息.
-    // 在copy[l~r]范围上建立sum数组，pos表示该范围的根结点应该在sum中哪个下标
+    // 在copy[l~r]范围上建立sum数组，pos表示该范围对应的结点应该在sum中哪个下标
     // 主函数调用该方法时应该这么调用：build(1, N, 1)   1~N就是对整个copy数组建立，对应的根的位置当然是填在sum[1]啦
     public void build(int l, int r, int pos){
         if (l == r){  // 说明是叶子结点，那就直接将元素值填上
@@ -171,6 +145,35 @@ public class SegmentTree {
     }
 
 
+    // 之前的，所有懒增加，和懒更新，从父范围，发给左右两个子范围
+    // 分发策略是什么
+    // ln表示左子树元素结点个数，rn表示右子树结点个数
+    // 一定要先做更新操作的分发
+    private void distribute(int pos, int ln, int rn) {
+        // 更新操作的分发
+        if (effect[pos]){
+            effect[pos << 1] = true;
+            effect[pos << 1 | 1] = true;
+            lazyU[pos << 1] = lazyU[pos];
+            lazyU[pos << 1 | 1] = lazyU[pos];
+            lazyA[pos << 1] = 0;
+            lazyA[pos << 1 | 1] = 0;
+            sum[pos << 1] = lazyU[pos] * ln;
+            sum[pos << 1 | 1] = lazyU[pos] * rn;
+            effect[pos] = false;  // 分发下去之后，就清空自己的有效位信息
+        }
+        // 累加操作的检查
+        if (lazyA[pos] != 0){
+            lazyA[pos << 1] += lazyA[pos];
+            sum[pos << 1] += lazyA[pos] * ln;
+            lazyA[pos << 1 | 1] += lazyA[pos];
+            sum[pos << 1 | 1] += lazyA[pos] * rn;
+            lazyA[pos] = 0;
+        }
+    }
+    // ===========================================================================================================
+
+
     // 用最暴力的结构实现上述操作
     static class PlanB{
         public int[] copy;
@@ -201,11 +204,11 @@ public class SegmentTree {
         }
     }
 
-    // 测试
+    // 功能测试
     // testTimes表示测试次数   addOrUpdate表示一次测试中执行累加和更新一共的次数  query表示查询的次数
-    public static boolean test(int testTimes, int maxSize, int maxVal, int addOrUpdate, int query){
+    public static boolean functionTest(int testTimes, int maxSize, int maxVal, int addOrUpdate, int query){
         for (int i = 0; i < testTimes; i++) {
-            int[] ori = arrays.generateRandomArray(maxSize, maxVal);
+            int[] ori = arrays.randomNoNegativeArr(maxSize, maxVal);
             PlanB planB = new PlanB(ori);
             SegmentTree segmentTree = new SegmentTree(ori);
             int N = ori.length;
@@ -239,9 +242,73 @@ public class SegmentTree {
         return true;
     }
 
+
+    // 性能测试
+    public static void performanceTest(int maxSize, int maxVal, int addOrUpdate, int query){
+        int[] arr = arrays.fixedLenArray(maxSize, maxVal);
+        int N = arr.length;
+        SegmentTree tree = new SegmentTree(arr);
+        tree.build(1, N, 1);
+        PlanB planB = new PlanB(arr);
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < addOrUpdate; i++) {
+            int num1 = (int) (Math.random() * N) + 1;
+            int num2 = (int) (Math.random() * N) + 1;
+            int L = Math.min(num1, num2);
+            int R = Math.max(num1, num2);
+            int C = (int) ((maxVal + 1) * Math.random());
+            if (Math.random() < 0.5)
+                planB.add(L, R, C);
+            else
+                planB.update(L, R, C);
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("暴力方法的累加和更新时间：" + (end - start) + " ms");
+
+        start = System.currentTimeMillis();
+        for (int i = 0; i < addOrUpdate; i++) {
+            int num1 = (int) (Math.random() * N) + 1;
+            int num2 = (int) (Math.random() * N) + 1;
+            int L = Math.min(num1, num2);
+            int R = Math.max(num1, num2);
+            int C = (int) ((maxVal + 1) * Math.random());
+            if (Math.random() < 0.5)
+                tree.add(L, R, C, 1, N, 1);
+            else
+                tree.update(L, R, C, 1, N, 1);
+        }
+        end = System.currentTimeMillis();
+        System.out.println("线段树的累加和更新时间：" + (end - start) + " ms");
+
+        start = System.currentTimeMillis();
+        for (int i = 0; i < query; i++) {
+            int num1 = (int) (Math.random() * N) + 1;
+            int num2 = (int) (Math.random() * N) + 1;
+            int L = Math.min(num1, num2);
+            int R = Math.max(num1, num2);
+            planB.query(L, R);
+        }
+        end = System.currentTimeMillis();
+        System.out.println("暴力方法的查询时间：" + (end - start) + " ms");
+
+        start = System.currentTimeMillis();
+        for (int i = 0; i < query; i++) {
+            int num1 = (int) (Math.random() * N) + 1;
+            int num2 = (int) (Math.random() * N) + 1;
+            int L = Math.min(num1, num2);
+            int R = Math.max(num1, num2);
+            tree.query(L, R, 1, N, 1);
+        }
+        end = System.currentTimeMillis();
+        System.out.println("线段树的查询时间：" + (end - start) + " ms");
+
+
+    }
+
     public static void main(String[] args) {
-        boolean res = test(10000, 20, 100, 20, 10);
+        boolean res = functionTest(10000, 20, 100, 20, 10);
         System.out.println(res);
+        performanceTest(100000, 10000, 50000, 50000);
     }
 }
 
