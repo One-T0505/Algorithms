@@ -6,7 +6,7 @@ import Tree.TreeNode;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class CompleteBinaryTree {
+public class IsCompleteBinaryTree {
 
     // 判断一棵树是否为完全二叉树，我们知道，如果一棵树的结点数量为N，则其后半部分⎡N/2⎤ 的结点全都是叶结点。
     // 根据这条性质，层次遍历时发现某个结点违反下面两条原则中任意一条，就可以断定该树不是完全二叉树：
@@ -105,5 +105,6 @@ public class CompleteBinaryTree {
 
         return new Info(isFull, isComplete, height);
     }
+
 
 }

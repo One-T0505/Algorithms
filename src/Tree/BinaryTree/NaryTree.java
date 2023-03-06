@@ -5,6 +5,7 @@ import Tree.TreeNode;
 import java.util.ArrayList;
 import java.util.List;
 
+// leetCode431
 // 多叉树与标准二叉树的相互转换
 //
 //              1                              1
@@ -41,6 +42,9 @@ public class NaryTree {
         return res;
     }
 
+
+    // 传入的参数是上级结点的孩子列表，该方法作用是将上级结点的各个子树转化成一个标准二叉树，并返回根结点，
+    // 上游会让这个上级结点的left指针接住返回的根结点。
     private TreeNode en(List<NaryNode> children) {
         TreeNode head = null, cur = null;
         for (NaryNode child : children) {
@@ -60,6 +64,7 @@ public class NaryTree {
             return null;
         return new NaryNode(root.val, de(root.left));
     }
+
 
     private List<NaryNode> de(TreeNode firstChild) {
         ArrayList<NaryNode> children = new ArrayList<>();

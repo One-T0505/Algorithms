@@ -121,7 +121,7 @@ public class MaxBST {
 
     public static void main(String[] args) {
         for (int i = 0; i < 10; i++) {
-            int[] array = arrays.noRepeatArray(20, 50);
+            int[] array = arrays.noRepeatArr(20, 50);
             TreeNode root = tree.generateRandomBinaryTree(array);
             PrintTree.printT(root);
             System.out.println(maxBST(root) == null ? null : maxBST(root).val);

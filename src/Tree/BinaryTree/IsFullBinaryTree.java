@@ -2,7 +2,7 @@ package Tree.BinaryTree;
 
 import Tree.TreeNode;
 
-public class FullBinaryTree {
+public class IsFullBinaryTree {
 
     static class Info {
         public int height; // 以当前结点为根的树的高度

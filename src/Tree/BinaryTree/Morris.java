@@ -155,6 +155,7 @@ public class Morris {
     // ==================================================================================================
 
 
+
     // 利用morris遍历序判断某棵树是否为二叉排序树
     public static boolean isBST(TreeNode root){
         if (root == null)
@@ -190,6 +191,8 @@ public class Morris {
         return res;
     }
     // ==================================================================================================
+
+
 
 
     // 树的最小高度：所有叶结点中距离根最近的高度。先用最暴力的版本
@@ -232,7 +235,6 @@ public class Morris {
         if (root == null)
             return 0;
         TreeNode cur = root;
-        TreeNode pre = null;
         int res = Integer.MAX_VALUE;
         int height = 0;
         while (cur != null){
@@ -246,22 +248,23 @@ public class Morris {
                 }
                 // 从while出来后，mostRight一定是cur左子树的最右结点
                 if (mostRight.right == null){  // 说明是第一次到达cur
-                    height++;  // height就可以正常加
                     mostRight.right = cur;
                     cur = cur.left;
+                    height++;  // height就可以正常加
                 } else {  // mostRight.right == cur 说明是第二次到达cur
                     // 第二次到达cur时，mostRight的右指针已修改成成null，如果左孩子也是null，说明mostRight是叶子
                     if (mostRight.left == null)
                         res = Math.min(res, height);
-                    height -= rightBound;  // 高度回溯
                     mostRight.right = null;
                     cur = cur.right;
+                    height -= rightBound;  // 高度回溯
                 }
             } else {  // cur没有左子树
-                height++;
                 cur = cur.right;
+                height++;
             }
         }
+        // 单独处理整棵树的最右结点
         int finalRight = 1;
         cur = root;
         while (cur.right != null) {
@@ -275,6 +278,8 @@ public class Morris {
         return res;
     }
     // ==================================================================================================
+
+
 
 
     // 什么时候用传统的遍历，什么时候用morris遍历？ 当来到某个结点x时如果你需要左子树给你想要的信息，也需要右子树给你想要的

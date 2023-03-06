@@ -5,7 +5,7 @@ import Tree.BiDirectNode;
 import java.util.ArrayList;
 
 // 一些基于非传统二叉树结点的题目
-public class SpecialBinaryTree {
+public class PreAndPost {
 
     // 1.该二叉树结点多了一个parent域用于指向树结构中的父结点。给定该二叉树中任意一个结点，返回其中序遍历下的后继结点,
     // 若无后继返回null

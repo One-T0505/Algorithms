@@ -2,8 +2,10 @@ package Tree.BinaryTree;
 
 import Tree.TreeNode;
 
-public class  BalancedTree {
-    // 判断一棵树是否为平衡二叉树
+// leetCode110
+// 判断一棵树是否为平衡二叉树  这里不需要判断是否满足是二叉排序数，只需要关注高度是否满足即可。
+
+public class IsBalancedTree {
 
     static class Info {
         public boolean isBalanced;
@@ -22,7 +24,7 @@ public class  BalancedTree {
         Info right = process(root.right);
         int height = Math.max(left.height, right.height) + 1;
         boolean balanced = left.isBalanced && right.isBalanced &&
-                Math.abs(left.height - right.height) < 2;;
+                Math.abs(left.height - right.height) < 2;
         return new Info(balanced, height);
     }
     public boolean isBalancedV1(TreeNode root) {

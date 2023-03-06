@@ -2,10 +2,7 @@ package Tree.BinaryTree;
 
 import Tree.TreeNode;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 public class BinaryTree {
 
@@ -58,6 +55,7 @@ public class BinaryTree {
         if (root != null) {
             Stack<TreeNode> stack = new Stack<>();
             TreeNode cur = root;
+            // 栈中都是等着要输出的，但是还没输出的元素
             while (!stack.isEmpty() || cur != null) {
                 if (cur != null) {
                     stack.push(cur);
@@ -71,6 +69,7 @@ public class BinaryTree {
         }
         System.out.println();
     }
+
 
     // 非递归方式实现后序遍历
     public static void posOrderUnderStack(TreeNode root){
@@ -90,6 +89,25 @@ public class BinaryTree {
                 System.out.print(stack2.pop().val + "\t");
         }
         System.out.println();
+    }
+
+
+    public List<Integer> postorderTraversal(TreeNode root) {
+        ArrayList<Integer> res = new ArrayList<>();
+        if (root == null)
+            return res;
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        while (!stack.isEmpty()){
+            TreeNode cur = stack.pop();
+            res.add(cur.val);
+            if (cur.left != null)
+                stack.push(cur.left);
+            if (cur.right != null)
+                stack.push(cur.right);
+        }
+        Collections.reverse(res);
+        return res;
     }
 
     // 只用一个栈实现非递归方式的后序遍历
@@ -112,6 +130,30 @@ public class BinaryTree {
         System.out.println();
     }
 
+
+    public List<List<Integer>> levelOrder1(TreeNode root) {
+        ArrayList<List<Integer>> res = new ArrayList<>();
+        if (root == null)
+            return res;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()){
+            int layerSize = queue.size();
+            ArrayList<Integer> layer = new ArrayList<>();
+            for (int i = 0; i < layerSize; i++) {
+                TreeNode cur = queue.poll();
+                layer.add(cur.val);
+                if (cur.left != null)
+                    queue.add(cur.left);
+                if (cur.right != null)
+                    queue.add(cur.right);
+            }
+            res.add(new ArrayList<>(layer));
+        }
+        return res;
+    }
+
+
     // 层次遍历
     public static void levelOrder(TreeNode root) {
         if (root == null)
@@ -129,7 +171,9 @@ public class BinaryTree {
         System.out.println();
     }
 
+
     // 统计一个二叉树的层次的最大宽度，利用hashmap和队列实现
+    // leetCode662 题和该题思路大体相同，可以看完这个后去662题
     public static int maxWidthV1(TreeNode root){
         if (root == null)
             return 0;
@@ -214,19 +258,19 @@ public class BinaryTree {
     }
 
     // 接收一个按照先序顺序序列化的 list，将其反序列化构建成一棵二叉树
-    public static TreeNode preOrderUnserialize(Queue<String> list){
+    public static TreeNode preOrderDeserialize(Queue<String> list){
         if (list == null || list.size() == 0)
             return null;
-        return preUnserialize(list);
+        return preDeserialize(list);
     }
 
-    public static TreeNode preUnserialize(Queue<String> list) {
+    public static TreeNode preDeserialize(Queue<String> list) {
         String value = list.poll();
         if (value == null)
             return null;
         TreeNode root = new TreeNode(Integer.parseInt(value));
-        root.left = preUnserialize(list);
-        root.right = preUnserialize(list);
+        root.left = preDeserialize(list);
+        root.right = preDeserialize(list);
         return root;
     }
 
@@ -258,7 +302,7 @@ public class BinaryTree {
     }
 
     // 层次遍历的反序列化
-    public static TreeNode levelOrderUnserialize(Queue<String> list) {
+    public static TreeNode levelOrderDeserialize(Queue<String> list) {
         if (list == null || list.size() == 0)
             return null;
         TreeNode root = generateNode(list.poll());
