@@ -5,12 +5,12 @@ import utils.arrays;
 import java.util.Stack;
 
 public class QuickSort {
-    // 给一个数组arr和一个整数num，把 <=num的数放在数组的左边， >num的数凡在数组的右边，左右两边的内部不要求有序
+    // 给一个数组arr和一个整数num，把 <=num的数放在数组的左边， >num的数放在数组的右边，左右两边的内部不要求有序
     // 要求：空间复杂度为O(1)，时间复杂度为O(N)
 
     // 思路：一开始另左边区域的边界bound为 -1，从头遍历元素，如果 <=num，则和bound的下一个位置的元素交换，左边区域扩大一位 bound++；
     // 如果 >num，则跳过
-    public static void partitonTwo(int[] arr, int num){
+    public static void partitionTwo(int[] arr, int num){
         if (arr == null || arr.length == 0)
             return;
         int bound = -1;
@@ -44,7 +44,7 @@ public class QuickSort {
     // ====================================================================================================
 
 
-    // 前两个问题说明了如何partition的过程，接下来就要用不同的partiton过程来实现快速排序
+    // 前两个问题说明了如何partition的过程，接下来就要用不同的partition过程来实现快速排序
     // 快速排序初级版，每次只能搞定一个数
     public static void quickSortV1(int[] arr, int l, int r){
         if (arr == null || arr.length < 2)
