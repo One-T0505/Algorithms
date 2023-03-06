@@ -1,3 +1,4 @@
+package String;
 
 // 若des是ori的子串，返回匹配成功的索引；若不存在返回-1
 public class KMP {
@@ -63,6 +64,11 @@ public class KMP {
         String processed = s1.repeat(2);
         return kmp(processed, s2) != -1;
     }
+
+
+
+    // KMP应用：给定两棵二叉树的头节点head1和head2，返回head1中是否有某个子树的结构和head2完全一样
+    // 思路：将二叉树中序遍历的序列排好之后，看head2的序列是否是head1的子串即可。
 
 
     public static void main(String[] args) {
