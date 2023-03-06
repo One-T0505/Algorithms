@@ -62,7 +62,7 @@ public class BucketSort {
                 count[curDigit]--;
             }
             int i = 0;
-            for (curDigit = 0, i =0; i <= r; i++, curDigit++)
+            for (curDigit = 0, i = l; i <= r; i++, curDigit++)
                 arr[i] = help[curDigit];
         }
 
