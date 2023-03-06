@@ -1,12 +1,12 @@
 package DynamicProgramming;
 
+import java.util.Arrays;
+
 // 给定一个正数数组arr，请把arr中所有的数分成两个集合.如果arr长度为偶数，两个集合包含数的个数要一样多.
 // 如果arr长度为奇数, 两个集合包含数的个数必须只差一个。请尽量让两个集合的累加和接近。
 // 返回：最接近的情况下，较小集合的累加和(这里的较小不是指集合中元素的数量)
 
 // 在Q1中已经会了没有数量限制的尝试，现在只是加了一个数量限制
-
-import java.util.Arrays;
 
 public class SplitSetQ2 {
     // 暴力递归尝试

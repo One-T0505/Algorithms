@@ -92,15 +92,15 @@ public class Sticker {
             // 如果目标字符串的第一个字符，该贴纸有，那再继续，否则直接不做; 肯定是可以避免一些不必要的递归的
             // 贪心策略也可以是别的
             if (curSticker[targetChars[0] - 'a'] > 0){
-                StringBuilder builder = new StringBuilder("");
+                StringBuilder sb = new StringBuilder("");
                 for (int j = 0; j < 26; j++) {
                     if (targetCounter[j] > 0){
                         // 贴纸提供的字符数量最多=目标字符串中的，如果多于，也只能减到0
                         int nums = Math.max(0, targetCounter[j] - curSticker[j]);
-                        builder.append(String.valueOf((char) (j + 'a')).repeat(nums));
+                        sb.append(String.valueOf((char) (j + 'a')).repeat(nums));
                     }
                 }
-                String rest = builder.toString();
+                String rest = sb.toString();
                 minus = Math.min(minus, process2(allStickers, rest));
             }
         }
@@ -150,9 +150,7 @@ public class Sticker {
                 // 说明rest需要这个字符
                 if (restMap[j] > 0) {
                     // 当前字符串可提供('a' + j)多少个？ 如果不够rest使用，那么在sb中补上还差多少个
-                    for (int k = 0; k < Math.max(0, restMap[j] - map[i][j]); k++) {
-                        sb.append((char) ('a' + j));
-                    }
+                    sb.append(String.valueOf((char) ('a' + j)).repeat(Math.max(0, restMap[j] - map[i][j])));
                 }
             }
             // 执行到这里时，sb就组装出了rest使用了一个map[i]字符串后，还需要的所有元素，但顺序已经和之前不同了

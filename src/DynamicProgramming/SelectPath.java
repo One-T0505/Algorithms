@@ -79,11 +79,9 @@ public class SelectPath {
         for (int row = rows - 2; row >= 0; row--)
             cache[row][cols - 1] = matrix[row][cols - 1] + cache[row + 1][cols - 1];
         // 填剩余部分
-        for (int row = rows - 2; row >= 0; row--) {
-            for (int col = cols - 2; col >= 0; col--) {
-                int p1 = matrix[row][col] + cache[row + 1][col];
-                int p2 = matrix[row][col] + cache[row][col + 1];
-                cache[row][col] = Math.min(p1, p2);
+        for (int i = rows - 2; i >= 0; i--) {
+            for (int j = cols - 2; j >= 0; j--) {
+                cache[i][j] = Math.min(cache[i + 1][j], cache[i][j + 1]) + matrix[i][j];
             }
         }
         return cache[0][0];
@@ -93,23 +91,23 @@ public class SelectPath {
 
     // 一定要一个和matrix等大的缓存表吗？事实上可以进一步对矩阵进行压缩只需要一个一维数组即可。
     // 为什么可以继续压缩？ 因为缓存表中第i行的值只依赖于第i-1行，和之前的已经无关了。
-    public static int dpV2(int[][] matrix){
-        if (matrix == null || matrix.length == 0)
-            return 0;
-        int rows = matrix.length;
-        int cols = matrix[0].length;
-        int[] cache = new int[cols];
-        // 先单独将matrix第一行填入到cache中，之后再将每行的值更新到cache
-        cache[0] = matrix[0][0];
-        for (int i = 1; i < cols; i++)
-            cache[i] = cache[i - 1] + matrix[0][i];
-        // 再来处理剩下的行
-        for (int row = 1; row < rows; row++) {
-            cache[0] += matrix[row][0];
-            for (int col = 1; col < cols; col++)
-                cache[col] = Math.min(cache[col - 1], cache[col]) + matrix[row][col];
+    public static int dpV2(int[][] grid){
+        int N = grid.length;
+        int M = grid[0].length;
+        int[] dp = new int[M];
+        // 默认先处理最后一行
+        dp[M - 1] = grid[N - 1][M - 1];
+        for(int j = M - 2; j >= 0; j--)
+            dp[j] = grid[N - 1][j] + dp[j + 1];
+
+        for(int i = N - 2; i >= 0; i--){
+            dp[M - 1] += grid[i][M - 1];
+            for(int j = M - 2; j >= 0; j--){
+                dp[j] = Math.min(dp[j], dp[j + 1]) + grid[i][j];
+            }
         }
-        return cache[cols - 1];
+
+        return dp[0];
     }
     // 得到的启发：
     // 1.如果有别的题目也是这种依赖左、上的关系，那么也可以使用这种空间压缩的技巧。 依赖两方的熟悉之后，如果是依赖

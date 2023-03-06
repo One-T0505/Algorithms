@@ -24,7 +24,10 @@ public class PalindromicSubSequence {
             int p2 = process1(chars, L, R - 1);  // 最长回文子序列包括左边界L，不包括右边界R
             int p3 = process1(chars, L + 1, R);  // 最长回文子序列不包括左边界L，包括右边界R
             // 最长回文子序列既包括左边界L也包括右边界R
-            int p4 = chars[L] == chars[R] ? 2 + p1 : 0; // 本来是：2 + process1(chars, L + 1, R - 1)
+            // 这里否则的情况下为什么在不成立的情况下设置为0呢？
+            // 关于这一点最好先去看最长公共子序列问题的讲解后再来。因为如果 chars[L] != chars[R] 的话，
+            // 那结果其实就是 [L+1, R-1] 也就是p1的值，所以，不相等时直接设为0就行了。
+            int p4 = chars[L] == chars[R] ? 2 + p1 : 0;
             return Math.max(Math.max(p1, p2), Math.max(p3, p4));
         }
     }
