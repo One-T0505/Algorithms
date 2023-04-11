@@ -9,7 +9,7 @@ public class arrays {
     public static int[] randomNoNegativeArr(int maxSize, int maxVal){
         int[] arr = new int[((int) (maxSize * Math.random())) + 1];
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = generateRandomNoNegativeNum(maxVal);
+            arr[i] = randomNoNegativeNum(maxVal);
         }
         return arr;
     }
@@ -97,7 +97,7 @@ public class arrays {
 
 
     // 返回一个在 [0, range]的整数
-    public static int generateRandomNoNegativeNum(int range){
+    public static int randomNoNegativeNum(int range){
         return (int) (Math.random() * (range + 1));
     }
 
