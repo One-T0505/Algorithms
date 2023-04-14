@@ -98,15 +98,15 @@ public class QuickSort {
     public static void quickSortV2(int[] arr){
         if (arr == null || arr.length < 2)
             return;
-        process(arr, 0, arr.length - 1);
+        f(arr, 0, arr.length - 1);
     }
 
-    private static void process(int[] arr, int l, int r) {
+    private static void f(int[] arr, int l, int r) {
         if (l >= r)
             return;
         int[] equalAreas = HollandFlag(arr, l, r);
-        process(arr, l, equalAreas[0] - 1);
-        process(arr, equalAreas[1] + 1, r);
+        f(arr, l, equalAreas[0] - 1);
+        f(arr, equalAreas[1] + 1, r);
     }
     // ====================================================================================================
 
@@ -117,16 +117,16 @@ public class QuickSort {
     public static void quickSortV3(int[] arr){
         if (arr == null || arr.length < 2)
             return;
-        process2(arr, 0, arr.length - 1);
+        g(arr, 0, arr.length - 1);
     }
 
-    private static void process2(int[] arr, int L, int R) {
+    private static void g(int[] arr, int L, int R) {
         if (L >= R)
             return;
         arrays.swap(arr, R, L + (int) (Math.random() * (R - L + 1)));
         int[] equalAreas = HollandFlag(arr, L, R);
-        process2(arr, L, equalAreas[0] - 1);
-        process2(arr, equalAreas[1] + 1, R);
+        g(arr, L, equalAreas[0] - 1);
+        g(arr, equalAreas[1] + 1, R);
     }
     // ====================================================================================================
 
