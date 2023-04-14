@@ -10,16 +10,16 @@ public class MergeSort {
     public static void mergeSortV1(int[] arr){
         if (arr == null || arr.length < 2)
             return;
-        process1(arr, 0, arr.length - 1);
+        f(arr, 0, arr.length - 1);
     }
 
     // 递归过程
-    private static void process1(int[] arr, int L, int R){
+    private static void f(int[] arr, int L, int R){
         if (L==R)
             return;
         int mid = L + ((R - L) >> 1);    //等价于： mid=(L+R)/2  这么写是为了防溢出
-        process1(arr, L, mid);
-        process1(arr,mid + 1, R);
+        f(arr, L, mid);
+        f(arr,mid + 1, R);
         merge(arr, L, mid, R);
     }
 
@@ -77,14 +77,14 @@ public class MergeSort {
     public static int lessSum(int[] arr){
         if (arr == null || arr.length < 2)
             return 0;
-        return process2(arr, 0, arr.length - 1);
+        return g(arr, 0, arr.length - 1);
     }
 
-    public static int process2(int[] arr, int l, int r) {
+    public static int g(int[] arr, int l, int r) {
         if (l == r)
             return 0;
         int mid = l + ((r - l) >> 1);
-        return process2(arr, l, mid) + process2(arr, mid + 1, r) + merge2(arr, l, mid, r);
+        return g(arr, l, mid) + g(arr, mid + 1, r) + merge2(arr, l, mid, r);
     }
 
     public static int merge2(int[] arr, int l, int m, int r){
@@ -127,14 +127,14 @@ public class MergeSort {
     public static int reversePair(int[] arr){
         if (arr == null || arr.length < 2)
             return 0;
-        return process3(arr,0, arr.length - 1);
+        return h(arr,0, arr.length - 1);
     }
 
-    public static int process3(int[] arr, int l, int r) {
+    public static int h(int[] arr, int l, int r) {
         if (l == r)
             return 0;
         int mid = l + ((r - l) >> 1);
-        return process3(arr, l, mid) + process3(arr, mid + 1, r) +merge3(arr, l, mid, r);
+        return h(arr, l, mid) + h(arr, mid + 1, r) + merge3(arr, l, mid, r);
     }
 
     public static int merge3(int[] arr, int L, int M, int R) {
@@ -309,14 +309,14 @@ public class MergeSort {
         help[0] = arr[0];
         for (int i = 1; i < help.length; i++)
             help[i] = help[i - 1] + arr[i];
-        return process4(help, 0, help.length - 1, lower, upper);
+        return y(help, 0, help.length - 1, lower, upper);
     }
 
-    private static int process4(int[] help, int L, int R, int lower, int upper) {
+    private static int y(int[] help, int L, int R, int lower, int upper) {
         if (L == R)
             return help[L] >= lower && help[L] <= upper ? 1 : 0;
         int M = L + ((R - L) >> 1);
-        return process4(help, L, M, lower, upper) + process4(help, M + 1, R, lower, upper) +
+        return y(help, L, M, lower, upper) + y(help, M + 1, R, lower, upper) +
                 merge5(help, L, M, R, lower, upper);
     }
 
