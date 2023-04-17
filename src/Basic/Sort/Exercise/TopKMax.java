@@ -1,4 +1,4 @@
-package Basic.Sort;
+package Basic.Sort.Exercise;
 
 // leetCode215
 // 给定整数数组 nums 和整数 k，请返回数组中第 k 个最大的元素。
@@ -11,7 +11,7 @@ package Basic.Sort;
 
 import java.util.*;
 
-public class _0215_Code {
+public class TopKMax {
 
 
     // 建立小根堆   用系统堆即可   这里是手动实现的，练手感
