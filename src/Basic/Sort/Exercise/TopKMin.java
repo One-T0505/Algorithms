@@ -15,6 +15,7 @@ public class _Offer40_Code {
         if (k == 0)
             return res;
         int i = 0;
+        // 大根堆作为门槛
         PriorityQueue<Integer> heap = new PriorityQueue<>((a, b) -> b - a);
         for (int j = 0; j < k; j++) {
             heap.add(arr[j]);
