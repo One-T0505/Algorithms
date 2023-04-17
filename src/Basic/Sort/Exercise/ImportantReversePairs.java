@@ -1,9 +1,10 @@
-package Basic.Sort;
+package Basic.Sort.Exercise;
 
+// leetCode493
 // 给定一个数组 nums ，如果 i < j 且 nums[i] > 2*nums[j] 我们就将 (i, j) 称作一个重要翻转对。
 // 你需要返回给定数组中的重要翻转对的数量。
 
-public class _0493_Code {
+public class ImportantReversePairs {
 
     // 很明显是一个利用归并排序解决的问题
     public int reversePairs(int[] nums) {
