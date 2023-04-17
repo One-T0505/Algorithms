@@ -113,13 +113,6 @@ public class HeapSort {
         // 默认小根堆
         PriorityQueue<Integer> heap = new PriorityQueue<>();
 
-        // 如果想生成大根堆
-        PriorityQueue<Integer> heapMax = new PriorityQueue<>(new Comparator<>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                return o2 - o1;
-            }
-        });
         int index = 0, i = 0;
         for (; index <= Math.min(arr.length - 1, k); index++)
             heap.add(arr[index]);
@@ -149,10 +142,10 @@ public class HeapSort {
 
         PriorityQueue<Integer> heap = new PriorityQueue<>();
         int max = Integer.MIN_VALUE;
-        for (int cur = 0; cur < lines.length; cur++) {
-            while (!heap.isEmpty() && heap.peek() <= lines[cur].start)
+        for (Line line : lines) {
+            while (!heap.isEmpty() && heap.peek() <= line.start)
                 heap.poll();
-            heap.add(lines[cur].end);
+            heap.add(line.end);
             max = Math.max(max, heap.size());
         }
         return max;
@@ -168,6 +161,10 @@ public class HeapSort {
             this.end = end;
         }
     }
+
+
+
+
     public static void main(String[] args) {
         int[] arr= {10, 1, 5, 2, 6, 8, 3, 7, 13, 2};
         HeapSort heapSort = new HeapSort(arr.length);

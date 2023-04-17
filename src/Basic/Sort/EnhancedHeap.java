@@ -11,10 +11,10 @@ import java.util.List;
 // 所以代价比较高。于是，就有了增强堆，增强堆需要我们自己手写，能以很低的代价满足数值动态变化的情况。
 
 public class EnhancedHeap<K> {
-    private ArrayList<K> heap;
-    private HashMap<K, Integer> indexMap;  // 这个就是反向表，记录某个元素存放在堆上的位置
+    private final ArrayList<K> heap;
+    private final HashMap<K, Integer> indexMap;  // 这个就是反向表，记录某个元素存放在堆上的位置
     private int heapSize;
-    private Comparator<? super K> comparator;
+    private final Comparator<? super K> comparator;
 
     public EnhancedHeap(Comparator<? super K> comparator) {
         heap = new ArrayList<>();
