@@ -1,4 +1,6 @@
-package Basic.Sort;
+package Basic.Sort.Exercise;
+
+import Basic.Sort.EnhancedHeap;
 
 import java.util.ArrayList;
 import java.util.Comparator;
