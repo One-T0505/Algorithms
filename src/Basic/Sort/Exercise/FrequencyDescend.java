@@ -1,4 +1,4 @@
-package Basic.Sort;
+package Basic.Sort.Exercise;
 
 // leetCode451
 // 给定一个字符串 s ，根据字符出现的频率对其进行降序排序。一个字符出现的频率是它出现在字符串中的次数。
@@ -10,7 +10,7 @@ package Basic.Sort;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
-public class _0451_Code {
+public class FrequencyDescend {
 
     public static class Node {
         public char c;
