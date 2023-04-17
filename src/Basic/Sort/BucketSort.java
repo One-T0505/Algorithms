@@ -23,6 +23,10 @@ public class BucketSort {
             }
         }
     }
+    // ----------------------------------------------------------------------------------------------
+
+
+
 
     // 基数排序：数组中的值必须非负,默认是十进制整数。
     public static void radixSort_main(int[] arr) {
@@ -31,6 +35,7 @@ public class BucketSort {
         radixSort(arr, 0, arr.length - 1, maxDigits(arr, 0, arr.length - 1));
 
         }
+
 
     // 该方法为基数排序的高级实现版，无需队列。
     private static void radixSort(int[] arr, int l, int r, int maxDigits) {
@@ -50,18 +55,18 @@ public class BucketSort {
                 count[i] += count[i - 1];
             // 逆向遍历数组，反向定位该元素应该填在help哪里; 这是最难理解的一个for循环
             // 举例,假如此时是按照个位来操作：arr = {101, 267, 133, 104, 352, 601}
-            // count本来是这样的 = [0, 2, 1, 1, 1, 0, 0, 0, 0, 0] 表示个位数分别为0-9的元素
-            // 有几个。经过上面的累加处理，count就成这样的了：count = [0, 2, 3, 4, 5, 5, 5, 5, 5, 5]。这样理解：
+            // count本来是这样的 = [0, 2, 1, 1, 1, 0, 0, 0, 0, 0] 表示个位数分别为0-9的元素有几个。
+            // 经过上面的累加处理，count就成这样的了：count = [0, 2, 3, 4, 5, 5, 5, 5, 5, 5]。这样理解：
             // 个位数<=0的有0个，个位数<=1的有2个，个位数<=2的有3个
             // 个位数<=3的有4个。。。 现在对arr从右至左遍历：第一个是601，个位为1，那就说明按照传统的基数排序进队列来说，
             // 601一定是1号队列的最后一个，那么出队列排好序后，
             // 601一定是放在help[1]的，因为从count中可以得知count[1]=2，所以601一定这两个数的最后一个.
-            for (int i = r; i <= l; i--) {
+            for (int i = r; i >= l; i--) {
                 curDigit = getDigit(arr[i], d);
                 help[count[curDigit] - 1] = arr[i];
                 count[curDigit]--;
             }
-            int i = 0;
+            int i;
             for (curDigit = 0, i = l; i <= r; i++, curDigit++)
                 arr[i] = help[curDigit];
         }
@@ -102,14 +107,13 @@ public class BucketSort {
     }
 
 
-    public static void main(String[] args) {
 
+    private static void test(int testTime){
         // 对数器测试计数排序 100,0000 次
-        for (int i = 0; i < 1000000; i++) {
+        for (int i = 0; i < testTime; i++) {
             int[] randomArray = BucketSort.generateRandomArray(30, 1000);
             int[] copy = new int[randomArray.length];
-            for (int j = 0; j < copy.length; j++)
-                copy[j] = randomArray[j];
+            System.arraycopy(randomArray, 0, copy, 0, copy.length);
             BucketSort.countSort(randomArray);
             Arrays.sort(copy);
             for (int j = 0; j < randomArray.length; j++) {
@@ -119,6 +123,10 @@ public class BucketSort {
         }
         System.out.println("成功！");
         System.out.println("===========================");
+    }
 
+
+    public static void main(String[] args) {
+        System.out.println(getDigit(123, 3));
     }
 }
