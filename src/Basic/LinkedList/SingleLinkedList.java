@@ -76,7 +76,7 @@ public class SingleLinkedList {
 
 
 
-    // 将单链表中结点值为 target的结点全部删除，剩下的结点相对顺序不变
+    // 将单链表中结点值为 target 的结点全部删除，剩下的结点相对顺序不变
     public static SingleNode removeTarget(SingleNode head, int target){
         // 如果头结点就是 target，那头结点就会被删除，就会产生新的头结点
         // 所以首先要找到第一个不是target的结点作为新的头结点
