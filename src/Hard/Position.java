@@ -1,4 +1,4 @@
-package Basic;
+package Hard;
 
 public class Position {
     // 给一个数组，其长度为2n，里面有n个奇数，n个偶数。现在让偶数位上放置偶数，奇数位上放奇数。

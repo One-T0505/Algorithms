@@ -1,4 +1,4 @@
-package Basic;
+package Hard;
 
 // 这道题不涉及什么数据结构和算法相关的知识，纯考coding能力
 
