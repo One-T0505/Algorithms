@@ -98,7 +98,7 @@ public class SingleLinkedList {
         }
         return head;
     }
-    // 进阶版：给定一个排好序的链表，删除所有重复值的元素。可以参考leetCode82 题。
+    // 进阶版：给定一个排好序的链表，删除所有重复值的元素。可以参考 leetCode82 题。
 
 
     public static void main(String[] args) {
