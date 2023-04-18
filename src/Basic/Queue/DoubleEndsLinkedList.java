@@ -1,4 +1,4 @@
-package Basic.SystemDesign;
+package Basic.Queue;
 
 
 import utils.DoubleNode;
