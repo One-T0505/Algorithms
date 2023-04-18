@@ -16,13 +16,6 @@ public class StackQueue {
         pop = new Stack<>();
     }
 
-    // push栈向pop栈倒数据
-    private void pushToPop(){
-        if (pop.isEmpty()){
-            while (!push.isEmpty())
-                pop.push(push.pop());
-        }
-    }
 
     // 元素入队
     public void add(int val){
@@ -30,11 +23,21 @@ public class StackQueue {
         pushToPop();
     }
 
+
     // 元素出队列
     public int poll(){
         if (pop.isEmpty() && push.isEmpty())
             throw new RuntimeException("queue is empty");
         pushToPop();
         return pop.pop();
+    }
+
+
+    // push栈向pop栈倒数据
+    private void pushToPop(){
+        if (pop.isEmpty()){
+            while (!push.isEmpty())
+                pop.push(push.pop());
+        }
     }
 }
