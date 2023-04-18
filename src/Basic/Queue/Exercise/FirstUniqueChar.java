@@ -1,4 +1,4 @@
-package Basic.Queue;
+package Basic.Queue.Exercise;
 
 // leetCode387
 // 给定一个字符串 s ，找到它的第一个不重复的字符，并返回它的索引 。如果不存在，则返回 -1。
@@ -6,7 +6,7 @@ package Basic.Queue;
 
 import java.util.Arrays;
 
-public class _0387_Code {
+public class FirstUniqueChar {
 
     public static int firstUniqChar(String s) {
         char[] chars = s.toCharArray();
