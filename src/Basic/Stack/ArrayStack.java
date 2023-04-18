@@ -2,8 +2,8 @@ package Basic.Stack;
 
 public class ArrayStack {
 
-    private int maxsize;
-    private int[] stack;
+    private final int maxsize;
+    private final int[] stack;
     private int top = -1;
 
     public ArrayStack(int maxsize){
