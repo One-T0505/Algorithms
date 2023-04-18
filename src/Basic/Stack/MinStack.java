@@ -7,7 +7,7 @@ import java.util.Stack;
 // 设计的栈类型可以使用现成的栈结构.
 // 思路：用两个栈data和min；data用于正常存放元素，min用于同步记录当前栈中最小元素
 //      有一个元素入栈，正常加入data，如果该元素比min中栈顶元素小，则入栈，否则min重复进入栈顶元素。
-//      不管何时，data中的元素数量和min中的数量都是相同的。
+//      不管何时，data中的元素数量和min中的数量都是相同的
 public class MinStack {
     public Stack<Integer> data;
     public Stack<Integer> min;
