@@ -1,6 +1,6 @@
 package Basic.Stack;
 
-import Basic.SystemDesign.DoubleEndsLinkedList;
+import Basic.Queue.DoubleEndsLinkedList;
 
 // java底层是用双向链表来实现栈的，我们之前自己复现了双向链表，此时可以利用我们自己
 // 写的双向链表来实现栈
