@@ -64,7 +64,7 @@ public class DoublePointer {
     }
 
     // 5.将单链表按某个值划分成左边小、中间相等、右边大的形式
-    //   方法1：把链表放数组里，在数组上做partition，在把数组构建成单链表（笔试用）时间复杂度：O(N), 空间复杂度：O(N)
+    //   方法1：把链表放数组里，在数组上做partition，再把数组构建成单链表（笔试用）时间复杂度：O(N), 空间复杂度：O(N)
     //   方法2：就在链表上分成小、中、大三部分再把各部分之间串起来（面试用）时间复杂度：O(N), 空间复杂度：O(1)
     public static SingleNode linkedListPartitionV1(SingleNode head, int pivot){
         if (head == null)
@@ -163,7 +163,7 @@ public class DoublePointer {
 
     // 6.假设有一个单链表长度为偶数2N，标记为：L1, L2, ... ,Ln, R1, R2, ... ,Rn，现在希望将其调整为：
     //   L1, Rn, L2, Rn-1, ... ,Ln, R1. 并返回新头部
-    // 对应于leetCode 143 题
+    // 对应于leetCode143 题
     public static SingleNode merge(SingleNode head){ // 该方法时间复杂度：O(N) 额外空间复杂度：O(1)
         if (head == null)
             return null;
