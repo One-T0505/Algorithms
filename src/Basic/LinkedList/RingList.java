@@ -42,7 +42,7 @@ public class RingList {
     }
 
 
-    // 该局部方法对应了leetCode141 和 142 题，直接通过。整体算法一模一样，只需要判断题目要求的长度为1，
+    // 该局部方法对应了leetCode141 和 leetCode142 题，直接通过。整体算法一模一样，只需要判断题目要求的长度为1，
     // 长度为2时，返回什么值，像这样的规定性问题需要辨别一下就行了。
     public static SingleNode getLoopNodeV2(SingleNode head){
         if (head == null || head.next == null || head.next.next == null)
@@ -100,7 +100,7 @@ public class RingList {
         return cur1;
     }
 
-    // 如果一个链表有环，一个链表无环，这样是不可能相交的。所以只需要在讨论下，两个链表都有环的情况下，如何找出
+    // 如果一个链表有环，一个链表无环，这样是不可能相交的。所以只需要再讨论下，两个链表都有环的情况下，如何找出
     // 相交的第一个结点  两个链表都有环的情况也要再细分成三种情况：
     // 1.两个链表各自玩各自的，没有任何关系
     //              ___                 ___
