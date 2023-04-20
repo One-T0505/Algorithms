@@ -6,6 +6,24 @@ import java.util.HashMap;
 // 有一个链表，结点采用RandNode型，完全复刻一个一模一样的链表，不仅要复刻出next，也要复刻出rand，并返回新头部
 // 有两种方式实现，一种是借助容器，一种只用有限几个变量
 public class CopyRandList {
+
+    public static class RandNode {
+        public int val;
+        public RandNode next;
+        public RandNode rand;  // 这个指针随意指向一个结点，可以为null，可以是自己，也可以是任意一个结点，但是一旦确定下来就不可修改
+
+        public RandNode(int val) {
+            this.val = val;
+        }
+
+        public RandNode(int val, RandNode next, RandNode rand) {
+            this.val = val;
+            this.next = next;
+            this.rand = rand;
+        }
+    }
+
+
     // 利用容器，时间复杂度为：O(N) 空间复杂度：O(N)
     public static RandNode copyRandListV1(RandNode head){
         // 该哈希表用于存储：老结点->新结点 的对应关系
@@ -15,7 +33,7 @@ public class CopyRandList {
             map.put(cur, new RandNode(cur.val));
             cur = cur.next;
         }
-        cur =head;
+        cur = head;
         while (cur != null){
             map.get(cur).next = map.get(cur.next);
             map.get(cur).rand = map.get(cur.rand);
@@ -59,8 +77,8 @@ public class CopyRandList {
 
     // RandList的输出
     public static void printRandList(RandNode head){
-        StringBuffer next = new StringBuffer("");
-        StringBuffer rand = new StringBuffer("");
+        StringBuffer next = new StringBuffer();
+        StringBuffer rand = new StringBuffer();
         RandNode cur = head;
         while (cur != null){
             next.append(cur.val).append("  ");
@@ -86,4 +104,5 @@ public class CopyRandList {
         printRandList(randNode);
 
     }
+
 }
