@@ -1,4 +1,4 @@
-package Basic.BitOperation;
+package Basic.BitOperation.Exercise;
 
 // leetCode405
 // 给定一个整数，编写一个算法将这个数转换为十六进制数。对于负整数，我们通常使用补码运算方法。
