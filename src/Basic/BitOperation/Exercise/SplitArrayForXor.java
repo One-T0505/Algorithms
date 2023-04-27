@@ -1,4 +1,4 @@
-package Basic.BitOperation;
+package Basic.BitOperation.Exercise;
 
 import utils.arrays;
 

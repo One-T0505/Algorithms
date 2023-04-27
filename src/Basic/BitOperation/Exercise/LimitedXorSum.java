@@ -1,4 +1,4 @@
-package Basic.BitOperation;
+package Basic.BitOperation.Exercise;
 
 // leetCode1707
 // 给你一个由非负整数组成的数组arr，另有一个查询数组queries，其中queries[i] = [xi, mi]。
@@ -68,6 +68,9 @@ public class LimitedXorSum {
                 int path = (num >> move) & 1;
                 // expected表示当前位的值希望遇到的值：不需要考虑符号位；
                 // 实际遇到的值。如若想去的地方存在且该去向有不超过m的值才能去，否则去另一边
+                // 其实这里有个思维难点，就是说只要下面的两个条件不同时满足，就可以去path 这条路吗？如果 path ^ 1 这条路存在，只是说这条路通过的所有值都 > m
+                // 在这样的情况下，凭什么就可以直接选择 path 这条路呢？万一通过 path 的所有值的最小值也都 > m 呢？
+                // 仔细想就知道不可能。假设当前结点来到了c，每个结点记录的是通过自己的所有值中的最小值，而c就两条路，如果都>m，那么从前缀树的根结点
                 int expected = (cur.nexts[path ^ 1] != null && cur.nexts[path ^ 1].min <= m) ?
                         path ^ 1 : path;
                 // expected ^ path 就得到了第move位真实的值，现在要把该位置上的值添加到res上

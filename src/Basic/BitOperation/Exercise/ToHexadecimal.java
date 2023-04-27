@@ -10,7 +10,7 @@ package Basic.BitOperation.Exercise;
 //  3.给定的数确保在32位有符号整数范围内。
 //  4.不能使用任何由库提供的将数字直接转换或格式化为十六进制的方法。
 
-public class _0405_Code {
+public class ToHexadecimal {
 
     public static String toHex(int num) {
         if (num == 0)

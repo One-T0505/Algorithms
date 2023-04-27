@@ -1,4 +1,4 @@
-package Basic.BitOperation;
+package Basic.BitOperation.Exercise;
 
 
 // Nim博弈问题。给定一个无序正数数组，有两个人，一个先手一个后手。每个人都可以在任意一个元素上拿取至少为1但不超过该元素的值。

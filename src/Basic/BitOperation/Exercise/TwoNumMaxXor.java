@@ -1,4 +1,4 @@
-package Basic.BitOperation;
+package Basic.BitOperation.Exercise;
 
 // leetCode421
 // 给你一个整数数组 nums ，返回 nums[i] XOR nums[j] 的最大运算结果，其中 0 ≤ i ≤ j < n 。
@@ -8,7 +8,7 @@ package Basic.BitOperation;
 
 public class TwoNumMaxXor {
 
-    // 这个题就是上个题目的阉割版。还是同样的一棵前缀树，一开始把arr[0]加进树里，然后新来的数在树中找结果，然后添加进树里。
+    // 这个题就是上个题目的阉割版。先去看 MaxXorSum 还是同样的一棵前缀树，一开始把arr[0]加进树里，然后新来的数在树中找结果，然后添加进树里。
     // 注意：添加进树里的是数组元素本身，不是前缀异或和了！！！
 
 

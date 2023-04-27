@@ -1,4 +1,4 @@
-package Basic.BitOperation;
+package Basic.BitOperation.Exercise;
 
 import utils.arrays;
 
@@ -55,45 +55,6 @@ public class MaxXorSum {
         return res;
     }
 
-    // 暴力方法：O(N^2)
-    public static int maxSumXorV2(int[] arr) {
-        if (arr == null || arr.length == 0)
-            return Integer.MIN_VALUE;
-        int res = Integer.MIN_VALUE;
-        int N = arr.length;
-        int[] help = new int[N];
-        help[0] = arr[0];
-        for (int i = 1; i < N; i++)
-            help[i] = arr[i] ^ help[i - 1];
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j <= i; j++)
-                res = Math.max(res, help[i] ^ (j == i ? 0 : help[j]));
-        }
-        return res;
-    }
-
-    // for test
-    public static void test(int testTime, int maxSize, int maxVal) {
-        for (int i = 0; i < testTime; i++) {
-            int[] arr = arrays.RandomArr(maxSize, maxVal);
-            int res1 = maxSumXor(arr);
-            int res2 = maxSumXorV2(arr);
-            if (res1 != res2) {
-                System.out.println("Failed");
-                arrays.printArray(arr);
-                System.out.println("前缀树方法：" + res1);
-                System.out.println("暴力方法：" + res2);
-                return;
-            }
-        }
-        System.out.println("AC");
-    }
-    // ==================================================================================================
-
-    public static void main(String[] args) {
-        test(10000, 50, 100);
-    }
-
     // 我们现在需要的这个前缀树，不需要什么end，pass了，该前缀树只需要提供两个方法：给你一个数的二进制形式，你把它
     // 加入到树中；给你一个数，你在树中找到能和它异或后结果最大的值返回出来。
     public static class Node {
@@ -136,4 +97,46 @@ public class MaxXorSum {
         } // 该方法的for循环固定32次，所以时间复杂度为：O(1)
 
     }
+    // ==================================================================================================
+
+
+
+    // 暴力方法：O(N^2)
+    public static int maxSumXorV2(int[] arr) {
+        if (arr == null || arr.length == 0)
+            return Integer.MIN_VALUE;
+        int res = Integer.MIN_VALUE;
+        int N = arr.length;
+        int[] help = new int[N];
+        help[0] = arr[0];
+        for (int i = 1; i < N; i++)
+            help[i] = arr[i] ^ help[i - 1];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j <= i; j++)
+                res = Math.max(res, help[i] ^ (j == i ? 0 : help[j]));
+        }
+        return res;
+    }
+
+    // for test
+    public static void test(int testTime, int maxSize, int maxVal) {
+        for (int i = 0; i < testTime; i++) {
+            int[] arr = arrays.RandomArr(maxSize, maxVal);
+            int res1 = maxSumXor(arr);
+            int res2 = maxSumXorV2(arr);
+            if (res1 != res2) {
+                System.out.println("Failed");
+                arrays.printArray(arr);
+                System.out.println("前缀树方法：" + res1);
+                System.out.println("暴力方法：" + res2);
+                return;
+            }
+        }
+        System.out.println("AC");
+    }
+
+    public static void main(String[] args) {
+        test(10000, 50, 100);
+    }
+
 }
