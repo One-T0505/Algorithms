@@ -21,7 +21,7 @@ public class XOR {
     // 这个就是 leetCode260的原题
     public void two_odd_times_num(int[] arr){
         int eor = one_odd_times_num(arr);  // eor==a^b
-        int right = eor & (~eor + 1);//固定操作：这样可以取出该数值的第一个不为空的1。eg： eor=10 （二进制：1010）-> right=0010
+        int right = eor & (~eor + 1); // 固定操作：这样可以取出该数值的第一个不为空的1。eg： eor=10 （二进制：1010）-> right=0010
         int eor_1 = 0;
         for (int j : arr) {
             if ((j & right) == 0) { // 将right这个数值位上的值为0的数都选出来了
