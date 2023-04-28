@@ -1,5 +1,6 @@
 package Basic.UnionFind.Exercise;
 
+// leetCode785
 // 存在一个无向图，图中有 n 个节点。其中每个节点都有一个介于 0 到 n - 1 之间的唯一编号。给你一个二维数组 graph，
 // 其中 graph[u] 是一个节点数组，由节点 u 的邻接节点组成。形式上，对于 graph[u] 中的每个 v，都存在一条位于节点
 // u 和节点 v 之间的无向边。该无向图同时具有以下属性：
@@ -13,7 +14,7 @@ package Basic.UnionFind.Exercise;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class _0785_Code {
+public class IsBipartite {
 
     // 对于图中的任意两个节点 u 和 v，如果它们之间有一条边直接相连，那么 u 和 v 必须属于不同的集合。
     // 如果给定的无向图连通，那么我们就可以任选一个节点开始，给它染成红色。随后我们对整个图进行遍历，

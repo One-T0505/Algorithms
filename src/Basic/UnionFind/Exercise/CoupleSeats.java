@@ -6,7 +6,7 @@ package Basic.UnionFind.Exercise;
 // 第二对是 (2, 3)，以此类推，最后一对是 (2n-2, 2n-1)。
 // 返回最少交换座位的次数，以便每对情侣可以并肩坐在一起。 每次交换可选择任意两人，让他们站起来交换座位。
 
-public class _0765_Code {
+public class CoupleSeats {
 
     // 思路
     // 两对交错的情侣 (x, y)  (x', y')  至少要交换1次;

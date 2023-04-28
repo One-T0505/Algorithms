@@ -1,4 +1,4 @@
-package Basic.UnionFind;
+package Basic.UnionFind.Exercise;
 
 import java.util.HashMap;
 
@@ -44,6 +44,7 @@ public class CommonFactor {
             int limit = (int) Math.sqrt(nums[i]);
             for (int j = 1; j <= limit; j++) {
                 if (nums[i] % j == 0) {
+                    // 这里很巧妙：因为我们只判断other是否需要放进哈希表，所以很自然地避免了因子1，因为other不可能为1
                     int other = nums[i] / j;
                     if (!factors.containsKey(other))
                         factors.put(other, i);

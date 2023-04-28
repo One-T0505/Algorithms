@@ -1,4 +1,4 @@
-package Basic.UnionFind;
+package Basic.UnionFind.Exercise;
 
 // leetCode547 虽然和这道题目内容不同，但是考点完全一样
 // 给定一个方阵M，行数代表有多少个人，M[i][j] = 1，表示i和j两个人互相认识，并且有M[j][i] = 1.
@@ -29,18 +29,6 @@ public class FriendCircle {
             circles = N;   // 一开始每一个人都是一个圈子
         }
 
-        private int findRoot(int i){
-             int index = 0;
-             while (i != roots[i]){
-                 i = roots[i];
-                 help[index++] = i; // 将沿途的结点都放在help中记录着
-             }
-             // 找到i的代表结点了
-            for (index -= 1; index >= 0; index--)
-                roots[help[index]] = i;
-            return i;
-        }
-
         public void union(int i, int j){
             int root1 = findRoot(i);
             int root2 = findRoot(j);
@@ -50,10 +38,22 @@ public class FriendCircle {
                     roots[root2] = root1;
                 } else {
                     sizes[root2] += sizes[root1];
-                    roots[root1] =root2;
+                    roots[root1] = root2;
                 }
                 circles--;
             }
+        }
+
+        private int findRoot(int i){
+            int index = 0;
+            while (i != roots[i]){
+                i = roots[i];
+                help[index++] = i; // 将沿途的结点都放在help中记录着
+            }
+            // 找到i的代表结点了
+            for (index -= 1; index >= 0; index--)
+                roots[help[index]] = i;
+            return i;
         }
     }
 
