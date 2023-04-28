@@ -19,30 +19,16 @@ public class UnionFind<V> {
     public HashMap<Node<V>, Node<V>> parents;  // 结点->其父结点
     public HashMap<Node<V>, Integer> sizes;    // 结点->该结点所在集合的元素个数, 只有各个集合的根结点才会记录
 
-    public UnionFind(List<V> vals) {
+    public UnionFind(List<V> values) {
         nodes = new HashMap<>();
         parents = new HashMap<>();
         sizes = new HashMap<>();
-        for (V v : vals) {
+        for (V v : values) {
             Node<V> node = new Node<>(v);
             nodes.put(v, node);
             parents.put(node, node);
             sizes.put(node, 1);
         }
-    }
-
-    // 从当前node找到该结点所在集合的根，并且沿路将node到root之间各级父结点都直接指向root
-    public Node<V> findRoot(Node<V> node){
-        Stack<Node<V>> stack = new Stack<>();
-        // 只有各个集合的根结点才会是：自己 == 自己的父结点
-        while (node != parents.get(node)){
-            stack.push(node);
-            node = parents.get(node);
-        }
-        // 当跳出上面的循环后， node就指向了当前集合的根结点
-        while (!stack.isEmpty())
-            parents.put(stack.pop(), node); // 让沿路上的那些结点的parent直接指向所在集合的根，这样起到了优化的作用
-        return node;
     }
 
     public boolean isSameSet(V a, V b){
@@ -65,5 +51,20 @@ public class UnionFind<V> {
             sizes.put(big, aSize + bSize);
             sizes.remove(small);
         }
+    }
+
+
+    // 从当前node找到该结点所在集合的根，并且沿路将node到root之间各级父结点都直接指向root
+    private Node<V> findRoot(Node<V> node){
+        Stack<Node<V>> stack = new Stack<>();
+        // 只有各个集合的根结点才会是：自己 == 自己的父结点
+        while (node != parents.get(node)){
+            stack.push(node);
+            node = parents.get(node);
+        }
+        // 当跳出上面的循环后， node就指向了当前集合的根结点
+        while (!stack.isEmpty())
+            parents.put(stack.pop(), node); // 让沿路上的那些结点的parent直接指向所在集合的根，这样起到了优化的作用
+        return node;
     }
 }
