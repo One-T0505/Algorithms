@@ -1,4 +1,4 @@
-package Basic.UnionFind;
+package Basic.UnionFind.Exercise;
 
 // 存在一个无向图，图中有 n 个节点。其中每个节点都有一个介于 0 到 n - 1 之间的唯一编号。给你一个二维数组 graph，
 // 其中 graph[u] 是一个节点数组，由节点 u 的邻接节点组成。形式上，对于 graph[u] 中的每个 v，都存在一条位于节点

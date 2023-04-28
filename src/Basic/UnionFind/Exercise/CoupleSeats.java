@@ -1,5 +1,6 @@
-package Basic.UnionFind;
+package Basic.UnionFind.Exercise;
 
+// leetCode765
 // n 对情侣坐在连续排列的 2n 个座位上，想要牵到对方的手。
 // 人和座位由一个整数数组 row 表示，其中 row[i] 是坐在第 i 个座位上的人的 ID。情侣们按顺序编号，第一对是 (0, 1)，
 // 第二对是 (2, 3)，以此类推，最后一对是 (2n-2, 2n-1)。

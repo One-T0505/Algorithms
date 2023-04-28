@@ -1,4 +1,4 @@
-package Basic.UnionFind;
+package Basic.UnionFind.Exercise;
 
 // 岛问题相关拓展
 // 给你一个大小为 m x n 的二进制矩阵 grid 。
