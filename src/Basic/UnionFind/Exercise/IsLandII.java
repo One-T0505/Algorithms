@@ -1,4 +1,4 @@
-package Basic.UnionFind;
+package Basic.UnionFind.Exercise;
 
 // 岛问题的进化版：这次给的矩阵matrix全部为0，但是会提供一组位置[i, j]。该位置矩阵positions形状为N*2, 每一行表示一个位置，
 // 每一个位置就代表让matrix[i, j] = 1，所以matrix是逐步增加1的个数的。
@@ -7,7 +7,7 @@ package Basic.UnionFind;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IsLandV2 {
+public class IsLandII {
 
     static class UnionFind {
         public int[] roots;
@@ -29,17 +29,17 @@ public class IsLandV2 {
             isLand = 0;
         }
 
-        public int connect(int row, int col) {
-            int pos = row * cols + col;
+        public int connect(int i, int j) {
+            int pos = i * cols + j;
             if (sizes[pos] == 0){  // 说明这个位置是第一次空降下来的
                 roots[pos] = pos;
                 sizes[pos] = 1;
                 isLand++;
                 // 和自己四周的检查下是否能合并
-                union(row - 1, col, row, col);  // 上
-                union(row + 1, col, row, col);  // 下
-                union(row, col - 1, row, col);  // 左
-                union(row, col + 1, row, col);  // 右
+                union(i - 1, j, i, j);  // 上
+                union(i + 1, j, i, j);  // 下
+                union(i, j - 1, i, j);  // 左
+                union(i, j + 1, i, j);  // 右
             }
             return isLand;
         }
@@ -82,14 +82,13 @@ public class IsLandV2 {
     }
 
     // 主方法
-    public static List<Integer> isLandV2(int m, int n, int[][] positions){
-        if (positions == null)
+    public static List<Integer> isLandII(int m, int n, int[][] positions){
+        if (positions == null || positions.length == 0)
             return null;
         UnionFind unionFind = new UnionFind(m, n);
         List<Integer> res = new ArrayList<>();
-        for (int[] position : positions)
-            res.add(unionFind.connect(position[0], position[1]));
-
+        for (int[] pos : positions)
+            res.add(unionFind.connect(pos[0], pos[1]));
         return res;
     }
 }

@@ -1,9 +1,9 @@
-package Basic.UnionFind;
+package Basic.UnionFind.Exercise;
 
 // leetCode200
 // 岛问题
 // 给定一个二维数组matrix，里面的值不是1就是0, 上、下、左、右相邻的1认为是一片岛, 返回matrix中岛的数量
-public class IsLand {
+public class IsLandI {
 
     // 方法1：用最暴力的递归方法做
     public static int isLandsV1(char[][] matrix){
@@ -63,9 +63,9 @@ public class IsLand {
         }
 
 
-        public void union(int row1, int col1, int row2, int col2) {
-            int pos1 = row1 * cols + col1;
-            int pos2 = row2 * cols + col2;
+        public void union(int r1, int c1, int r2, int c2) {
+            int pos1 = r1 * cols + c1;
+            int pos2 = r2 * cols + c2;
             int root1 = findRoot(pos1);
             int root2 = findRoot(pos2);
             if (root1 != root2){
